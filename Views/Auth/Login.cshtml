@@ -1,0 +1,134 @@
+@{
+    Layout = "~/Views/Shared/Auth_Layout.cshtml";
+    ViewData["Title"] = "Login Page";
+}
+
+<style>
+    .input-clean {
+        width: 100%;
+        border-radius: 6px;
+        padding: 6px 16px;
+        border: 1px solid #CBCBCB;
+        box-shadow: none;
+        outline: none;
+        color: #000;
+    }
+
+    .input-clean::placeholder {
+        color: #CBCBCB;
+        opacity: 1;
+    }
+
+    .btn-submit {
+        width: 100%;
+        border-radius: 6px;
+        padding: 5px;
+        color: #fff;
+        background-color: #EB455F;
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .error-message {
+        color: #EB455F;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+</style>
+
+<!-- Tiêu đề -->
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 20px;">
+    <p style="color: #EB455F; font-weight: 700; font-size: 20px; margin: 0;">Đăng nhập</p>
+    <p style="color: #4A4A4A; font-weight: 400; font-size: 12px; margin: 0;">Tinh hoa ẩm thực – Phục vụ hoàn hảo</p>
+</div>
+
+<form id="loginForm" asp-controller="Auth" asp-action="Login" method="post" style="margin-top: 20px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
+    <div class="form-group" style="margin-bottom: 15px;">
+        <p style="margin-bottom: 5px;">Số điện thoại</p>
+        <input type="text" id="phone" placeholder="+84" class="input-clean" style="width: 100%; box-sizing: border-box;" />
+        <div id="phoneError" class="error-message"></div>
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="form-group" style="position: relative; margin-bottom: 20px;">
+        <p style="margin-bottom: 5px;">Mật khẩu</p>
+        <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="passwordInput" placeholder="Mật khẩu" class="input-clean" style="width: 100%; box-sizing: border-box; padding-right: 40px;" />
+            <span onclick="togglePassword()" style="position: absolute; right: 12px; cursor: pointer; display: flex; align-items: center; height: 100%;">
+                <img src="~/svg/hidden.svg" alt="Toggle password visibility" id="toggleIcon" style="width: 20px; height: 20px;" />
+            </span>
+        </div>
+        <div id="passwordError" class="error-message"></div>
+    </div>
+
+    <!-- Nút -->
+    <button type="submit" class="btn-submit" style="width: 100%; border-radius: 8px;">Đăng nhập</button>
+    <p style="margin-bottom: 60px; color: #000;">
+        Don't have account?
+        <a asp-action="Create_Staff" style="color: #000; text-decoration: underline;">
+            Register
+        </a>
+    </p>
+</form>
+
+@section Scripts {
+    <script src="~/js/api_service/auth.service.js"></script>
+    <script>
+        function togglePassword() {
+            var input = document.getElementById("passwordInput");
+            var icon = document.getElementById("toggleIcon");
+            if (input.type === "password") {
+                input.type = "text";
+                icon.src = "/svg/cart.svg";
+            } else {
+                input.type = "password";
+                icon.src = "/svg/hidden.svg";
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.getElementById('phoneError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+            
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('passwordInput').value;
+            
+            // Validate input
+            if (!phone) {
+                document.getElementById('phoneError').textContent = 'Vui lòng nhập số điện thoại';
+                document.getElementById('phoneError').style.display = 'block';
+                return;
+            }
+            
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Vui lòng nhập mật khẩu';
+                document.getElementById('passwordError').style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await window.authService.login(phone, password);
+
+                if (response.success) {
+                    // Lưu thông tin user vào localStorage
+                    localStorage.setItem('user', JSON.stringify(response.user));
+                    // Chuyển hướng đến trang Home
+                    window.location.href = '/Home/Index';
+                } else {
+                    // Hiển thị thông báo lỗi
+                    document.getElementById('passwordError').textContent = response.message || 'Đăng nhập thất bại';
+                    document.getElementById('passwordError').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('passwordError').textContent = 'Có lỗi xảy ra, vui lòng thử lại';
+                document.getElementById('passwordError').style.display = 'block';
+            }
+        });
+    </script>
+}

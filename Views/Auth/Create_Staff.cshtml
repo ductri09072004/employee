@@ -1,0 +1,129 @@
+@{
+    Layout = "~/Views/Shared/Auth_Layout.cshtml";
+    ViewData["Title"] = "Register staff";
+}
+
+<style>
+    .input-clean {
+        width: 100%;
+        border-radius: 6px;
+        padding: 6px 16px;
+        border: 1px solid #CBCBCB;
+        box-shadow: none;
+        outline: none;
+        color: #000;
+    }
+
+    .input-clean::placeholder {
+        color: #CBCBCB;
+        opacity: 1;
+    }
+
+    .btn-submit {
+        width: 100%;
+        border-radius: 6px;
+        padding: 10px;
+        color: #fff;
+        background-color: #EB455F;
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+    }
+</style>
+
+<!-- Tiêu đề -->
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 20px;">
+    <p style="color: #EB455F; font-weight: 700; font-size: 20px; margin: 0;">Đăng ký nhà hàng</p>
+    <p style="color: #4A4A4A; font-weight: 400; font-size: 12px; margin: 0;">Tinh hoa ẩm thực – Phục vụ hoàn hảo</p>
+</div>
+
+<form id="staffForm" style="margin-top: 20px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
+    <!-- Họ và Tên -->
+    <div style="display: flex; gap: 10px; margin-bottom: 15px; width: 100%; box-sizing: border-box;">
+        <div style="flex: 1; min-width: 0;">
+            <p style="margin-bottom: 5px;">Họ</p>
+            <input type="text" id="lastName" placeholder="Họ" class="input-clean" style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <div style="flex: 1; min-width: 0;">
+            <p style="margin-bottom: 5px;">Tên</p>
+            <input type="text" id="firstName" placeholder="Tên" class="input-clean" style="width: 100%; box-sizing: border-box;" />
+        </div>
+    </div>
+
+    <!-- Số điện thoại -->
+    <div class="form-group" style="margin-bottom: 15px;">
+        <p style="margin-bottom: 5px;">Số điện thoại</p>
+        <input type="text" id="phone" placeholder="+84" class="input-clean" style="width: 100%; box-sizing: border-box;" />
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="form-group" style="position: relative; margin-bottom: 20px;">
+        <p style="margin-bottom: 5px;">Mật khẩu</p>
+        <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="passwordInput" placeholder="Mật khẩu" class="input-clean" style="width: 100%; box-sizing: border-box; padding-right: 40px;" />
+            <span onclick="togglePassword()" style="position: absolute; right: 12px; cursor: pointer; display: flex; align-items: center; height: 100%;">
+                <img src="~/svg/hidden.svg" alt="Toggle password visibility" id="toggleIcon" style="width: 20px; height: 20px;" />
+            </span>
+        </div>
+    </div>
+
+    <!-- Nút -->
+    <button type="submit" class="btn-submit" style="width: 100%; border-radius: 8px; margin-bottom: 60px">Tiếp theo</button>
+</form>
+
+@section Scripts {
+    <script src="~/js/api_service/auth.service.js"></script>
+    <script>
+        console.log('Script loaded'); // Debug log to verify script loading
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.src = "/svg/cart.svg";
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.src = "/svg/hidden.svg";
+            }
+        }
+
+        document.getElementById('staffForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('Form submitted'); // Debug log
+            
+            const name = document.getElementById('lastName').value + ' ' + document.getElementById('firstName').value;
+            const phone = document.getElementById('phone').value;
+            const password_hash = document.getElementById('passwordInput').value;
+            
+            console.log('Sending data:', { name, phone, password_hash }); // Debug log
+            
+            try {
+                const response = await window.authService.create_staff(name, phone, password_hash);
+                console.log('API Response:', response); // Debug log
+
+                if (response && response.message === "Tài khoản đã được thêm") {
+                    console.log('Staff created successfully, saving id_staff:', response.id_staff); // Debug log
+                    // Lưu id_staff để sử dụng sau này
+                    localStorage.setItem('id_staff', response.id_staff);
+                    
+                    @* console.log('Showing success alert'); // Debug log
+                    alert('Tạo staff thành công!'); *@
+                    
+                    console.log('Redirecting to Create_Restaurant page...'); // Debug log
+                    setTimeout(() => {
+                        // Sử dụng đường dẫn đầy đủ
+                        window.location.replace('/Auth/Create_Restaurant');
+                    }, 100);
+                } else {
+                    console.log('Unexpected response:', response); // Debug log
+                    alert(response?.message || 'Có lỗi xảy ra khi tạo staff');
+                }
+            } catch (error) {
+                console.error('Error creating staff:', error);
+                alert('Có lỗi xảy ra khi tạo staff');
+            }
+        });
+    </script>
+}

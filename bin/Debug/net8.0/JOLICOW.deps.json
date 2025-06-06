@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "JOLICOW/1.0.0": {
+        "runtime": {
+          "JOLICOW.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "JOLICOW/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
