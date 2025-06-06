@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Study\\MVC_Web\\JOLICOW\\JOLICOW.csproj": {}
+    "E:\\Study\\MVC_Web\\Employee\\JOLICOW.csproj": {}
   },
   "projects": {
-    "E:\\Study\\MVC_Web\\JOLICOW\\JOLICOW.csproj": {
+    "E:\\Study\\MVC_Web\\Employee\\JOLICOW.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Study\\MVC_Web\\JOLICOW\\JOLICOW.csproj",
+        "projectUniqueName": "E:\\Study\\MVC_Web\\Employee\\JOLICOW.csproj",
         "projectName": "JOLICOW",
-        "projectPath": "E:\\Study\\MVC_Web\\JOLICOW\\JOLICOW.csproj",
+        "projectPath": "E:\\Study\\MVC_Web\\Employee\\JOLICOW.csproj",
         "packagesPath": "C:\\Users\\ductr\\.nuget\\packages\\",
-        "outputPath": "E:\\Study\\MVC_Web\\JOLICOW\\obj\\",
+        "outputPath": "E:\\Study\\MVC_Web\\Employee\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ductr\\AppData\\Roaming\\NuGet\\NuGet.Config"
