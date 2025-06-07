@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Quản lý</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #F9F9F9;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .user-info {
+            padding: 24px 16px 16px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+
+        .nav-menu {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .nav-item {
+            display: flex;
+            padding: 12px 16px 12px 32px;
+            gap: 12px;
+            color: #696969;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .nav-item-res {
+            display: flex;
+            padding: 12px 16px 12px 32px;
+            gap: 12px;
+            color: #696969;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .nav-item:hover {
+            background-color: #F9FAFF;
+        }
+
+         .nav-item-res:hover {
+            background-color: #F9FAFF;
+        }
+
+        .nav-item.active {
+            background-color: #F9FAFF;
+            border-right: 1px solid #EB455F;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            padding: 8px 16px;
+        }
+
+        .logout-btn button {
+            width: 100%;
+            padding: 10px;
+            background-color: #EB455F;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout-btn button:hover {
+            background-color: #c82333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 32px;
+            overflow-y: auto;
+            background-color: #fff;
+            margin: 24px;
+            border-radius: 6px;
+        }
+
+        .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4A4A4A;
+        }
+
+        .role{
+            font-size: 12px;
+            font-weight: 400;
+            color: #696969;
+        }
+
+        .icon-placeholder {
+            width: 16px;  
+            height: 16px;
+            display: inline-block;
+        }
+
+         .down-icon {
+            position: absolute;
+            right: 16px; 
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-info">
+            <p class="name">Trần Hữu Minh Trí</p>
+            <p class="role">Quản trị viên</p>
+        </div>
+
+        <div class="nav-menu">
+            <a asp-controller="Home" asp-action="Index" class="nav-item active">
+                <img src="~/svg/home_icon.svg" alt="icon" class="icon" />
+                Tổng quan
+            </a>
+            <a asp-controller="Home" asp-action="QL_Order" class="nav-item">
+                <img src="~/svg/ql_order.svg" alt="icon" class="icon" />
+                Quản lý đơn gọi món
+            </a>
+            <a asp-controller="Home" asp-action="History" class="nav-item">
+                <img src="~/svg/his_icon.svg" alt="icon" class="icon" />
+                Lịch sử đơn
+            </a>
+
+            <div class="nav-item">
+                <img src="~/svg/ql_restaurant.svg" alt="icon" class="icon" />
+                Quản lý nhà hàng
+                <img src="~/svg/down_icon.svg" alt="icon" class="icon down-icon" />
+            </div>
+            <a asp-controller="Home" asp-action="QL_Table" class="nav-item-res">
+                <span class="icon-placeholder"></span>
+                Quản lý bàn
+            </a>
+            <a asp-controller="Home" asp-action="QL_Menu" class="nav-item-res">
+                <span class="icon-placeholder"></span>
+                Quản lý thực đơn
+            </a>
+            <a asp-controller="Home" asp-action="QL_Topping" class="nav-item-res">
+                <span class="icon-placeholder"></span>
+                Quản lý topping kèm
+            </a>
+
+            <a asp-controller="Home" asp-action="Setting" class="nav-item-res">
+                <img src="~/svg/setting_icon.svg" alt="icon" class="icon" />
+                Cài đặt
+            </a>
+        </div>
+        
+        <div class="logout-btn">
+            <button>Đăng xuất</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        @RenderBody()
+    </div>
+</body>
+</html>

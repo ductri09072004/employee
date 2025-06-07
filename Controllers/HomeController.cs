@@ -18,7 +18,32 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult QL_Order()
+    {
+        return View();
+    }
+
+    public IActionResult History()
+    {
+        return View();
+    }
+
+    public IActionResult QL_Table()
+    {
+        return View();
+    }
+
+    public IActionResult QL_Menu()
+    {
+        return View();
+    }
+
+    public IActionResult QL_Topping()
+    {
+        return View();
+    }
+
+    public IActionResult Setting()
     {
         return View();
     }

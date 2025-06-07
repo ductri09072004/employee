@@ -265,8 +265,36 @@
       "PackagePath": "staticwebassets\\svg\\cart.svg"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\down_icon.svg",
+      "PackagePath": "staticwebassets\\svg\\down_icon.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\down_icon_small.svg",
+      "PackagePath": "staticwebassets\\svg\\down_icon_small.svg"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\hidden.svg",
       "PackagePath": "staticwebassets\\svg\\hidden.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\his_icon.svg",
+      "PackagePath": "staticwebassets\\svg\\his_icon.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\home_icon.svg",
+      "PackagePath": "staticwebassets\\svg\\home_icon.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\ql_order.svg",
+      "PackagePath": "staticwebassets\\svg\\ql_order.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\ql_restaurant.svg",
+      "PackagePath": "staticwebassets\\svg\\ql_restaurant.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\setting_icon.svg",
+      "PackagePath": "staticwebassets\\svg\\setting_icon.svg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.JOLICOW.Microsoft.AspNetCore.StaticWebAssets.props",
