@@ -3,6 +3,157 @@
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Home</h1>
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+
+    .stat-content h3 {
+        font-size: 24px;
+        margin: 0;
+        color: #333;
+    }
+
+    .stat-content p {
+        font-size: 14px;
+        margin: 0;
+        color: #777;
+    }
+
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 20px;
+    }
+
+    .chart-card {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .chart-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chart-placeholder {
+        height: 250px;
+        background-color: #f8f9fa;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ccc;
+    }
+
+    .revenue-percentage {
+        font-size: 14px;
+        font-weight: bold;
+        color: #28a745; /* Green color for positive change */
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .arrow-icon {
+        font-size: 12px;
+    }
+</style>
+
+<div class="dashboard">
+    <div class="dashboard-grid">
+        <div class="stat-card">
+            <div class="stat-icon icon-orange">
+                <img src="~/svg/index/icon1.svg" alt="user icon" />
+            </div>
+            <div class="stat-content">
+                <h3>34</h3>
+                <p>Tổng đơn gọi món</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-blue">
+                <img src="~/svg/index/icon2.svg" alt="user icon"/>
+            </div>
+            <div class="stat-content">
+                <h3>1</h3>
+                <p>Đơn chờ xử lý</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-blue">
+                <img src="~/svg/index/icon2.svg" alt="user icon"/>
+            </div>
+            <div class="stat-content">
+                <h3>1</h3>
+                <p>Đơn đang chế biến</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-purple">
+                <img src="~/svg/index/icon3.svg" alt="percent icon"/>
+            </div>
+            <div class="stat-content">
+                <h3>12</h3>
+                <p>Đơn đã hoàn thành</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-purple">
+                <img src="~/svg/index/icon3.svg" alt="percent icon" />
+            </div>
+            <div class="stat-content">
+                <h3>12</h3>
+                <p>Đơn chưa thanh toán</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h2 class="chart-title">Món bán chạy trong ngày</h2>
+            <div class="chart-placeholder"><!-- Biểu đồ món bán chạy sẽ ở đây --></div>
+        </div>
+        <div class="chart-card">
+            <h2 class="chart-title">
+                <span>Doanh thu</span>
+                <span class="revenue-percentage">14% <span class="arrow-icon">&#8599;</span></span>
+            </h2>
+            <div class="chart-placeholder"> <!-- Biểu đồ doanh thu sẽ ở đây --></div>
+        </div>
+    </div>
 </div>

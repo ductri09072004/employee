@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rO/7Tl9QJoGAogIuC28Toq4sVJDaALaoPaNVEklVrC8=",
+  "Hash": "VH+7jXLubhTuW7oonYW0TOsBOeKxsshwPpihSqhig2I=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -1271,12 +1271,12 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\cart.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon1.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/cart.svg",
+      "RelativePath": "svg/index/icon1.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1287,15 +1287,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\cart.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\index\\icon1.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\down_icon_small.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon2.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/down_icon_small.svg",
+      "RelativePath": "svg/index/icon2.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1306,15 +1306,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\down_icon_small.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\index\\icon2.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\down_icon.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon3.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/down_icon.svg",
+      "RelativePath": "svg/index/icon3.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1325,15 +1325,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\down_icon.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\index\\icon3.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\hidden.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\cart.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/hidden.svg",
+      "RelativePath": "svg/sidebar/cart.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1344,15 +1344,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\hidden.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\cart.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\his_icon.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\down_icon_small.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/his_icon.svg",
+      "RelativePath": "svg/sidebar/down_icon_small.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1363,15 +1363,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\his_icon.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\down_icon_small.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\home_icon.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\down_icon.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/home_icon.svg",
+      "RelativePath": "svg/sidebar/down_icon.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1382,15 +1382,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\home_icon.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\down_icon.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\ql_order.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\hidden.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/ql_order.svg",
+      "RelativePath": "svg/sidebar/hidden.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1401,15 +1401,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\ql_order.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\hidden.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\ql_restaurant.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\his_icon.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/ql_restaurant.svg",
+      "RelativePath": "svg/sidebar/his_icon.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1420,15 +1420,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\ql_restaurant.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\his_icon.svg"
     },
     {
-      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\setting_icon.svg",
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\home_icon.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
       "BasePath": "_content/JOLICOW",
-      "RelativePath": "svg/setting_icon.svg",
+      "RelativePath": "svg/sidebar/home_icon.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1439,7 +1439,64 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\svg\\setting_icon.svg"
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\home_icon.svg"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\ql_order.svg",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "svg/sidebar/ql_order.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\ql_order.svg"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\ql_restaurant.svg",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "svg/sidebar/ql_restaurant.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\ql_restaurant.svg"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\setting_icon.svg",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "svg/sidebar/setting_icon.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\setting_icon.svg"
     }
   ]
 }

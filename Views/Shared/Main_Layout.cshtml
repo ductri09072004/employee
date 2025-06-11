@@ -15,13 +15,30 @@
         body {
             font-family: 'Lato', sans-serif;
             display: flex;
-            height: 100vh;
-            overflow: hidden;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
             background-color: #F9F9F9;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1600px;
+            height: 100vh;
+            overflow-y: auto;
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .container::-webkit-scrollbar {
+            display: none;
         }
 
         .sidebar {
             width: 250px;
+            min-width: 250px;
             background-color: #FFFFFF;
             display: flex;
             flex-direction: column;
@@ -32,7 +49,8 @@
             padding: 24px 16px 16px 32px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
 
@@ -41,6 +59,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            padding-top: 16px;
         }
 
         .nav-item {
@@ -50,6 +69,7 @@
             color: #696969;
             text-decoration: none;
             font-weight: 400;
+            cursor: pointer;
         }
 
         .nav-item-res {
@@ -70,6 +90,11 @@
         }
 
         .nav-item.active {
+            background-color: #F9FAFF;
+            border-right: 1px solid #EB455F;
+        }
+
+        .nav-item-res.active {
             background-color: #F9FAFF;
             border-right: 1px solid #EB455F;
         }
@@ -101,6 +126,13 @@
             background-color: #fff;
             margin: 24px;
             border-radius: 6px;
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .main-content::-webkit-scrollbar {
+            display: none;
         }
 
         .name {
@@ -125,63 +157,102 @@
             position: absolute;
             right: 16px; 
             margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .down-icon.rotate {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .submenu.show {
+            display: flex;
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="user-info">
-            <p class="name">Trần Hữu Minh Trí</p>
-            <p class="role">Quản trị viên</p>
-        </div>
-
-        <div class="nav-menu">
-            <a asp-controller="Home" asp-action="Index" class="nav-item active">
-                <img src="~/svg/home_icon.svg" alt="icon" class="icon" />
-                Tổng quan
-            </a>
-            <a asp-controller="Home" asp-action="QL_Order" class="nav-item">
-                <img src="~/svg/ql_order.svg" alt="icon" class="icon" />
-                Quản lý đơn gọi món
-            </a>
-            <a asp-controller="Home" asp-action="History" class="nav-item">
-                <img src="~/svg/his_icon.svg" alt="icon" class="icon" />
-                Lịch sử đơn
-            </a>
-
-            <div class="nav-item">
-                <img src="~/svg/ql_restaurant.svg" alt="icon" class="icon" />
-                Quản lý nhà hàng
-                <img src="~/svg/down_icon.svg" alt="icon" class="icon down-icon" />
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-info">
+                <p class="name">Trần Hữu Minh Trí</p>
+                <p class="role">Quản trị viên</p>
             </div>
-            <a asp-controller="Home" asp-action="QL_Table" class="nav-item-res">
-                <span class="icon-placeholder"></span>
-                Quản lý bàn
-            </a>
-            <a asp-controller="Home" asp-action="QL_Menu" class="nav-item-res">
-                <span class="icon-placeholder"></span>
-                Quản lý thực đơn
-            </a>
-            <a asp-controller="Home" asp-action="QL_Topping" class="nav-item-res">
-                <span class="icon-placeholder"></span>
-                Quản lý topping kèm
-            </a>
 
-            <a asp-controller="Home" asp-action="Setting" class="nav-item-res">
-                <img src="~/svg/setting_icon.svg" alt="icon" class="icon" />
-                Cài đặt
-            </a>
+            <div class="nav-menu">
+                <a asp-controller="Home" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+                    <img src="~/svg/home_icon.svg" alt="icon" class="icon" />
+                    Tổng quan
+                </a>
+                <a asp-controller="Home" asp-action="QL_Order" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Order" ? "active" : "")">
+                    <img src="~/svg/ql_order.svg" alt="icon" class="icon" />
+                    Quản lý đơn gọi món
+                </a>
+                <a asp-controller="Home" asp-action="History" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "History" ? "active" : "")">
+                    <img src="~/svg/his_icon.svg" alt="icon" class="icon" />
+                    Lịch sử đơn
+                </a>
+
+                <div class="nav-item" id="restaurantMenu">
+                    <img src="~/svg/ql_restaurant.svg" alt="icon" class="icon" />
+                    Quản lý nhà hàng
+                    <img src="~/svg/down_icon.svg" alt="icon" class="icon down-icon" />
+                </div>
+                <div class="submenu" id="restaurantSubmenu">
+                    <a asp-controller="Home" asp-action="QL_Table" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Table" ? "active" : "")">
+                        <span class="icon-placeholder"></span>
+                        Quản lý bàn
+                    </a>
+                    <a asp-controller="Home" asp-action="QL_Menu" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Menu" ? "active" : "")">
+                        <span class="icon-placeholder"></span>
+                        Quản lý thực đơn
+                    </a>
+                    <a asp-controller="Home" asp-action="QL_Topping" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Topping" ? "active" : "")">
+                        <span class="icon-placeholder"></span>
+                        Quản lý topping kèm
+                    </a>
+                </div>
+
+                <a asp-controller="Home" asp-action="Setting" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "Setting" ? "active" : "")">
+                    <img src="~/svg/setting_icon.svg" alt="icon" class="icon" />
+                    Cài đặt
+                </a>
+            </div>
+            
+            <div class="logout-btn">
+                <button>Đăng xuất</button>
+            </div>
         </div>
-        
-        <div class="logout-btn">
-            <button>Đăng xuất</button>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            @RenderBody()
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        @RenderBody()
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const restaurantMenu = document.getElementById('restaurantMenu');
+            const restaurantSubmenu = document.getElementById('restaurantSubmenu');
+            const downIcon = restaurantMenu.querySelector('.down-icon');
+
+            // Kiểm tra nếu đang ở một trong các trang con
+            const currentAction = '@ViewContext.RouteData.Values["Action"]';
+            if (['QL_Table', 'QL_Menu', 'QL_Topping'].includes(currentAction)) {
+                restaurantSubmenu.classList.add('show');
+                downIcon.classList.add('rotate');
+            }
+
+            restaurantMenu.addEventListener('click', function() {
+                restaurantSubmenu.classList.toggle('show');
+                downIcon.classList.toggle('rotate');
+            });
+        });
+    </script>
 </body>
 </html>

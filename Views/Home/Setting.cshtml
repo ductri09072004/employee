@@ -3,6 +3,152 @@
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Setting</h1> 
+<style>
+    .setting-container {
+        @* max-width: 800px; *@
+        margin: 0 auto;
+        padding: 32px;
+        background-color: #fff;
+    }
+
+    .setting-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #4A4A4A;
+        margin-bottom: 24px;
+    }
+
+    .warning-text {
+        color: #EB455F;
+        font-size: 18px;
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #4A4A4A;
+        margin-bottom: 16px;
+    }
+
+    .instruction-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 24px;
+        gap: 12px;
+    }
+
+    .instruction-list li {
+        font-size: 16px;
+        color: #4A4A4A;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .form-group label {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .port-input-group {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 32px;
+        align-items: flex-end;
+    }
+
+    .port-input {
+        flex-grow: 1;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .port-input::placeholder {
+        color: #aaa;
+    }
+
+    .update-button {
+        padding: 10px 46px;
+        background-color: #EB455F;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .update-button:hover {
+        background-color: #c82333;
+    }
+
+    .purpose-list {
+        list-style-type: disc;
+        padding-left: 20px;
+        margin-bottom: 32px;
+    }
+
+    .purpose-list li {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    .contact-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .contact-list li {
+        font-size: 14px;
+        color: #4A4A4A;
+        margin-bottom: 8px;
+    }
+
+    .contact-list li strong {
+        font-weight: 700;
+        color: #4A4A4A;
+    }
+</style>
+
+<div class="setting-container">
+    <h1 class="setting-title">Hướng dẫn lấy IP Port WI-FI cửa hàng</h1>
+    <p class="warning-text">Lưu ý: Nếu tắt mở modem, địa chỉ truy cập (IP và Port) có thể thay đổi. Vui lòng liên hệ kỹ thuật nếu gặp sự cố không vào được hệ thống.</p>
+
+    @* <h2 class="section-title">Bước 1: Vào đó</h2> *@
+    <ul class="instruction-list">
+        <li>Bước 1: Bấm tổ hợp phím Win+X, chọn Terminal</li>
+        <li>Bước 2: Sau đó gõ "ipconfig"</li>
+        <li>Bước 3: Lướt xuống tìm mục "IPv4 Address" nhìn sang bên phải là IP port Wi-Fi cần tìm</li>
+        <li>Bước 4: Sau khi nhận được kết quả, copy và dán Port vào ô dưới</li>
+    </ul>
+
+    <div class="form-group">
+        <label for="portIp">Port IP của nhà hàng</label>
+        <div class="port-input-group">
+            <input type="text" id="portIp" class="port-input" placeholder="VD: 10.21.9.223">
+            <button class="update-button">Cập nhật Port</button>
+        </div>
+    </div>
+
+    <h2 class="section-title">Mục đích cài đặt Port:</h2>
+    <ul class="purpose-list">
+        <li>Bảo mật: Ngăn chặn người lạ từ bên ngoài truy cập trái phép, đặt hàng giả hoặc làm rối hệ thống.</li>
+        <li>Ổn định: Hệ thống chạy nhanh và mượt hơn vì không cần Internet, chỉ cần Wi-Fi nội bộ.</li>
+        <li>Kiểm soát: Chỉ thiết bị bị trong cửa hàng mới được truy cập, giúp dễ để quản lý và hạn chế lỗi.</li>
+    </ul>
+
+    <h2 class="section-title">Liên hệ hỗ trợ:</h2>
+    <ul class="contact-list">
+        <li><strong>Hotline:</strong> 19001234 (Hỗ trợ 24/7)</li>
+        <li><strong>Gmail:</strong> ductri09072004@gmail.com</li>
+    </ul>
 </div>

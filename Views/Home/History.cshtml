@@ -3,6 +3,353 @@
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Lịch sử đơn</h1>
+<style>
+    .history-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .filter-button-container {
+        margin-bottom: 20px;
+    }
+
+    .filter-button {
+        background: none;
+        border: none;
+        color: #007bff;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .filter-button:hover {
+        text-decoration: underline;
+    }
+
+    .filter-icon {
+        font-size: 18px;
+    }
+
+    .history-table-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    .history-table th,
+    .history-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    .history-table th {
+        background-color: #f8f8f8;
+        color: #555;
+        font-weight: bold;
+    }
+
+    .history-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .history-table .status-approved {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .history-table .action-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .history-table .action-link:hover {
+        text-decoration: underline;
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 15px;
+        padding: 10px 0;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding-right: 20px;
+    }
+
+    .pagination-label {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .items-per-page-select {
+        padding: 6px 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .pagination-info {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .pagination-controls button {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .pagination-controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination-controls span {
+        margin: 0 5px;
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+
+<div class="history-container">
+    <div class="filter-button-container">
+        <button class="filter-button">
+            <span class="filter-icon">+</span> Thêm bộ lọc
+        </button>
+    </div>
+
+    <div class="history-table-container">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã đơn</th>
+                    <th>Bàn số</th>
+                    <th>Giờ đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Duyệt đơn</th>
+                    <th>Chi tiết đơn</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>DH0001</td>
+                    <td>Bàn 02</td>
+                    <td>12:04</td>
+                    <td>450.000đ</td>
+                    <td>Thanh toán trực tuyến</td>
+                    <td>Đã hoàn tất</td>
+                    <td>3 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>04</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>05</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>06</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>07</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>08</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>09</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>DH0002</td>
+                    <td>Bàn 01</td>
+                    <td>12:00</td>
+                    <td>150.000đ</td>
+                    <td>Thanh toán tại quầy</td>
+                    <td>Đã hoàn tất</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-container">
+        <span class="pagination-label">Số hàng trên mỗi trang:</span>
+        <select class="items-per-page-select">
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+        </select>
+        <span class="pagination-info">1 - 15/61</span>
+        <div class="pagination-controls">
+            <button>&lt;&lt;</button>
+            <button>&lt;</button>
+            <button>&gt;</button>
+            <button>&gt;&gt;</button>
+        </div>
+    </div>
 </div>
