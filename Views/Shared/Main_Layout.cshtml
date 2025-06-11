@@ -186,22 +186,22 @@
 
             <div class="nav-menu">
                 <a asp-controller="Home" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
-                    <img src="~/svg/home_icon.svg" alt="icon" class="icon" />
+                    <img src="~/svg/sidebar/home_icon.svg" alt="icon" class="icon" />
                     Tổng quan
                 </a>
                 <a asp-controller="Home" asp-action="QL_Order" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Order" ? "active" : "")">
-                    <img src="~/svg/ql_order.svg" alt="icon" class="icon" />
+                    <img src="~/svg/sidebar/ql_order.svg" alt="icon" class="icon" />
                     Quản lý đơn gọi món
                 </a>
                 <a asp-controller="Home" asp-action="History" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "History" ? "active" : "")">
-                    <img src="~/svg/his_icon.svg" alt="icon" class="icon" />
+                    <img src="~/svg/sidebar/his_icon.svg" alt="icon" class="icon" />
                     Lịch sử đơn
                 </a>
 
                 <div class="nav-item" id="restaurantMenu">
-                    <img src="~/svg/ql_restaurant.svg" alt="icon" class="icon" />
+                    <img src="~/svg/sidebar/ql_restaurant.svg" alt="icon" class="icon" />
                     Quản lý nhà hàng
-                    <img src="~/svg/down_icon.svg" alt="icon" class="icon down-icon" />
+                    <img src="~/svg/sidebar/down_icon.svg" alt="icon" class="icon down-icon" />
                 </div>
                 <div class="submenu" id="restaurantSubmenu">
                     <a asp-controller="Home" asp-action="QL_Table" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Table" ? "active" : "")">
@@ -219,7 +219,7 @@
                 </div>
 
                 <a asp-controller="Home" asp-action="Setting" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "Setting" ? "active" : "")">
-                    <img src="~/svg/setting_icon.svg" alt="icon" class="icon" />
+                    <img src="~/svg/sidebar/setting_icon.svg" alt="icon" class="icon" />
                     Cài đặt
                 </a>
             </div>
