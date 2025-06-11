@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\api_service\\auth.service.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\order.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\order.service.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\restaurant.service.js",
       "PackagePath": "staticwebassets\\js\\api_service\\restaurant.service.js"
     },

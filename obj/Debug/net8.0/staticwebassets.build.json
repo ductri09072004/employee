@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VH+7jXLubhTuW7oonYW0TOsBOeKxsshwPpihSqhig2I=",
+  "Hash": "pVhFyZ5e75Ik8szRuRdrDUieiUyuJq2SdaHQy0rvBY8=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\api_service\\auth.service.js"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\order.service.js",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "js/api_service/order.service.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\api_service\\order.service.js"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\restaurant.service.js",
