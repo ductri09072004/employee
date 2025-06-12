@@ -2,17 +2,15 @@
 const Restaurant_API = {
     BASE_URL: 'https://jollicowfe-production.up.railway.app/api',
     
-    async create_restaurant(name_restaurant, address, number_tax) {
+    async create_restaurant(id_restaurant) {
         try {
-            const response = await fetch(`${this.BASE_URL}/restaurants`, {
+            const response = await fetch(`${this.BASE_URL}/orders/fillerid`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name_restaurant: name_restaurant,
-                    address: address,
-                    number_tax: number_tax
+                    id_restaurant: id_restaurant
                 })
             });
 
@@ -20,6 +18,26 @@ const Restaurant_API = {
             return data;
         } catch (error) {
             console.error('Create restaurant error:', error);
+            throw error;
+        }
+    },
+
+    async getOrderHistory(id_restaurant) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/orders/fillerid`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_restaurant: id_restaurant
+                })
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Get order history error:', error);
             throw error;
         }
     }

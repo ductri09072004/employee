@@ -106,7 +106,6 @@
 
         .main-content {
             flex-grow: 1;
-            padding: 32px;
             overflow-y: auto;
             background-color: #fff;
             margin: 24px;
@@ -354,5 +353,10 @@
             });
         });
     </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/api_service/order.service.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

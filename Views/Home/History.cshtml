@@ -5,19 +5,23 @@
 
 <style>
     .history-container {
-        padding: 20px;
-        background-color: #f9f9f9;
+        background-color: #f8f9fa;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .filter-button-container {
         margin-bottom: 20px;
+        background-color: #fff;
+        padding: 12px;
     }
 
     .filter-button {
         background: none;
         border: none;
-        color: #007bff;
-        font-size: 16px;
+        color: #4267B2;
+        font-size: 12px;
         cursor: pointer;
         padding: 0;
         display: flex;
@@ -26,38 +30,43 @@
     }
 
     .filter-button:hover {
-        text-decoration: underline;
+        color: #3498db;
     }
 
     .filter-icon {
-        font-size: 18px;
+        font-size: 12px;
     }
 
     .history-table-container {
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
         overflow: hidden;
         margin-bottom: 20px;
+        flex: 1;
     }
 
     .history-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .history-table th,
     .history-table td {
-        padding: 12px 15px;
+        padding: 12px;
         text-align: left;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #e9ecef;
     }
 
     .history-table th {
-        background-color: #f8f8f8;
-        color: #555;
-        font-weight: bold;
+        background-color: #fff;
+        color: #696969;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .history-table tbody tr:hover {
+        background-color: #f8f9fa;
     }
 
     .history-table tbody tr:last-child td {
@@ -65,16 +74,18 @@
     }
 
     .history-table .status-approved {
-        color: #28a745;
-        font-weight: bold;
+        color: #27ae60;
+        font-weight: 600;
     }
 
     .history-table .action-link {
-        color: #007bff;
+        color: #3498db;
         text-decoration: none;
+        font-weight: 500;
     }
 
     .history-table .action-link:hover {
+        color: #2980b9;
         text-decoration: underline;
     }
 
@@ -83,38 +94,46 @@
         justify-content: flex-end;
         align-items: center;
         gap: 15px;
-        padding: 10px 0;
+        padding: 15px;
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        padding-right: 20px;
+        border-radius: 10px;
+        margin-top: auto;
     }
 
     .pagination-label {
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #696969;
     }
 
     .items-per-page-select {
-        padding: 6px 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
+        padding: 8px 12px;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #696969;
+        background-color: #fff;
     }
 
     .pagination-info {
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #696969;
     }
 
     .pagination-controls button {
-        background: none;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 6px 10px;
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 8px 12px;
         cursor: pointer;
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #696969;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-controls button:hover:not(:disabled) {
+        background-color: #3498db;
+        color: #fff;
+        border-color: #3498db;
     }
 
     .pagination-controls button:disabled {
@@ -125,7 +144,23 @@
     .pagination-controls span {
         margin: 0 5px;
         font-size: 14px;
-        color: #555;
+        color: #2C3E50;
+    }
+
+    /* Status colors */
+    .status-completed {
+        color: #27ae60;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        color: #f39c12;
+        font-weight: 600;
+    }
+
+    .status-cancelled {
+        color: #e74c3c;
+        font-weight: 600;
     }
 </style>
 
@@ -152,204 +187,86 @@
                     <th>Chi tiết đơn</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>01</td>
-                    <td>DH0001</td>
-                    <td>Bàn 02</td>
-                    <td>12:04</td>
-                    <td>450.000đ</td>
-                    <td>Thanh toán trực tuyến</td>
-                    <td>Đã hoàn tất</td>
-                    <td>3 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>02</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>03</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>04</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>05</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>06</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>07</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>08</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>09</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>11</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>12</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>13</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>14</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>DH0002</td>
-                    <td>Bàn 01</td>
-                    <td>12:00</td>
-                    <td>150.000đ</td>
-                    <td>Thanh toán tại quầy</td>
-                    <td>Đã hoàn tất</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link status-approved">Đã duyệt đơn</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                </tr>
+            <tbody id="orderHistoryBody">
+                <!-- Data will be populated by JavaScript -->
             </tbody>
         </table>
     </div>
 
     <div class="pagination-container">
         <span class="pagination-label">Số hàng trên mỗi trang:</span>
-        <select class="items-per-page-select">
+        <select class="items-per-page-select" id="itemsPerPage">
             <option value="15">15</option>
             <option value="30">30</option>
             <option value="50">50</option>
         </select>
-        <span class="pagination-info">1 - 15/61</span>
+        <span class="pagination-info" id="paginationInfo">1 - 15/0</span>
         <div class="pagination-controls">
-            <button>&lt;&lt;</button>
-            <button>&lt;</button>
-            <button>&gt;</button>
-            <button>&gt;&gt;</button>
+            <button id="firstPage">&lt;&lt;</button>
+            <button id="prevPage">&lt;</button>
+            <button id="nextPage">&gt;</button>
+            <button id="lastPage">&gt;&gt;</button>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const restaurantId = 'CHZ8694'; // Replace with actual restaurant ID
+            loadOrderHistory(restaurantId);
+        });
+
+        async function loadOrderHistory(restaurantId) {
+            try {
+                const data = await window.restaurantService.getOrderHistory(restaurantId);
+                displayOrderHistory(data);
+            } catch (error) {
+                console.error('Error loading order history:', error);
+            }
+        }
+
+        function displayOrderHistory(data) {
+            const tbody = document.getElementById('orderHistoryBody');
+            tbody.innerHTML = '';
+
+            let index = 1;
+            for (const [key, order] of Object.entries(data)) {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const orderDate = new Date(order.date_create);
+                const formattedTime = orderDate.toLocaleTimeString('vi-VN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // Format price
+                const formattedPrice = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(order.total_price);
+
+                row.innerHTML = `
+                    <td>${String(index).padStart(2, '0')}</td>
+                    <td>${order.id_order}</td>
+                    <td>Bàn ${order.id_table}</td>
+                    <td>${formattedTime}</td>
+                    <td>${formattedPrice}</td>
+                    <td>${order.payment}</td>
+                    <td>${order.status_order ? 'Đã hoàn tất' : 'Đang xử lý'}</td>
+                    <td>0 ghi chú</td>
+                    <td><a href="#" class="action-link ${order.status_confirm ? 'status-approved' : ''}">${order.status_confirm ? 'Đã duyệt đơn' : 'Chưa duyệt'}</a></td>
+                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                `;
+                
+                tbody.appendChild(row);
+                index++;
+            }
+
+            // Update pagination info
+            const totalOrders = Object.keys(data).length;
+            document.getElementById('paginationInfo').textContent = `1 - ${totalOrders}/${totalOrders}`;
+        }
+    </script>
+}

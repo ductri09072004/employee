@@ -5,76 +5,102 @@
 
 <style>
     .table-management-container {
-        padding: 20px;
-        background-color: #f9f9f9;
+        background-color: #f8f9fa;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .add-table-button-container {
         display: flex;
         justify-content: flex-end;
         margin-bottom: 20px;
+        background-color: #fff;
+        padding: 12px;
+        width: fit-content;
+        margin-left: auto;
+        border-radius: 8px;
     }
 
     .add-table-button {
         background: none;
         border: none;
-        color: #007bff;
-        font-size: 16px;
+        color: #4267B2;
+        font-size: 12px;
         cursor: pointer;
         padding: 0;
         display: flex;
         align-items: center;
         gap: 5px;
-        font-weight: bold;
+        font-weight: 400;
     }
 
     .add-table-button:hover {
-        text-decoration: underline;
+        color: #3498db;
     }
 
     .add-icon {
-        font-size: 18px;
+        font-size: 12px;
     }
 
     .table-list-container {
         background-color: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         overflow: hidden;
         margin-bottom: 20px;
+        flex: 1;
     }
 
     .table-list {
         width: 100%;
         border-collapse: collapse;
-        font-size: 14px;
+        font-size: 12px;
+        color: #696969;
     }
 
     .table-list th,
     .table-list td {
         padding: 12px 15px;
         text-align: left;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #e9ecef;
     }
 
     .table-list th {
-        background-color: #f8f8f8;
-        color: #555;
-        font-weight: bold;
+        background-color: #fff;
+        color: #696969;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .table-list tbody tr:hover {
+        background-color: #f8f9fa;
     }
 
     .table-list tbody tr:last-child td {
         border-bottom: none;
     }
 
-    .table-list .action-link {
-        color: #007bff;
+    .table-list td a {
+        color: #696969;
         text-decoration: none;
-        margin-right: 10px; /* Space between links */
+    }
+
+    .table-list td a:hover {
+        text-decoration: underline;
+    }
+
+    .table-list .action-link {
+        color: #4267B2;
+        text-decoration: none;
+        margin-right: 10px;
     }
 
     .table-list .action-link.delete {
-        color: #dc3545;
+        color: #B24242;
+    }
+
+    .table-list .action-link.upload {
+        color: #137018;
     }
 
     .table-list .action-link:hover {
@@ -86,38 +112,46 @@
         justify-content: flex-end;
         align-items: center;
         gap: 15px;
-        padding: 10px 0;
+        padding: 10px 20px;
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        padding-right: 20px;
+        border-radius: 8px; 
+        margin-top: auto;
     }
 
     .pagination-label {
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #396897;
     }
 
     .items-per-page-select {
-        padding: 6px 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
+        padding: 8px 12px;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #2C3E50;
+        background-color: #fff;
     }
 
     .pagination-info {
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #2C3E50;
     }
 
     .pagination-controls button {
-        background: none;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 6px 10px;
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 8px 12px;
         cursor: pointer;
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #2C3E50;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-controls button:hover:not(:disabled) {
+        background-color: #3498db;
+        color: #fff;
+        border-color: #3498db;
     }
 
     .pagination-controls button:disabled {
@@ -127,8 +161,8 @@
 
     .pagination-controls span {
         margin: 0 5px;
-        font-size: 14px;
-        color: #555;
+        font-size: 12px;
+        color: #2C3E50;
     }
 </style>
 
@@ -147,6 +181,7 @@
                     <th>Bàn số</th>
                     <th>QR Code</th>
                     <th>Hành Động</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -155,6 +190,7 @@
                     <td>Bàn 01</td>
                     <td><a href="http://localhost:5000/Restaurant?id_table=B01&id_restaurant=CHA1001" target="_blank">http://localhost:5000/Restaurant?id_table=B01&id_restaurant=CHA1001</a></td>
                     <td>
+                        <a href="#" class="action-link upload">[Hiện]</a>
                         <a href="#" class="action-link">[Chỉnh sửa]</a>
                         <a href="#" class="action-link delete">[Xóa]</a>
                     </td>
@@ -164,6 +200,7 @@
                     <td>Bàn 01</td>
                     <td><a href="http://localhost:5000/Restaurant?id_table=B02&id_restaurant=CHA1001" target="_blank">http://localhost:5000/Restaurant?id_table=B02&id_restaurant=CHA1001</a></td>
                     <td>
+                        <a href="#" class="action-link upload">[Hiện]</a>
                         <a href="#" class="action-link">[Chỉnh sửa]</a>
                         <a href="#" class="action-link delete">[Xóa]</a>
                     </td>
