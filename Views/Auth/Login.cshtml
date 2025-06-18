@@ -117,8 +117,23 @@
                 if (response.success) {
                     // Lưu thông tin user vào localStorage
                     localStorage.setItem('user', JSON.stringify(response.user));
-                    // Chuyển hướng đến trang Home
-                    window.location.href = '/Home/Index';
+                    
+                    // Gửi request để lưu session
+                    const sessionResponse = await fetch('/Auth/SetSession', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phone: phone })
+                    });
+
+                    if (sessionResponse.ok) {
+                        // Chuyển hướng đến trang Home
+                        window.location.href = '/Home/Index';
+                    } else {
+                        document.getElementById('passwordError').textContent = 'Có lỗi xảy ra khi xác thực';
+                        document.getElementById('passwordError').style.display = 'block';
+                    }
                 } else {
                     // Hiển thị thông báo lỗi
                     document.getElementById('passwordError').textContent = response.message || 'Đăng nhập thất bại';

@@ -15,7 +15,29 @@ public class AuthController : Controller
 
     public IActionResult Login()
     {
+        // Kiểm tra nếu đã đăng nhập thì chuyển về trang chủ
+        var user = HttpContext.Session.GetString("User");
+        if (!string.IsNullOrEmpty(user))
+        {
+            return RedirectToAction("Index", "Home");
+        }
         return View();
+    }
+
+    [HttpPost]
+    public IActionResult SetSession([FromBody] LoginRequest request)
+    {
+        try
+        {
+            // Lưu thông tin user vào session
+            HttpContext.Session.SetString("User", request.Phone);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error setting session");
+            return StatusCode(500);
+        }
     }
 
     public IActionResult Create_Staff()
@@ -59,6 +81,22 @@ public class AuthController : Controller
 
         return Json(staffData);
     }
+
+    [HttpPost]
+    public IActionResult Logout()
+    {
+        try
+        {
+            // Xóa session
+            HttpContext.Session.Clear();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during logout");
+            return StatusCode(500);
+        }
+    }
 }
 
 public class StaffData
@@ -66,4 +104,9 @@ public class StaffData
     public string Name { get; set; }
     public string Phone { get; set; }
     public string Password { get; set; }
+}
+
+public class LoginRequest
+{
+    public string Phone { get; set; }
 }

@@ -245,7 +245,7 @@
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="user-info">
-                <p class="name">Trần Hữu Minh Trí</p>
+                <p class="name" id="userName">Đang tải...</p>
                 <p class="role">Quản trị viên</p>
             </div>
 
@@ -290,7 +290,7 @@
             </div>
             
             <div class="logout-btn">
-                <button>Đăng xuất</button>
+                <button onclick="handleLogout()">Đăng xuất</button>
             </div>
         </div>
 
@@ -351,7 +351,41 @@
                     }
                 });
             });
+
+            // Lấy thông tin user từ localStorage và hiển thị tên
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    document.getElementById('userName').textContent = user.name || 'Không có tên';
+                } catch (error) {
+                    console.error('Lỗi khi parse user data:', error);
+                    document.getElementById('userName').textContent = 'Không có tên';
+                }
+            } else {
+                document.getElementById('userName').textContent = 'Chưa đăng nhập';
+            }
         });
+
+        function handleLogout() {
+            // Xóa thông tin user trong localStorage
+            localStorage.removeItem('user');
+            
+            // Gọi API đăng xuất để xóa session
+            fetch('/Auth/Logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Chuyển hướng về trang đăng nhập
+                    window.location.href = '/Auth/Login';
+                }
+            }).catch(error => {
+                console.error('Lỗi khi đăng xuất:', error);
+            });
+        }
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

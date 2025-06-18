@@ -254,9 +254,9 @@
                     <td>${formattedTime}</td>
                     <td>${formattedPrice}</td>
                     <td>${order.payment}</td>
-                    <td>${order.status_order ? 'Đã hoàn tất' : 'Đang xử lý'}</td>
+                    <td>${order.status_order}</td>
                     <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link ${order.status_confirm ? 'status-approved' : ''}">${order.status_confirm ? 'Đã duyệt đơn' : 'Chưa duyệt'}</a></td>
+                    <td><a href="#" class="action-link">${order.status_order}</a></td>
                     <td><a href="#" class="action-link">[Xem đơn]</a></td>
                 `;
                 

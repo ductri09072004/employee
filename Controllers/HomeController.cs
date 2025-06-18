@@ -15,6 +15,13 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // Kiểm tra xem có thông tin user trong session không
+        var user = HttpContext.Session.GetString("User");
+        if (string.IsNullOrEmpty(user))
+        {
+            // Nếu chưa đăng nhập, chuyển hướng về trang login
+            return RedirectToAction("Login", "Auth");
+        }
         return View();
     }
 
