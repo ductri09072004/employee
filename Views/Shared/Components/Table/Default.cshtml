@@ -1,0 +1,71 @@
+@model Components.Model.Table.TableComponentModel
+
+<style>
+.table-list-container {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 0;
+}
+.table-list {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    color: #696969;
+}
+.table-list th,
+.table-list td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+.table-list th {
+    background-color: #fff;
+    color: #696969;
+    font-weight: 700;
+    font-size: 14px;
+}
+.table-list tbody tr:hover {
+    background-color: #f8f9fa;
+}
+.table-list tbody tr:last-child td {
+    border-bottom: none;
+}
+.table-list td a {
+    color: #696969;
+    text-decoration: none;
+}
+.table-list td a:hover {
+    text-decoration: underline;
+}
+.table-list .action-link {
+    color: #4267B2;
+    text-decoration: none;
+    margin-right: 10px;
+}
+.table-list .action-link.delete {
+    color: #B24242;
+}
+.table-list .action-link.upload {
+    color: #137018;
+}
+.table-list .action-link:hover {
+    text-decoration: underline;
+}
+</style>
+
+<div class="table-list-container">
+    <table class="table-list">
+        <thead>
+            <tr>
+                @foreach (var col in Model.ColumnNames)
+                {
+                    <th>@col</th>
+                }
+            </tr>
+        </thead>
+        <tbody id="@Model.TableBodyId">
+            <!-- Dữ liệu sẽ được render bằng JavaScript -->
+        </tbody>
+    </table>
+</div> 

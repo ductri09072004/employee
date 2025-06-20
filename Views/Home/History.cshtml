@@ -172,28 +172,18 @@
     </div>
 
     <div class="history-table-container">
-        <table class="history-table">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Mã đơn</th>
-                    <th>Bàn số</th>
-                    <th>Giờ đặt</th>
-                    <th>Tổng tiền</th>
-                    <th>Phương thức thanh toán</th>
-                    <th>Trạng thái</th>
-                    <th>Ghi chú</th>
-                    <th>Duyệt đơn</th>
-                    <th>Chi tiết đơn</th>
-                </tr>
-            </thead>
-            <tbody id="orderHistoryBody">
-                <!-- Data will be populated by JavaScript -->
-            </tbody>
-        </table>
+        <!-- Components table  -->
+           @await Component.InvokeAsync("Table", new { 
+            columnNames = new List<string> { "STT", "Mã đơn", "Bàn số",
+                "Giờ đặt", "Tổng tiền", "Phương thức thanh toán", "Trạng thái",
+                "Ghi chú", "Duyệt đơn", "Chi tiết đơn" 
+                }, 
+            tableBodyId = "orderHistoryBody" 
+        })
     </div>
 
     <div class="pagination-container">
+        <p id="restaurantIdDisplay">restaurant_id: </p>
         <span class="pagination-label">Số hàng trên mỗi trang:</span>
         <select class="items-per-page-select" id="itemsPerPage">
             <option value="15">15</option>
@@ -213,8 +203,27 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const restaurantId = 'CHZ8694'; // Replace with actual restaurant ID
-            loadOrderHistory(restaurantId);
+            // Lấy thông tin user từ localStorage
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    if (user.restaurant_id) {
+                        // Hiển thị restaurant_id lên giao diện
+                        document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: ' + user.restaurant_id;
+                        loadOrderHistory(user.restaurant_id);
+                    } else {
+                        document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: (không tìm thấy)';
+                        console.error('Không tìm thấy restaurant_id trong thông tin user');
+                    }
+                } catch (error) {
+                    document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: (lỗi dữ liệu)';
+                    console.error('Lỗi khi parse user data:', error);
+                }
+            } else {
+                document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: (chưa đăng nhập)';
+                console.error('Chưa đăng nhập');
+            }
         });
 
         async function loadOrderHistory(restaurantId) {

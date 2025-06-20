@@ -164,17 +164,130 @@
         font-size: 12px;
         color: #2C3E50;
     }
+
+    /* Modal popup thêm bàn */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0; top: 0; width: 100%; height: 100%;
+        overflow: auto; background: rgba(0,0,0,0.3);
+    }
+    .modal-content {
+        background: #fff; margin: 8% auto; padding: 32px 32px 24px 32px; border-radius: 14px;
+        width: 300px; box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .close-modal {
+        position: absolute; right: 18px; top: 12px; font-size: 26px; color: #bbb; cursor: pointer;
+        transition: color 0.2s;
+    }
+    .close-modal:hover {
+        color: #e74c3c;
+    }
+    .modal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #4267B2;
+        margin-bottom: 18px;
+        text-align: center;
+    }
+    .modal-form-group {
+        width: 100%;
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .modal-form-group label {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 0;
+        font-weight: 500;
+        margin-right: 14px;
+        min-width: 60px;
+        text-align: right;
+    }
+    #tableNumberInput {
+        width: 100%; padding: 10px; margin: 0; border: 1.5px solid #e9ecef; border-radius: 7px; font-size: 15px;
+        transition: border 0.2s;
+    }
+    #tableNumberInput:focus {
+        border: 1.5px solid #4267B2;
+        outline: none;
+    }
+    #confirmAddTableBtn {
+        background: linear-gradient(90deg, #4267B2 60%, #3498db 100%); color: #fff; border: none; border-radius: 7px; padding: 10px 32px; font-size: 15px; cursor: pointer; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 2px 8px rgba(66,103,178,0.08);
+        margin-top: 8px;
+        transition: background 0.2s, box-shadow 0.2s;
+        width: 100%;
+    }
+    #confirmAddTableBtn:hover {
+        background: linear-gradient(90deg, #3498db 60%, #4267B2 100%);
+        box-shadow: 0 4px 16px rgba(66,103,178,0.13);
+    }
+
+    /* Popup modal xác nhận xóa bàn */
+    #delete-table-modal .modal-content {
+        border: 2px solid #B24242;
+        box-shadow: 0 4px 24px rgba(178,66,66,0.13);
+    }
+    #confirmDeleteTableBtn:hover {
+        background: #e74c3c;
+    }
+    #cancelDeleteTableBtn:hover {
+        background: #d0d7de;
+    }
 </style>
 
 <div class="table-management-container">
     <div class="add-table-button-container">
-        <button class="add-table-button">
+        <button class="add-table-button" id="openAddTableModal">
             <span class="add-icon">+</span> Thêm bàn
         </button>
     </div>
 
+    <!-- Popup modal thêm bàn -->
+    <div id="add-table-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAddTableModal">&times;</span>
+            <h2 class="modal-title">Thêm bàn mới</h2>
+            <div class="modal-form-group">
+                <label for="tableNumberInput">Số bàn</label>
+                <input type="text" id="tableNumberInput" placeholder="Nhập số bàn..." />
+            </div>
+            <button id="confirmAddTableBtn">Thêm</button>
+        </div>
+    </div>
+
+    <!-- Popup modal xác nhận xóa bàn -->
+    <div id="delete-table-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:340px;">
+            <span class="close-modal" id="closeDeleteTableModal">&times;</span>
+            <h2 class="modal-title" style="color:#B24242;">Xác nhận xóa bàn</h2>
+            <div style="margin: 18px 0 24px 0; text-align:center; color:#333; font-size:15px;">Bạn có chắc chắn muốn xóa bàn này không?</div>
+            <div style="display:flex; gap:12px; width:100%; justify-content:center;">
+                <button id="cancelDeleteTableBtn" style="background:#e9ecef; color:#333; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:500;">Hủy</button>
+                <button id="confirmDeleteTableBtn" style="background:#B24242; color:#fff; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:600;">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup modal hiển thị QR code -->
+    <div id="show-qr-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:340px;">
+            <span class="close-modal" id="closeShowQRModal">&times;</span>
+            <h2 class="modal-title" style="color:#4267B2;">Mã QR bàn</h2>
+            <div id="qrCodeContainer" style="display:flex; justify-content:center; margin:18px 0;"></div>
+            <div id="qrUrlText" style="text-align:center; font-size:13px; color:#888; word-break:break-all;"></div>
+        </div>
+    </div>
+
     <div class="table-list-container">
-        <table class="table-list">
+        @* <table class="table-list">
             <thead>
                 <tr>
                     <th>STT</th>
@@ -184,29 +297,15 @@
                     
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>01</td>
-                    <td>Bàn 01</td>
-                    <td><a href="http://localhost:5000/Restaurant?id_table=B01&id_restaurant=CHA1001" target="_blank">http://localhost:5000/Restaurant?id_table=B01&id_restaurant=CHA1001</a></td>
-                    <td>
-                        <a href="#" class="action-link upload">[Hiện]</a>
-                        <a href="#" class="action-link">[Chỉnh sửa]</a>
-                        <a href="#" class="action-link delete">[Xóa]</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>02</td>
-                    <td>Bàn 01</td>
-                    <td><a href="http://localhost:5000/Restaurant?id_table=B02&id_restaurant=CHA1001" target="_blank">http://localhost:5000/Restaurant?id_table=B02&id_restaurant=CHA1001</a></td>
-                    <td>
-                        <a href="#" class="action-link upload">[Hiện]</a>
-                        <a href="#" class="action-link">[Chỉnh sửa]</a>
-                        <a href="#" class="action-link delete">[Xóa]</a>
-                    </td>
-                </tr>
+            <tbody id="table-list-body">
+                <!-- Dữ liệu sẽ được render bằng JavaScript -->
             </tbody>
-        </table>
+ 
+        </table> *@
+         @await Component.InvokeAsync("Table", new { 
+            columnNames = new List<string> { "STT", "Bàn số", "QR Code", "Hành Động" }, 
+            tableBodyId = "table-list-body" 
+        })
     </div>
 
     <div class="pagination-container">
@@ -225,3 +324,8 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="~/js/logic/table.js"></script>
+}

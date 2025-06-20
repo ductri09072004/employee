@@ -54,7 +54,7 @@ public class AuthController : Controller
             TempData["StaffName"] = staffData.Name;
             TempData["StaffPhone"] = staffData.Phone;
             TempData["StaffPassword"] = staffData.Password;
-            
+           
             return Json(new { success = true });
         }
         catch (Exception ex)

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pVhFyZ5e75Ik8szRuRdrDUieiUyuJq2SdaHQy0rvBY8=",
+  "Hash": "xtuuBd4tnkfiFZ1zXxpXZf494HZtuAfiWHna+tHxkOU=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -169,6 +169,25 @@
       "OriginalItemSpec": "wwwroot\\js\\api_service\\restaurant.service.js"
     },
     {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\table.service.js",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "js/api_service/table.service.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\api_service\\table.service.js"
+    },
+    {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\config\\api.config.js",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
@@ -186,6 +205,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\config\\api.config.js"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\table.js",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "js/logic/table.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\logic\\table.js"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\site.js",
