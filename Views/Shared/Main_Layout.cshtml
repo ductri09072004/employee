@@ -5,6 +5,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Quản lý</title>
+    <link rel="icon" type="image/x-icon" href="~/logo_web_admin.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/png/logo_web_admin.png" />
+    <link rel="apple-touch-icon" href="~/png/logo_web_admin.png" />
     <style>
         * {
             box-sizing: border-box;
@@ -273,9 +276,14 @@
                         <span class="icon-placeholder"></span>
                         Quản lý bàn
                     </a>
+                
                     <a asp-controller="Home" asp-action="QL_Menu" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Menu" ? "active" : "")">
                         <span class="icon-placeholder"></span>
                         Quản lý thực đơn
+                    </a>
+                         <a asp-controller="Home" asp-action="QL_Categories" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Categories" ? "active" : "")">
+                        <span class="icon-placeholder"></span>
+                        Quản lý danh mục
                     </a>
                     <a asp-controller="Home" asp-action="QL_Topping" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Topping" ? "active" : "")">
                         <span class="icon-placeholder"></span>
@@ -315,7 +323,7 @@
 
             // Kiểm tra nếu đang ở một trong các trang con
             const currentAction = '@ViewContext.RouteData.Values["Action"]';
-            if (['QL_Table', 'QL_Menu', 'QL_Topping'].includes(currentAction)) {
+            if (['QL_Table', 'QL_Menu', 'QL_Topping','QL_Categories'].includes(currentAction)) {
                 restaurantSubmenu.classList.add('show');
                 downIcon.classList.add('rotate');
             }
@@ -392,6 +400,8 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/api_service/order.service.js"></script>
     <script src="~/js/api_service/table.service.js"></script>
+    <script src="~/js/api_service/menu.service.js"></script>
+    <script src="~/js/api_service/categories.service.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -182,100 +182,15 @@
         })
     </div>
 
-    <div class="pagination-container">
-        <p id="restaurantIdDisplay">restaurant_id: </p>
-        <span class="pagination-label">Số hàng trên mỗi trang:</span>
-        <select class="items-per-page-select" id="itemsPerPage">
-            <option value="15">15</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
-        </select>
-        <span class="pagination-info" id="paginationInfo">1 - 15/0</span>
-        <div class="pagination-controls">
-            <button id="firstPage">&lt;&lt;</button>
-            <button id="prevPage">&lt;</button>
-            <button id="nextPage">&gt;</button>
-            <button id="lastPage">&gt;&gt;</button>
-        </div>
-    </div>
+    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+        CurrentPage = 1,
+        TotalPages = 1,
+        TotalItems = 1,
+        ItemsPerPage = 15,
+        PageAction = "onHistoryPageChange"
+    })
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Lấy thông tin user từ localStorage
-            const userStr = localStorage.getItem('user');
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    if (user.restaurant_id) {
-                        // Hiển thị restaurant_id lên giao diện
-                        document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: ' + user.restaurant_id;
-                        loadOrderHistory(user.restaurant_id);
-                    } else {
-                        document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: (không tìm thấy)';
-                        console.error('Không tìm thấy restaurant_id trong thông tin user');
-                    }
-                } catch (error) {
-                    document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: (lỗi dữ liệu)';
-                    console.error('Lỗi khi parse user data:', error);
-                }
-            } else {
-                document.getElementById('restaurantIdDisplay').textContent = 'restaurant_id: (chưa đăng nhập)';
-                console.error('Chưa đăng nhập');
-            }
-        });
-
-        async function loadOrderHistory(restaurantId) {
-            try {
-                const data = await window.restaurantService.getOrderHistory(restaurantId);
-                displayOrderHistory(data);
-            } catch (error) {
-                console.error('Error loading order history:', error);
-            }
-        }
-
-        function displayOrderHistory(data) {
-            const tbody = document.getElementById('orderHistoryBody');
-            tbody.innerHTML = '';
-
-            let index = 1;
-            for (const [key, order] of Object.entries(data)) {
-                const row = document.createElement('tr');
-                
-                // Format date
-                const orderDate = new Date(order.date_create);
-                const formattedTime = orderDate.toLocaleTimeString('vi-VN', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                // Format price
-                const formattedPrice = new Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND'
-                }).format(order.total_price);
-
-                row.innerHTML = `
-                    <td>${String(index).padStart(2, '0')}</td>
-                    <td>${order.id_order}</td>
-                    <td>Bàn ${order.id_table}</td>
-                    <td>${formattedTime}</td>
-                    <td>${formattedPrice}</td>
-                    <td>${order.payment}</td>
-                    <td>${order.status_order}</td>
-                    <td>0 ghi chú</td>
-                    <td><a href="#" class="action-link">${order.status_order}</a></td>
-                    <td><a href="#" class="action-link">[Xem đơn]</a></td>
-                `;
-                
-                tbody.appendChild(row);
-                index++;
-            }
-
-            // Update pagination info
-            const totalOrders = Object.keys(data).length;
-            document.getElementById('paginationInfo').textContent = `1 - ${totalOrders}/${totalOrders}`;
-        }
-    </script>
+    <script src="~/js/logic/history.js"></script>
 }

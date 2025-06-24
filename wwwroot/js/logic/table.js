@@ -10,19 +10,46 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
     if (!restaurant_id) {
-        tableBody.innerHTML = '<tr><td colspan="4">Không tìm thấy thông tin nhà hàng.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="4">Không tìm thấy thông tin bàn.</td></tr>';
         return;
     }
     try {
         const data = await window.tableService.getTable(restaurant_id);
-        const tablesArr = Array.isArray(data) ? data : [];
+        console.log('API Response:', data); // Debug log
+        
+        let tablesArr = [];
+        let totalCount = 0;
+        
+        // Kiểm tra format response
+        if (data && typeof data === 'object' && data.tables && typeof data.total === 'number') {
+            // Format mới: { tables: [...], total: number }
+            tablesArr = Array.isArray(data.tables) ? data.tables : [];
+            totalCount = data.total;
+        } else if (Array.isArray(data)) {
+            // Format cũ: chỉ mảng
+            tablesArr = data;
+            totalCount = data.length;
+        } else {
+            // Fallback
+            tablesArr = [];
+            totalCount = 0;
+        }
+        
+        console.log('Tables array:', tablesArr); // Debug log
+        console.log('Total count:', totalCount); // Debug log
+        
         if (tablesArr.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4">Không có dữ liệu bàn.</td></tr>';
+            // Cập nhật pagination với count = 0
+            updatePaginationUI(1, 15, totalCount);
             return;
         }
-        renderTableList(tablesArr, restaurant_id);
+        renderTableList(tablesArr, restaurant_id, totalCount);
     } catch (err) {
+        console.error('Error loading tables:', err); // Debug log
         tableBody.innerHTML = '<tr><td colspan="4">Lỗi tải dữ liệu bàn.</td></tr>';
+        // Cập nhật pagination với count = 0 khi có lỗi
+        updatePaginationUI(1, 15, 0);
     }
 });
 
@@ -92,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 let deleteTableId = null;
 
+//btn delete
 function setupDeleteTableButtons() {
     document.querySelectorAll('.action-link.delete').forEach(btn => {
         btn.addEventListener('click', function (e) {
@@ -104,11 +132,13 @@ function setupDeleteTableButtons() {
     });
 }
 
+//popup delete
 function showDeleteTableModal() {
     const modal = document.getElementById('delete-table-modal');
     if (modal) modal.style.display = 'block';
 }
 
+//hide popup
 function hideDeleteTableModal() {
     const modal = document.getElementById('delete-table-modal');
     if (modal) modal.style.display = 'none';
@@ -148,6 +178,7 @@ function setupDeleteTableModalEvents() {
     }
 }
 
+//hiện qr
 function setupShowQRButtons() {
     document.querySelectorAll('.action-link.upload').forEach(btn => {
         btn.addEventListener('click', function (e) {
@@ -199,16 +230,77 @@ function setupShowQRModalEvents() {
     }
 }
 
-// Sau khi render bảng, gọi setupDeleteTableButtons()
-function renderTableList(tablesArr, restaurant_id) {
+let allTablesArr = [];
+let currentPage = 1;
+let itemsPerPage = 15;
+let totalTableCount = 0; // Thêm biến để lưu tổng số bàn từ API
+
+function updatePaginationUI(page, perPage, totalItems) {
+    const totalPages = Math.ceil(totalItems / perPage) || 1;
+    currentPage = parseInt(page, 10);
+    itemsPerPage = parseInt(perPage, 10);
+
+    // Update info text
+    const paginationInfo = document.getElementById('pagination-info');
+    if (paginationInfo) {
+        const start = (currentPage - 1) * itemsPerPage + 1;
+        const end = Math.min(currentPage * itemsPerPage, totalItems);
+        paginationInfo.textContent = `${start} - ${end}/${totalItems}`;
+    }
+
+    // Update button states and onclick handlers
+    const btnFirst = document.getElementById('page-first');
+    const btnPrev = document.getElementById('page-prev');
+    const btnNext = document.getElementById('page-next');
+    const btnLast = document.getElementById('page-last');
+
+    if (btnFirst && btnPrev && btnNext && btnLast) {
+        btnFirst.disabled = currentPage === 1;
+        btnPrev.disabled = currentPage === 1;
+        btnNext.disabled = currentPage === totalPages;
+        btnLast.disabled = currentPage === totalPages;
+
+        // Xóa event listeners cũ (nếu có)
+        btnFirst.replaceWith(btnFirst.cloneNode(true));
+        btnPrev.replaceWith(btnPrev.cloneNode(true));
+        btnNext.replaceWith(btnNext.cloneNode(true));
+        btnLast.replaceWith(btnLast.cloneNode(true));
+
+        // Lấy lại reference sau khi clone
+        const newBtnFirst = document.getElementById('page-first');
+        const newBtnPrev = document.getElementById('page-prev');
+        const newBtnNext = document.getElementById('page-next');
+        const newBtnLast = document.getElementById('page-last');
+
+        // Gắn event listeners mới
+        newBtnFirst.addEventListener('click', () => window.onTablePageChange(1, itemsPerPage));
+        newBtnPrev.addEventListener('click', () => window.onTablePageChange(currentPage - 1, itemsPerPage));
+        newBtnNext.addEventListener('click', () => window.onTablePageChange(currentPage + 1, itemsPerPage));
+        newBtnLast.addEventListener('click', () => window.onTablePageChange(totalPages, itemsPerPage));
+    }
+}
+
+function renderTableListPaged(page, perPage) {
+    console.log('Rendering page:', { page, perPage, totalItems: allTablesArr.length }); // Debug log
+    
     const tableBody = document.getElementById('table-list-body');
-    tableBody.innerHTML = tablesArr.map((item, idx) => {
-        const tableId = item.id_table || `B${(idx+1).toString().padStart(2, '0')}`;
-        const qrUrl = `https://jollicow.up.railway.app/menu?id_table=${tableId}&restaurant_id=${restaurant_id}`;
-        // Sử dụng item.id làm data-id cho nút xóa
+    const startIdx = (page - 1) * perPage;
+    const endIdx = startIdx + perPage;
+    const pageTables = allTablesArr.slice(startIdx, endIdx);
+    
+    console.log('Page data:', { startIdx, endIdx, itemsInPage: pageTables.length }); // Debug log
+    
+    if (pageTables.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4">Không có dữ liệu bàn.</td></tr>';
+        return;
+    }
+
+    tableBody.innerHTML = pageTables.map((item, idx) => {
+        const tableId = item.id_table || `B${(startIdx + idx + 1).toString().padStart(2, '0')}`;
+        const qrUrl = `https://jollicow.up.railway.app/menu?id_table=${tableId}&restaurant_id=${item.restaurant_id || ''}`;
         return `
             <tr>
-                <td>${(idx+1).toString().padStart(2, '0')}</td>
+                <td>${(startIdx + idx + 1).toString().padStart(2, '0')}</td>
                 <td>${tableId}</td>
                 <td><a href="${qrUrl}" target="_blank">${qrUrl}</a></td>
                 <td>
@@ -219,6 +311,40 @@ function renderTableList(tablesArr, restaurant_id) {
             </tr>
         `;
     }).join('');
+    
+    // Cập nhật lại các event listeners sau khi render lại bảng
     setupDeleteTableButtons();
     setupShowQRButtons();
-} 
+}
+
+// Hàm này sẽ được gọi bởi component Pagination
+window.onTablePageChange = function(page, perPage) {
+    console.log('Page change triggered:', { page, perPage }); // Debug log
+    
+    currentPage = parseInt(page, 10);
+    itemsPerPage = parseInt(perPage, 10);
+    
+    // Render lại danh sách với trang mới
+    renderTableListPaged(currentPage, itemsPerPage);
+    
+    // Cập nhật UI phân trang
+    updatePaginationUI(currentPage, itemsPerPage, allTablesArr.length);
+};
+
+// Khi load dữ liệu lần đầu
+function renderTableList(tablesArr, restaurant_id, totalCount) {
+    allTablesArr = tablesArr.map(item => ({ ...item, restaurant_id }));
+    
+    // Lấy giá trị mặc định từ select nếu có
+    const select = document.querySelector('.items-per-page-select');
+    if (select) {
+        itemsPerPage = parseInt(select.value, 10) || 15;
+    }
+    
+    // Reset về trang 1 khi load dữ liệu mới
+    currentPage = 1;
+    
+    // Render danh sách và cập nhật UI phân trang
+    renderTableListPaged(currentPage, itemsPerPage);
+    updatePaginationUI(currentPage, itemsPerPage, totalCount || allTablesArr.length);
+}

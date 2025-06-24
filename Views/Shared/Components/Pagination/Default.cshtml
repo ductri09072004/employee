@@ -1,0 +1,43 @@
+@model Components.Model.Pagination.PaginationComponentModel
+
+<div class="pagination-container">
+    <span class="pagination-label">Số hàng trên mỗi trang:</span>
+    <select class="items-per-page-select" onchange="changeItemsPerPage(this.value)">
+        @{
+            var options = new[] { 15, 30, 50 };
+            foreach (var opt in options)
+            {
+                if (Model.ItemsPerPage == opt)
+                {
+                    <option value="@opt" selected>@opt</option>
+                }
+                else
+                {
+                    <option value="@opt">@opt</option>
+                }
+            }
+        }
+    </select>
+    <span class="pagination-info" id="pagination-info">
+        @{
+            var start = (Model.CurrentPage - 1) * Model.ItemsPerPage + 1;
+            var end = Math.Min(Model.CurrentPage * Model.ItemsPerPage, Model.TotalItems);
+        }
+        @start - @end/@Model.TotalItems
+    </span>
+    <div class="pagination-controls">
+        <button id="page-first" @(Model.CurrentPage == 1 ? "disabled" : "")>&lt;&lt;</button>
+        <button id="page-prev" @(Model.CurrentPage == 1 ? "disabled" : "")>&lt;</button>
+        <button id="page-next" @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")>&gt;</button>
+        <button id="page-last" @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")>&gt;&gt;</button>
+    </div>
+</div>
+
+<script>
+    function changeItemsPerPage(value) {
+        // Gọi action hoặc AJAX để thay đổi số item/trang
+        if (typeof window['@Model.PageAction'] === 'function') {
+            window['@Model.PageAction'](1, value);
+        }
+    }
+</script> 

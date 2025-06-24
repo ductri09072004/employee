@@ -15,9 +15,26 @@ const Table_API = {
             });
 
             const data = await response.json();
-            return data;
+            console.log('Raw API Response:', data); // Debug log
+            
+            // Kiểm tra xem response có format mới không (có cả tables và total)
+            if (data && typeof data === 'object' && data.tables && typeof data.total === 'number') {
+                console.log('Using new format'); // Debug log
+                return {
+                    tables: data.tables,
+                    total: data.total
+                };
+            }
+            
+            // Nếu không có format mới, trả về format cũ (backward compatibility)
+            const tablesArr = Array.isArray(data) ? data : [];
+            console.log('Using old format, count:', tablesArr.length); // Debug log
+            return {
+                tables: tablesArr,
+                total: tablesArr.length
+            };
         } catch (error) {
-            console.error('Get order history error:', error);
+            console.error('Get table error:', error);
             throw error;
         }
     },

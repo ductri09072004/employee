@@ -45,6 +45,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult QL_Categories()
+    {
+        return View();
+    }
+
     public IActionResult QL_Topping()
     {
         return View();

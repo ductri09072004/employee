@@ -21,6 +21,14 @@
       "PackagePath": "staticwebassets\\js\\api_service\\auth.service.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\categories.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\categories.service.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\menu.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\menu.service.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\order.service.js",
       "PackagePath": "staticwebassets\\js\\api_service\\order.service.js"
     },
@@ -35,6 +43,18 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\config\\api.config.js",
       "PackagePath": "staticwebassets\\js\\config\\api.config.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\categories.js",
+      "PackagePath": "staticwebassets\\js\\logic\\categories.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\history.js",
+      "PackagePath": "staticwebassets\\js\\logic\\history.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\menu.js",
+      "PackagePath": "staticwebassets\\js\\logic\\menu.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\table.js",
@@ -271,6 +291,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\logo_web_admin.ico",
+      "PackagePath": "staticwebassets\\logo_web_admin.ico"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon1.svg",
