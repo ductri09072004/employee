@@ -41,6 +41,10 @@
       "PackagePath": "staticwebassets\\js\\api_service\\table.service.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\topping.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\topping.service.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\config\\api.config.js",
       "PackagePath": "staticwebassets\\js\\config\\api.config.js"
     },
@@ -59,6 +63,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\table.js",
       "PackagePath": "staticwebassets\\js\\logic\\table.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\topping.js",
+      "PackagePath": "staticwebassets\\js\\logic\\topping.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\site.js",

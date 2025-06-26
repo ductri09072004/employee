@@ -3,6 +3,330 @@
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Quản lý Topping</h1>
+
+<style>
+    .table-management-container {
+        background-color: #f8f9fa;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-table-button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+        background-color: #fff;
+        padding: 12px;
+        width: fit-content;
+        margin-left: auto;
+        border-radius: 8px;
+    }
+
+    .add-table-button {
+        background: none;
+        border: none;
+        color: #4267B2;
+        font-size: 12px;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 400;
+    }
+
+    .add-table-button:hover {
+        color: #3498db;
+    }
+
+    .add-icon {
+        font-size: 12px;
+    }
+
+    .table-list-container {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        flex: 1;
+    }
+
+    .table-list {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        color: #696969;
+    }
+
+    .table-list th,
+    .table-list td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .table-list th {
+        background-color: #fff;
+        color: #696969;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .table-list tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .table-list tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table-list td a {
+        color: #696969;
+        text-decoration: none;
+    }
+
+    .table-list td a:hover {
+        text-decoration: underline;
+    }
+
+    .table-list .action-link {
+        color: #4267B2;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+
+    .table-list .action-link.delete {
+        color: #B24242;
+    }
+
+    .table-list .action-link.upload {
+        color: #137018;
+    }
+
+    .table-list .action-link:hover {
+        text-decoration: underline;
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 15px;
+        padding: 10px 20px;
+        background-color: #fff;
+        border-radius: 8px; 
+        margin-top: auto;
+    }
+
+    .pagination-label {
+        font-size: 12px;
+        color: #396897;
+    }
+
+    .items-per-page-select {
+        padding: 8px 12px;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #2C3E50;
+        background-color: #fff;
+    }
+
+    .pagination-info {
+        font-size: 12px;
+        color: #2C3E50;
+    }
+
+    .pagination-controls button {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #2C3E50;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-controls button:hover:not(:disabled) {
+        background-color: #3498db;
+        color: #fff;
+        border-color: #3498db;
+    }
+
+    .pagination-controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination-controls span {
+        margin: 0 5px;
+        font-size: 12px;
+        color: #2C3E50;
+    }
+
+    /* Modal popup thêm bàn */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0; top: 0; width: 100%; height: 100%;
+        overflow: auto; background: rgba(0,0,0,0.3);
+    }
+    .modal-content {
+        background: #fff; margin: 8% auto; padding: 32px 32px 24px 32px; border-radius: 14px;
+        width: 300px; box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .close-modal {
+        position: absolute; right: 18px; top: 12px; font-size: 26px; color: #bbb; cursor: pointer;
+        transition: color 0.2s;
+    }
+    .close-modal:hover {
+        color: #e74c3c;
+    }
+    .modal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #4267B2;
+        margin-bottom: 18px;
+        text-align: center;
+    }
+    .modal-form-group {
+        width: 100%;
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .modal-form-group label {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 0;
+        font-weight: 500;
+        margin-right: 14px;
+        min-width: 60px;
+        text-align: right;
+    }
+    #tableNumberInput {
+        width: 100%; padding: 10px; margin: 0; border: 1.5px solid #e9ecef; border-radius: 7px; font-size: 15px;
+        transition: border 0.2s;
+    }
+    #tableNumberInput:focus {
+        border: 1.5px solid #4267B2;
+        outline: none;
+    }
+    #confirmAddTableBtn {
+        background: linear-gradient(90deg, #4267B2 60%, #3498db 100%); color: #fff; border: none; border-radius: 7px; padding: 10px 32px; font-size: 15px; cursor: pointer; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 2px 8px rgba(66,103,178,0.08);
+        margin-top: 8px;
+        transition: background 0.2s, box-shadow 0.2s;
+        width: 100%;
+    }
+    #confirmAddTableBtn:hover {
+        background: linear-gradient(90deg, #3498db 60%, #4267B2 100%);
+        box-shadow: 0 4px 16px rgba(66,103,178,0.13);
+    }
+
+    /* Popup modal xác nhận xóa bàn */
+    #delete-table-modal .modal-content {
+        border: 2px solid #B24242;
+        box-shadow: 0 4px 24px rgba(178,66,66,0.13);
+    }
+    #confirmDeleteTableBtn:hover {
+        background: #e74c3c;
+    }
+    #cancelDeleteTableBtn:hover {
+        background: #d0d7de;
+    }
+</style>
+
+<div class="table-management-container">
+    <div class="add-table-button-container">
+        <button class="add-table-button" id="openAddTableModal">
+            <span class="add-icon">+</span> Thêm topping
+        </button>
+    </div>
+
+    <!-- Popup modal thêm bàn -->
+    <div id="add-table-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAddTableModal">&times;</span>
+            <h2 class="modal-title">Thêm topping mới</h2>
+            <div class="modal-form-group">
+                <label for="tableNumberInput">Tên topping</label>
+                <input type="text" id="tableNumberInput" placeholder="Nhập tên topping..." />
+            </div>
+            <button id="confirmAddTableBtn">Thêm</button>
+        </div>
+    </div>
+
+    <!-- Popup modal xác nhận xóa bàn -->
+    <div id="delete-table-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:340px;">
+            <span class="close-modal" id="closeDeleteTableModal">&times;</span>
+            <h2 class="modal-title" style="color:#B24242;">Xác nhận xóa topping</h2>
+            <div style="margin: 18px 0 24px 0; text-align:center; color:#333; font-size:15px;">Bạn có chắc chắn muốn xóa topping này không?</div>
+            <div style="display:flex; gap:12px; width:100%; justify-content:center;">
+                <button id="cancelDeleteTableBtn" style="background:#e9ecef; color:#333; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:500;">Hủy</button>
+                <button id="confirmDeleteTableBtn" style="background:#B24242; color:#fff; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:600;">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup modal hiển thị QR code -->
+    <div id="show-qr-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:340px;">
+            <span class="close-modal" id="closeShowQRModal">&times;</span>
+            <h2 class="modal-title" style="color:#4267B2;">Mã QR bàn</h2>
+            <div id="qrCodeContainer" style="display:flex; justify-content:center; margin:18px 0;"></div>
+            <div id="qrUrlText" style="text-align:center; font-size:13px; color:#888; word-break:break-all;"></div>
+        </div>
+    </div>
+
+@* Components table *@
+    <div class="table-list-container">   
+         @await Component.InvokeAsync("Table", new { 
+            columnNames = new List<string> { "STT","Phân loại","Tên topping", "Món","Giá","Trạng thái","Hành động" }, 
+            tableBodyId = "table-list-body" 
+        })
+    </div>
+    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+        CurrentPage = 1,
+        TotalPages = 1,
+        TotalItems = 1,
+        ItemsPerPage = 15,
+        PageAction = "onTablePageChange"
+    })
 </div>
+
+<!-- Popup modal thêm topping cho món -->
+<div id="add-topping-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:400px;">
+        <span class="close-modal" id="closeAddToppingModal">&times;</span>
+        <h2 class="modal-title">Thêm topping cho món</h2>
+        <div class="modal-form-group">
+            <label for="toppingNameDetailsInput">Phân loại (name_details)</label>
+            <input type="text" id="toppingNameDetailsInput" placeholder="Nhập phân loại topping..." />
+        </div>
+        <div class="modal-form-group">
+            <label for="toppingNameInput">Tên topping (name)</label>
+            <input type="text" id="toppingNameInput" placeholder="Nhập tên topping..." />
+        </div>
+        <div class="modal-form-group">
+            <label for="toppingPriceInput">Giá topping (price)</label>
+            <input type="number" id="toppingPriceInput" placeholder="Nhập giá topping..." min="0" />
+        </div>
+        <button id="confirmAddToppingBtn">Thêm topping</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="~/js/api_service/menu.service.js"></script>
+    <script src="~/js/logic/topping.js"></script>
+}
+
