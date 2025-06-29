@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\JOLICOW.bundle.scp.css"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\pagination.css",
+      "PackagePath": "staticwebassets\\css\\pagination.css"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -59,6 +63,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\menu.js",
       "PackagePath": "staticwebassets\\js\\logic\\menu.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\order.js",
+      "PackagePath": "staticwebassets\\js\\logic\\order.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\table.js",

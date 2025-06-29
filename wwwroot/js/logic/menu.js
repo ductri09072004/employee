@@ -540,9 +540,11 @@ function openAddMenuModal() {
         `;
         document.body.appendChild(modal);
     }
+    
     // Gán danh mục
     const categorySelect = document.getElementById('addMenuCategoryInput');
     categorySelect.innerHTML = allCategoriesArr.map(cat => `<option value="${cat.id_category}">${cat.name} (${cat.id_category})</option>`).join('');
+    
     // Reset các trường
     document.getElementById('addMenuNameInput').value = '';
     document.getElementById('addMenuPriceInput').value = '';
@@ -550,14 +552,24 @@ function openAddMenuModal() {
     document.getElementById('addImagePreview').style.display = 'none';
     document.getElementById('addImageUploadArea').style.display = 'block';
     document.getElementById('addImageFileInput').value = '';
+    
     // Setup drag & drop
     setupAddImageUpload();
+    
     // Đóng modal
-    document.getElementById('closeAddMenuModal').onclick = () => { modal.style.display = 'none'; };
-    document.getElementById('cancelAddMenuBtn').onclick = () => { modal.style.display = 'none'; };
-    window.onclick = function(event) {
-        if (event.target === modal) modal.style.display = 'none';
+    const closeModal = () => { modal.style.display = 'none'; };
+    
+    document.getElementById('closeAddMenuModal').onclick = closeModal;
+    document.getElementById('cancelAddMenuBtn').onclick = closeModal;
+    
+    // Đóng modal khi click bên ngoài
+    const closeModalOutside = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     };
+    window.addEventListener('click', closeModalOutside);
+    
     // Xác nhận thêm
     document.getElementById('confirmAddMenuBtn').onclick = async function() {
         const id_categories = categorySelect.value;
@@ -565,6 +577,7 @@ function openAddMenuModal() {
         const price = parseFloat(document.getElementById('addMenuPriceInput').value);
         const status = document.getElementById('addMenuStatusInput').value;
         let image = '';
+        
         // Lấy restaurant_id từ localStorage
         let userStr = localStorage.getItem('user');
         let restaurant_id = '';
@@ -574,14 +587,17 @@ function openAddMenuModal() {
                 restaurant_id = userObj.restaurant_id;
             } catch {}
         }
+        
         if (!id_categories || !name || isNaN(price) || !restaurant_id) {
             alert('Vui lòng nhập đầy đủ thông tin hợp lệ!');
             return;
         }
+        
         if (!selectedAddImageFile) {
             alert('Vui lòng chọn ảnh món ăn!');
             return;
         }
+        
         // Upload ảnh lên Cloudinary
         try {
             image = await uploadToCloudinaryAddAsync(selectedAddImageFile);
@@ -589,51 +605,68 @@ function openAddMenuModal() {
             alert('Lỗi tải ảnh lên Cloudinary!');
             return;
         }
+        
         try {
             await window.menuService.createMenu(id_categories, name, image, restaurant_id, status, price);
             modal.style.display = 'none';
+            showToast('Thêm món ăn thành công!', 'success');
             if (user && user.restaurant_id) {
                 loadMenuList(user.restaurant_id);
             }
         } catch (err) {
-            alert('Có lỗi xảy ra khi thêm món ăn!');
+            showToast('Có lỗi xảy ra khi thêm món ăn!', 'error');
             console.error('Error creating menu:', err);
         }
     };
+    
+    modal.style.display = 'block';
 }
 
 function setupAddImageUpload() {
     const uploadArea = document.getElementById('addImageUploadArea');
     const fileInput = document.getElementById('addImageFileInput');
+    
+    // Xóa event listener cũ nếu có
+    const newUploadArea = uploadArea.cloneNode(true);
+    uploadArea.parentNode.replaceChild(newUploadArea, uploadArea);
+    
+    const newFileInput = fileInput.cloneNode(true);
+    fileInput.parentNode.replaceChild(newFileInput, fileInput);
+    
     // Click to select file
-    uploadArea.addEventListener('click', () => {
-        fileInput.click();
+    newUploadArea.addEventListener('click', () => {
+        newFileInput.click();
     });
+    
     // File input change
-    fileInput.addEventListener('change', (e) => {
+    newFileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
             handleAddImageFile(file);
         }
     });
+    
     // Drag and drop events
-    uploadArea.addEventListener('dragover', (e) => {
+    newUploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
-        uploadArea.classList.add('dragover');
+        newUploadArea.classList.add('dragover');
     });
-    uploadArea.addEventListener('dragleave', (e) => {
+    
+    newUploadArea.addEventListener('dragleave', (e) => {
         e.preventDefault();
-        uploadArea.classList.remove('dragover');
+        newUploadArea.classList.remove('dragover');
     });
-    uploadArea.addEventListener('drop', (e) => {
+    
+    newUploadArea.addEventListener('drop', (e) => {
         e.preventDefault();
-        uploadArea.classList.remove('dragover');
+        newUploadArea.classList.remove('dragover');
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             handleAddImageFile(files[0]);
         }
     });
 }
+
 function handleAddImageFile(file) {
     if (!file.type.startsWith('image/')) {
         alert('Vui lòng chọn file ảnh hợp lệ!');
@@ -650,6 +683,7 @@ function handleAddImageFile(file) {
     reader.readAsDataURL(file);
     selectedAddImageFile = file;
 }
+
 function showAddImagePreview(imageUrl) {
     const preview = document.getElementById('addImagePreview');
     const previewImg = document.getElementById('addPreviewImg');
@@ -667,6 +701,7 @@ function showAddImagePreview(imageUrl) {
         };
     }
 }
+
 function uploadToCloudinaryAddAsync(file) {
     return new Promise((resolve, reject) => {
         const progressDiv = document.getElementById('addUploadProgress');
@@ -706,6 +741,7 @@ function uploadToCloudinaryAddAsync(file) {
         xhr.send(formData);
     });
 }
+
 // --- END Add Menu Item ---
 
 // Thêm nút mở modal thêm menu vào trang (nếu cần)

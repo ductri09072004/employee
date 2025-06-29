@@ -73,7 +73,7 @@ const Menus_API = {
             });
             return await response.json();
         } catch (error) {
-            console.error('Delete table error:', error);
+            console.error('Delete menu error:', error);
             throw error;
         }
     }

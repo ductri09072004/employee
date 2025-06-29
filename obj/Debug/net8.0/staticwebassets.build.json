@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2+b0vJbHNWetOZhtA+99QDikmS6wJ3KVuduNX4gOHgY=",
+  "Hash": "MRJhoqszirtIRUtmn01rN8AXkQXT9KhC3NlPxciOyJI=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "E:\\Study\\MVC_Web\\Employee\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\JOLICOW.bundle.scp.css"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\pagination.css",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "css/pagination.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\pagination.css"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\site.css",
@@ -319,6 +338,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\logic\\menu.js"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\order.js",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "js/logic/order.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\logic\\order.js"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\table.js",

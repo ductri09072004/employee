@@ -4,7 +4,7 @@
     <span class="pagination-label">Số hàng trên mỗi trang:</span>
     <select class="items-per-page-select" onchange="changeItemsPerPage(this.value)">
         @{
-            var options = new[] { 15, 30, 50 };
+            var options = new[] {5 ,15, 30, 50 };
             foreach (var opt in options)
             {
                 if (Model.ItemsPerPage == opt)

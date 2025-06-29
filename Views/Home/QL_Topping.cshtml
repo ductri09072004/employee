@@ -3,7 +3,6 @@
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
 
-
 <style>
     .table-management-container {
         background-color: #f8f9fa;
@@ -106,64 +105,6 @@
 
     .table-list .action-link:hover {
         text-decoration: underline;
-    }
-
-    .pagination-container {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 15px;
-        padding: 10px 20px;
-        background-color: #fff;
-        border-radius: 8px; 
-        margin-top: auto;
-    }
-
-    .pagination-label {
-        font-size: 12px;
-        color: #396897;
-    }
-
-    .items-per-page-select {
-        padding: 8px 12px;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        font-size: 12px;
-        color: #2C3E50;
-        background-color: #fff;
-    }
-
-    .pagination-info {
-        font-size: 12px;
-        color: #2C3E50;
-    }
-
-    .pagination-controls button {
-        background: #fff;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        padding: 8px 12px;
-        cursor: pointer;
-        font-size: 12px;
-        color: #2C3E50;
-        transition: all 0.3s ease;
-    }
-
-    .pagination-controls button:hover:not(:disabled) {
-        background-color: #3498db;
-        color: #fff;
-        border-color: #3498db;
-    }
-
-    .pagination-controls button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .pagination-controls span {
-        margin: 0 5px;
-        font-size: 12px;
-        color: #2C3E50;
     }
 
     /* Modal popup thêm bàn */
@@ -298,7 +239,7 @@
         CurrentPage = 1,
         TotalPages = 1,
         TotalItems = 1,
-        ItemsPerPage = 15,
+        ItemsPerPage = 5,
         PageAction = "onTablePageChange"
     })
 </div>
