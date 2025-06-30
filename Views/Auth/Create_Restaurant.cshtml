@@ -38,11 +38,11 @@
     }
 
     .staff-info {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #dee2e6;
+        @* background-color: #f8f9fa; *@
+        @* border-radius: 8px; *@
+        @* padding: 15px; *@
+        @* margin-bottom: 20px;
+        border: 1px solid #dee2e6; *@
     }
 
     .staff-info h3 {
@@ -69,13 +69,13 @@
 </div>
 
 <!-- Thông tin nhân viên -->
-<div id="staffInfoContainer" class="staff-info" style="display: none; margin-top: 20px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
+<div id="staffInfoContainer" class="staff-info" style="display: none; margin-top: 10px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
     <h3>Thông tin nhân viên</h3>
     <p><strong>Họ và tên:</strong> <span id="staffName"></span></p>
     <p><strong>Số điện thoại:</strong> <span id="staffPhone"></span></p>
 </div>
 
-<form id="restaurantForm" style="margin-top: 20px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
+<form id="restaurantForm" style="margin-top: 10px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
     <!-- Tên nhà hàng -->
     <div class="form-group" style="margin-bottom: 15px;">
         <p style="margin-bottom: 5px; font-size: 14px;">Tên nhà hàng</p>
@@ -219,111 +219,134 @@
             
             // Validate form
             const restaurantName = document.getElementById('restaurantName').value;
-            const province = document.getElementById('province').value;
-            const district = document.getElementById('district').value;
-            const ward = document.getElementById('ward').value;
+            const provinceCode = document.getElementById('province').value;
+            const districtCode = document.getElementById('district').value;
+            const wardCode = document.getElementById('ward').value;
+            const streetName = document.getElementById('streetName').value;
             const taxCode = document.getElementById('taxCode').value;
             
-            if (!restaurantName || !province || !district || !ward || !taxCode) {
+            if (!restaurantName || !provinceCode || !districtCode || !wardCode || !streetName || !taxCode) {
                 alert('Vui lòng điền đầy đủ thông tin');
                 return;
             }
 
-            // Construct full address
-            const fullAddress = `${ward}, ${district}, ${province}`;
+            // Kiểm tra dữ liệu staff tạm thời
+            const tempStaffData = localStorage.getItem('temp_staff_data');
+            if (!tempStaffData) {
+                alert('Không tìm thấy dữ liệu staff. Vui lòng quay lại trang đăng ký staff.');
+                return;
+            }
+
+            const staffData = JSON.parse(tempStaffData);
+            console.log('Retrieved staff data from localStorage:', staffData);
+
+            // Tìm tên địa chỉ từ mã code
+            const province = provinces.find(p => p.code === parseInt(provinceCode));
+            const district = province?.districts.find(d => d.code === parseInt(districtCode));
+            const ward = district?.wards.find(w => w.code === parseInt(wardCode));
+
+            // Construct full address with actual names
+            const fullAddress = `${streetName}, ${ward?.name}, ${district?.name}, ${province?.name}`;
             
             try {
-                console.log('Creating restaurant with data:', { restaurantName, fullAddress, taxCode }); // Debug log
+                console.log('Step 1: Creating staff with data:', staffData);
                 
-                // Create restaurant with separate parameters
+                // Bước 1: Tạo staff trước
+                const staffResponse = await window.authService.create_staff(
+                    staffData.name,
+                    staffData.phone,
+                    staffData.password_hash
+                );
+
+                console.log('Staff creation response:', staffResponse);
+
+                if (!staffResponse || !staffResponse.id_staff) {
+                    alert('Có lỗi xảy ra khi tạo staff');
+                    return;
+                }
+
+                console.log('Staff created successfully with ID:', staffResponse.id_staff);
+                
+                // Lưu id_staff vào localStorage
+                localStorage.setItem('id_staff', staffResponse.id_staff);
+                
+                // Bước 2: Tạo restaurant
+                console.log('Step 2: Creating restaurant with data:', { restaurantName, fullAddress, taxCode });
+                
                 const restaurantResponse = await window.restaurantService.create_restaurant(
                     restaurantName,
                     fullAddress,
                     taxCode
                 );
 
-                console.log('Restaurant response:', restaurantResponse); // Debug log
+                console.log('Restaurant response:', restaurantResponse);
 
-                if (restaurantResponse && restaurantResponse.id_restaurant) {
-                    console.log('Restaurant created successfully with ID:', restaurantResponse.id_restaurant);
-                    
-                    // Lưu id_restaurant vào localStorage
-                    localStorage.setItem('id_restaurant', restaurantResponse.id_restaurant);
-                    
-                    // Lấy cả id_staff và id_restaurant từ localStorage
-                    const id_staff = localStorage.getItem('id_staff');
-                    const id_restaurant = localStorage.getItem('id_restaurant');
-                    console.log('Retrieved from localStorage:', { id_staff, id_restaurant }); // Debug log
-
-                    if (id_staff && id_restaurant) {
-                        try {
-                            // Gọi API add_id_restaurant với cả hai ID từ localStorage
-                            console.log('Calling add_id_restaurant API with:', {
-                                id_restaurant: id_restaurant,
-                                id_staff: id_staff
-                            }); // Debug log
-                            
-                            const addIdResponse = await window.authService.add_id_restaurant(
-                                id_restaurant,
-                                id_staff
-                            );
-                            
-                            console.log('Raw Add ID response:', addIdResponse); // Debug log
-                            console.log('Response type:', typeof addIdResponse);
-                            console.log('Response message:', addIdResponse?.message);
-                            
-                            // Kiểm tra response có message không
-                            if (addIdResponse && addIdResponse.message) {
-                                console.log('Found message in response:', addIdResponse.message);
-                                alert('Tạo restaurant và liên kết staff thành công!');
-                                setTimeout(() => {
-                                    window.location.replace('/Auth/Login');
-                                }, 100);
-                            } else {
-                                console.log('No message found in response');
-                            }
-                        } catch (error) {
-                            console.error('Error calling add_id_restaurant:', error);
-                        }
-                    }
-                } else {
+                if (!restaurantResponse || !restaurantResponse.id_restaurant) {
                     alert('Có lỗi xảy ra khi tạo restaurant');
+                    return;
                 }
+
+                console.log('Restaurant created successfully with ID:', restaurantResponse.id_restaurant);
+                
+                // Lưu id_restaurant vào localStorage
+                localStorage.setItem('id_restaurant', restaurantResponse.id_restaurant);
+                
+                // Bước 3: Liên kết staff với restaurant
+                console.log('Step 3: Linking staff with restaurant');
+                
+                const addIdResponse = await window.authService.add_id_restaurant(
+                    restaurantResponse.id_restaurant,
+                    staffResponse.id_staff
+                );
+                
+                console.log('Link response:', addIdResponse);
+                
+                if (addIdResponse && addIdResponse.message) {
+                    console.log('Success message:', addIdResponse.message);
+                    
+                    // Xóa dữ liệu tạm thời
+                    localStorage.removeItem('temp_staff_data');
+                    localStorage.removeItem('temp_staff_form_data');
+                    localStorage.removeItem('temp_restaurant_form_data');
+                    
+                    alert('Tạo restaurant và liên kết staff thành công!');
+                    setTimeout(() => {
+                        window.location.replace('/Auth/Login');
+                    }, 100);
+                } else {
+                    console.log('No success message in response');
+                    alert('Tạo thành công nhưng có lỗi khi liên kết staff với restaurant');
+                }
+                
             } catch (error) {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi tạo restaurant');
+                console.error('Error in the process:', error);
+                alert('Có lỗi xảy ra trong quá trình tạo. Vui lòng thử lại.');
             }
         });
 
         // Hàm hiển thị thông tin staff
         async function displayStaffInfo() {
             try {
-                console.log('Fetching staff data...'); // Debug log
-                const response = await fetch('/Auth/GetStaffData');
-                const staffData = await response.json();
-                console.log('Staff data received:', staffData); // Debug log
-
-                if (staffData && staffData.success) {
-                    const container = document.getElementById('staffInfoContainer');
-                    const staffInfo = staffData.data;
-                    console.log('Staff info to display:', staffInfo); // Debug log
+                console.log('Getting staff data from localStorage...'); // Debug log
+                const tempStaffData = localStorage.getItem('temp_staff_data');
+                
+                if (tempStaffData) {
+                    const staffData = JSON.parse(tempStaffData);
+                    console.log('Staff data from localStorage:', staffData); // Debug log
                     
-                    // Kiểm tra và hiển thị thông tin
-                    if (staffInfo) {
-                        document.getElementById('staffName').textContent = staffInfo.name || 'Chưa có thông tin';
-                        document.getElementById('staffPhone').textContent = staffInfo.phone || 'Chưa có thông tin';
-                        container.style.display = 'block';
-                        console.log('Staff info displayed successfully'); // Debug log
-                    } else {
-                        console.log('No staff info found in response');
-                        container.style.display = 'none';
-                    }
+                    const container = document.getElementById('staffInfoContainer');
+                    
+                    // Hiển thị thông tin từ dữ liệu tạm thời
+                    document.getElementById('staffName').textContent = staffData.name || 'Chưa có thông tin';
+                    document.getElementById('staffPhone').textContent = staffData.phone || 'Chưa có thông tin';
+                    container.style.display = 'block';
+                    console.log('Staff info displayed successfully from localStorage'); // Debug log
                 } else {
-                    console.log('Failed to get staff data:', staffData);
+                    console.log('No temporary staff data found');
                     document.getElementById('staffInfoContainer').style.display = 'none';
                 }
             } catch (error) {
-                console.error('Error fetching staff data:', error);
+                console.error('Error getting staff data from localStorage:', error);
                 document.getElementById('staffInfoContainer').style.display = 'none';
             }
         }
@@ -336,8 +359,65 @@
             }
         });
 
+        // Hàm lưu dữ liệu form vào localStorage
+        function saveRestaurantFormData() {
+            const formData = {
+                restaurantName: document.getElementById('restaurantName').value,
+                province: document.getElementById('province').value,
+                district: document.getElementById('district').value,
+                ward: document.getElementById('ward').value,
+                streetName: document.getElementById('streetName').value,
+                taxCode: document.getElementById('taxCode').value
+            };
+            localStorage.setItem('temp_restaurant_form_data', JSON.stringify(formData));
+        }
+
+        // Hàm khôi phục dữ liệu form từ localStorage
+        function restoreRestaurantFormData() {
+            const savedData = localStorage.getItem('temp_restaurant_form_data');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('restaurantName').value = formData.restaurantName || '';
+                document.getElementById('streetName').value = formData.streetName || '';
+                document.getElementById('taxCode').value = formData.taxCode || '';
+                
+                // Khôi phục các select boxes (cần đợi dữ liệu provinces được load)
+                if (formData.province) {
+                    setTimeout(() => {
+                        document.getElementById('province').value = formData.province;
+                        if (formData.district) {
+                            renderDistricts(formData.province);
+                            setTimeout(() => {
+                                document.getElementById('district').value = formData.district;
+                                if (formData.ward) {
+                                    renderWards(formData.district);
+                                    setTimeout(() => {
+                                        document.getElementById('ward').value = formData.ward;
+                                    }, 100);
+                                }
+                            }, 100);
+                        }
+                    }, 500);
+                }
+                console.log('Restaurant form data restored from localStorage');
+            }
+        }
+
+        // Thêm event listeners để lưu dữ liệu khi user nhập
+        document.getElementById('restaurantName').addEventListener('input', saveRestaurantFormData);
+        document.getElementById('streetName').addEventListener('input', saveRestaurantFormData);
+        document.getElementById('taxCode').addEventListener('input', saveRestaurantFormData);
+        document.getElementById('province').addEventListener('change', saveRestaurantFormData);
+        document.getElementById('district').addEventListener('change', saveRestaurantFormData);
+        document.getElementById('ward').addEventListener('change', saveRestaurantFormData);
+
         // Khởi tạo
         fetchProvinces();
         displayStaffInfo(); // Hiển thị thông tin staff khi trang được load
+        
+        // Khôi phục dữ liệu form sau khi provinces được load
+        setTimeout(() => {
+            restoreRestaurantFormData();
+        }, 1000);
     </script>
 }
