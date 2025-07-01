@@ -1,0 +1,84 @@
+/* Modal popup thêm topping cho món - topping-modal.css */
+#add-topping-modal .modal-content {
+    max-width: 520px;
+    padding: 36px 36px 28px 36px;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px rgba(66,103,178,0.13);
+}
+#add-topping-modal .modal-title {
+    font-size: 24px;
+    color: #4267B2;
+    margin-bottom: 22px;
+    text-align: center;
+}
+#add-topping-modal .modal-form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#add-topping-modal label {
+    font-size: 15px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+#add-topping-modal select,
+#add-topping-modal input[type="text"],
+#add-topping-modal input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.5px solid #e9ecef;
+    font-size: 15px;
+    margin-bottom: 4px;
+    box-sizing: border-box;
+}
+#add-topping-modal select {
+    max-width: 340px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#add-topping-modal select option {
+    max-width: 320px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#add-topping-modal #confirmAddToppingBtn {
+    background: linear-gradient(90deg, #4267B2 60%, #3498db 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(66,103,178,0.10);
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+#add-topping-modal #confirmAddToppingBtn:hover {
+    background: linear-gradient(90deg, #3498db 60%, #4267B2 100%);
+    box-shadow: 0 4px 16px rgba(66,103,178,0.13);
+}
+#add-topping-modal .close-modal {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    font-size: 26px;
+    color: #bbb;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+#add-topping-modal .close-modal:hover {
+    color: #e74c3c;
+}
+@media (max-width: 600px) {
+    #add-topping-modal .modal-content {
+        max-width: 98vw;
+        padding: 18px 6vw 18px 6vw;
+    }
+} 

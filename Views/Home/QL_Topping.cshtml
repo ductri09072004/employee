@@ -183,11 +183,18 @@
     #cancelDeleteTableBtn:hover {
         background: #d0d7de;
     }
+
+    #dishSelect option {
+        max-width: 320px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 </style>
 
 <div class="table-management-container">
     <div class="add-table-button-container">
-        <button class="add-table-button" id="openAddTableModal">
+        <button class="add-table-button" id="openAddToppingModal">
             <span class="add-icon">+</span> Thêm topping
         </button>
     </div>
@@ -229,11 +236,20 @@
     </div>
 
 @* Components table *@
-    <div class="table-list-container">   
-         @await Component.InvokeAsync("Table", new { 
-            columnNames = new List<string> { "STT","Phân loại","Tên topping", "Món","Giá","Trạng thái","Hành động" }, 
-            tableBodyId = "table-list-body" 
-        })
+    <div class="table-list-container">
+        <table class="table-list" id="topping-accordion-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên món</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="topping-accordion-body">
+                <!-- Nội dung sẽ render bằng JS -->
+            </tbody>
+        </table>
     </div>
     @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
         CurrentPage = 1,
@@ -245,20 +261,29 @@
 </div>
 
 <!-- Popup modal thêm topping cho món -->
+<link rel="stylesheet" href="/css/topping-modal.css" />
 <div id="add-topping-modal" class="modal" style="display:none;">
-    <div class="modal-content" style="max-width:400px;">
+    <div class="modal-content">
         <span class="close-modal" id="closeAddToppingModal">&times;</span>
         <h2 class="modal-title">Thêm topping cho món</h2>
         <div class="modal-form-group">
-            <label for="toppingNameDetailsInput">Phân loại (name_details)</label>
-            <input type="text" id="toppingNameDetailsInput" placeholder="Nhập phân loại topping..." />
+            <label for="dishSelect">Chọn món</label>
+            <select id="dishSelect"></select>
         </div>
         <div class="modal-form-group">
-            <label for="toppingNameInput">Tên topping (name)</label>
+            <label for="toppingNameDetailsSelect">Phân loại topping</label>
+            <select id="toppingNameDetailsSelect">
+                <option value="">-- Chọn phân loại --</option>
+                <option value="__new__">+ Nhập phân loại mới</option>
+            </select>
+            <input type="text" id="toppingNameDetailsInput" placeholder="Nhập phân loại topping..." style="display:none;" />
+        </div>
+        <div class="modal-form-group">
+            <label for="toppingNameInput">Tên topping</label>
             <input type="text" id="toppingNameInput" placeholder="Nhập tên topping..." />
         </div>
         <div class="modal-form-group">
-            <label for="toppingPriceInput">Giá topping (price)</label>
+            <label for="toppingPriceInput">Giá topping (VND)</label>
             <input type="number" id="toppingPriceInput" placeholder="Nhập giá topping..." min="0" />
         </div>
         <button id="confirmAddToppingBtn">Thêm topping</button>
@@ -269,5 +294,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="~/js/api_service/menu.service.js"></script>
     <script src="~/js/logic/topping.js"></script>
+    <link rel="stylesheet" href="/css/topping-accordion.css" />
+    <script src="/js/logic/topping-accordion.js"></script>
 }
 

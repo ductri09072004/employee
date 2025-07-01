@@ -40,15 +40,98 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('add-topping-modal').style.display = 'none';
         };
     }
+    // Thêm event cho nút mở modal thêm topping tổng quát
+    const openAddToppingBtn = document.getElementById('openAddToppingModal');
+    if (openAddToppingBtn) {
+        openAddToppingBtn.onclick = async function() {
+            const modal = document.getElementById('add-topping-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                document.getElementById('toppingNameDetailsInput').value = '';
+                document.getElementById('toppingNameInput').value = '';
+                document.getElementById('toppingPriceInput').value = '';
+                // Load danh sách món vào dropdown
+                const userStr = localStorage.getItem('user');
+                if (!userStr) return;
+                const user = JSON.parse(userStr);
+                let menuData = {};
+                try {
+                    menuData = await window.menuService.getMenu(user.restaurant_id);
+                } catch (e) {
+                    menuData = {};
+                }
+                const dishSelect = document.getElementById('dishSelect');
+                dishSelect.innerHTML = '';
+                Object.values(menuData).forEach(dish => {
+                    const option = document.createElement('option');
+                    option.value = dish.id_dishes || dish.id;
+                    option.textContent = dish.name;
+                    dishSelect.appendChild(option);
+                });
+                // Gọi trigger change để load phân loại cho món đầu tiên
+                if (dishSelect.options.length > 0) {
+                    dishSelect.value = dishSelect.options[0].value;
+                    dishSelect.dispatchEvent(new Event('change'));
+                }
+            }
+        };
+    }
+
+    // Khi chọn món, load các phân loại (name_details) của món đó vào select
+    document.getElementById('dishSelect').addEventListener('change', async function() {
+        const dishId = this.value;
+        const userStr = localStorage.getItem('user');
+        if (!userStr) return;
+        const user = JSON.parse(userStr);
+        let menuData = {};
+        try {
+            menuData = await window.menuService.getMenu(user.restaurant_id);
+        } catch (e) {
+            menuData = {};
+        }
+        const dish = Object.values(menuData).find(d => (d.id_dishes || d.id) === dishId);
+        const select = document.getElementById('toppingNameDetailsSelect');
+        select.innerHTML = '<option value="">-- Chọn phân loại --</option><option value="__new__">+ Nhập phân loại mới</option>';
+        if (dish && dish.toppings) {
+            const uniqueDetails = [...new Set(dish.toppings.map(t => t.name_details))];
+            uniqueDetails.forEach(name_details => {
+                const opt = document.createElement('option');
+                opt.value = name_details;
+                opt.textContent = name_details;
+                select.appendChild(opt);
+            });
+        }
+        // Ẩn input nhập mới
+        document.getElementById('toppingNameDetailsInput').style.display = 'none';
+    });
+
+    // Khi chọn phân loại, nếu chọn nhập mới thì hiện input
+    document.getElementById('toppingNameDetailsSelect').addEventListener('change', function() {
+        if (this.value === '__new__') {
+            document.getElementById('toppingNameDetailsInput').style.display = '';
+        } else {
+            document.getElementById('toppingNameDetailsInput').style.display = 'none';
+        }
+    });
+
     // Xác nhận thêm topping
     const confirmBtn = document.getElementById('confirmAddToppingBtn');
     if (confirmBtn) {
         confirmBtn.onclick = async function() {
-            const name_details = document.getElementById('toppingNameDetailsInput').value.trim();
+            const dishSelect = document.getElementById('dishSelect');
+            const id_dishes = dishSelect ? dishSelect.value : null;
+            // Lấy name_details từ select hoặc input
+            const detailsSelect = document.getElementById('toppingNameDetailsSelect');
+            let name_details = '';
+            if (detailsSelect.value === '__new__') {
+                name_details = document.getElementById('toppingNameDetailsInput').value.trim();
+            } else {
+                name_details = detailsSelect.value;
+            }
             const name = document.getElementById('toppingNameInput').value.trim();
             const priceStr = document.getElementById('toppingPriceInput').value.trim();
             const price = Number(priceStr);
-            if (!name_details || !name || !priceStr) {
+            if (!id_dishes || !name_details || !name || !priceStr) {
                 alert('Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
@@ -60,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const options = [{ name, price }];
             try {
                 await window.toppingService.createTopping({
-                    id_dishes: currentEditDishId,
+                    id_dishes,
                     name_details,
                     options
                 });
@@ -162,8 +245,8 @@ function renderToppingListPaged(page, perPage) {
                             <td>${optionFormattedPrice}</td>
                             <td>${statusBadge}</td>
                             <td>
-                                <a href="#" class="action-link edit" data-id="${dish.id}" data-option-id="${option.id_option}">Sửa</a>
-                                <a href="#" class="action-link delete" data-id="${dish.id}" data-option-id="${option.id_option}">Xóa</a>
+                                <a href="#" class="action-link edit" data-id="${dish.id_dishes || dish.id}" data-option-id="${option.id_option}">Sửa</a>
+                                <a href="#" class="action-link delete" data-id="${dish.id_dishes || dish.id}" data-option-id="${option.id_option}">Xóa</a>
                             </td>
                         </tr>
                     `;
@@ -181,8 +264,8 @@ function renderToppingListPaged(page, perPage) {
                     <td>${formattedPrice}</td>
                     <td>${statusBadge}</td>
                     <td>
-                        <a href="#" class="action-link edit" data-id="${dish.id}">Sửa</a>
-                        <a href="#" class="action-link delete" data-id="${dish.id}">Xóa</a>
+                        <a href="#" class="action-link edit" data-id="${dish.id_dishes || dish.id}">Sửa</a>
+                        <a href="#" class="action-link delete" data-id="${dish.id_dishes || dish.id}">Xóa</a>
                     </td>
                 </tr>
             `;

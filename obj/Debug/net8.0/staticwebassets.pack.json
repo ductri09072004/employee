@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\topping-accordion.css",
+      "PackagePath": "staticwebassets\\css\\topping-accordion.css"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\topping-modal.css",
+      "PackagePath": "staticwebassets\\css\\topping-modal.css"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
@@ -71,6 +79,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\table.js",
       "PackagePath": "staticwebassets\\js\\logic\\table.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\topping-accordion.js",
+      "PackagePath": "staticwebassets\\js\\logic\\topping-accordion.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\topping.js",
