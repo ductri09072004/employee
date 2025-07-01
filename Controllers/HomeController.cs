@@ -55,6 +55,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult QL_Partner()
+    {
+        return View();
+    }
+
     public IActionResult Setting()
     {
         return View();

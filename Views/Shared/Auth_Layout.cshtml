@@ -172,13 +172,238 @@
                     min-height: auto;
                 }
             }
+
+            @@media (max-width: 500px) {
+                .announcement-icon {
+                    left: 8px;
+                    top: 8px;
+                }
+                .document-icon {
+                    left: 60px;
+                    top: 8px;
+                }
+            }
+
+            .announcement-icon {
+                position: fixed;
+                top: 24px;
+                left: 24px;
+                z-index: 1001;
+                background: #fff;
+                border-radius: 50%;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: box-shadow 0.2s;
+                color: #e53935;
+                margin-right: 12px;
+            }
+            .announcement-icon:hover {
+                box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+            }
+            .announcement-popups-container {
+                position: fixed;
+                top: 80px;
+                left: 24px;
+                z-index: 1100;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .announcement-popup {
+                min-width: 320px;
+                max-width: 350px;
+                background: #fff;
+                color: #4A4A4A;
+                border: 1px solid #4A4A4A;
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+                padding: 20px 24px 16px 24px;
+                font-size: 16px;
+                display: none;
+                position: relative;
+                animation: fadeIn 0.2s;
+            }
+            .announcement-popup.active {
+                display: block;
+            }
+            .announcement-popup .close-btn {
+                position: absolute;
+                top: 8px;
+                right: 12px;
+                background: none;
+                border: none;
+                font-size: 22px;
+                color: #4A4A4A;
+                cursor: pointer;
+            }
+            keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .announcement-list {
+                padding-left: 18px;
+                margin: 0;
+                font-size: 15px;
+            }
+            .announcement-list li {
+                margin-bottom: 8px;
+                line-height: 1.5;
+            }
+            .document-icon {
+                position: fixed;
+                top: 24px;
+                left: 84px;
+                z-index: 1001;
+                background: #fff;
+                border-radius: 50%;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: box-shadow 0.2s;
+                color: #1976d2;
+            }
+            .document-icon:hover {
+                box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+            }
+            .document-popup {
+                position: fixed;
+                top: 80px;
+                left: 84px;
+                z-index: 1100;
+                min-width: 320px;
+                max-width: 90vw;
+                background: #f0f7ff;
+                color: #1976d2;
+                border: 1px solid #90caf9;
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+                padding: 20px 24px 16px 24px;
+                font-size: 16px;
+                display: none;
+                animation: fadeIn 0.2s;
+            }
+            .document-popup.active {
+                display: block;
+            }
+            .document-popup .close-btn {
+                position: absolute;
+                top: 8px;
+                right: 12px;
+                background: none;
+                border: none;
+                font-size: 22px;
+                color: #1976d2;
+                cursor: pointer;
+            }
+            .document-list {
+                padding-left: 18px;
+                margin: 8;
+                font-size: 14px;
+                
+            }
+            .document-list li {
+                margin-bottom: 8px;
+                line-height: 1.5;
+            }
+            .document-list a {
+                color: #1976d2;
+                text-decoration: underline;
+                transition: color 0.2s;
+            }
+            .document-list a:hover {
+                color: #0d47a1;
+                text-decoration: underline;
+            }
+            @@media (max-width: 600px) {
+                .announcement-icon {
+                    left: 50% !important;
+                    transform: translateX(-50%);
+                }
+                .document-icon {
+                    left: calc(50% + 36px) !important;
+                    transform: translateX(-50%);
+                }
+            }
+            .popup-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 8px;
+            }
+            .popup-title {
+                font-weight: 600;
+                font-size: 14px;
+                word-break: break-word;
+                flex: 1;
+                padding-right: 24px;
+                white-space: normal;
+            }
+           
+            .popup-date-label {
+                font-weight: 600;
+                font-size: 12px;
+            }
+
+             .popup-date {
+                font-weight: 400;
+                font-size: 12px;
+            }
         </style>
 
         </head>
         <body>
+            <div class="announcement-icon" id="announcementIcon" title="Xem thông báo">
+                <!-- SVG chuông thông báo -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6V11c0-3.07-1.63-5.64-5-5.95V4a1 1 0 1 0-2 0v1.05C7.63 5.36 6 7.92 6 11v5l-1.29 1.29A1 1 0 0 0 6 19h12a1 1 0 0 0 .71-1.71L18 16z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="document-icon" id="documentIcon" title="Tài liệu hướng dẫn">
+                <!-- SVG tài liệu -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5V9h5.5L13 3.5z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="announcement-popups-container" id="announcementPopupsContainer">
+                <div class="announcement-popup" id="announcementPopup0">
+                    <div class="popup-header">
+                        <div class="popup-title">Hệ thống đang trong gian đoạn thử nghiệm !</div>
+                        <button class="close-btn" data-close="0" aria-label="Đóng">&times;</button>
+                    </div>
+                    <div><span class="popup-date-label">Ngày đăng:</span> 
+                        <span class="popup-date">1/7/2025</span>
+                    </div>
+                </div>
+                <div class="announcement-popup" id="announcementPopup1">
+                    <div class="popup-header">
+                        <div class="popup-title">Vui lòng đổi mật khẩu định kỳ để bảo mật tài khoản</div>
+                        <button class="close-btn" data-close="1" aria-label="Đóng">&times;</button>
+                    </div>
+                    <div><span class="popup-date-label">Ngày đăng:</span> 
+                        <span class="popup-date">1/7/2025</span>
+                    </div>
+                </div>
+            </div>
+            <div class="document-popup" id="documentPopup">
+                <button class="close-btn" id="closeDocument" aria-label="Đóng">&times;</button>
+                <div style="font-weight:600; font-size:18px; margin-bot.tom:8px; color:#1976d2;">Tài liệu hướng dẫn</div>
+                <div id="documentContent">
+                    <ul class="document-list">
+                        <li><a href="https://docs.google.com/document/d/11BxwyaFgZGoKJChrfi2d3NWk9Ck4PMdg/edit?usp=sharing&ouid=110284464016464465281&rtpof=true&sd=true" target="_blank" rel="noopener">Tài liệu sử dụng API của hệ thống</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="login-layout">
-                <!-- Welcome text and background -->
+               
                 <div class="welcome-section">
+                    
                     <img src="~/svg/sidebar/cart.svg" alt="Login Illustration" />
                     <p style="font-size: 32px; font-weight: 700; text-align: center;">
                          Chào mừng đến với Hệ Thống Nhà Hàng
@@ -199,5 +424,71 @@
                 </div>              
             </div>
             @await RenderSectionAsync("Scripts", required: false)
+            <script>
+                const icon = document.getElementById('announcementIcon');
+                const popupsContainer = document.getElementById('announcementPopupsContainer');
+                const popupCount = 2; // Số lượng thông báo, cập nhật nếu thêm/xoá
+                // Ẩn tất cả popup khi load
+                for (let i = 0; i < popupCount; i++) {
+                    document.getElementById('announcementPopup' + i).classList.remove('active');
+                }
+                icon.addEventListener('click', function(e) {
+                    let anyActive = false;
+                    for (let i = 0; i < popupCount; i++) {
+                        const popup = document.getElementById('announcementPopup' + i);
+                        if (popup.classList.contains('active')) anyActive = true;
+                    }
+                    if (anyActive) {
+                        // Nếu đã có popup nào mở thì đóng hết
+                        for (let i = 0; i < popupCount; i++) {
+                            document.getElementById('announcementPopup' + i).classList.remove('active');
+                        }
+                    } else {
+                        // Mở tất cả popup
+                        for (let i = 0; i < popupCount; i++) {
+                            document.getElementById('announcementPopup' + i).classList.add('active');
+                        }
+                    }
+                    documentPopup.classList.remove('active');
+                });
+                // Đóng từng popup riêng
+                document.querySelectorAll('.announcement-popup .close-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        const idx = btn.getAttribute('data-close');
+                        document.getElementById('announcementPopup' + idx).classList.remove('active');
+                    });
+                });
+                // Đóng popup khi click ra ngoài popups
+                document.addEventListener('mousedown', function(event) {
+                    let clickedInside = false;
+                    for (let i = 0; i < popupCount; i++) {
+                        const popup = document.getElementById('announcementPopup' + i);
+                        if (popup.classList.contains('active') && popup.contains(event.target)) {
+                            clickedInside = true;
+                        }
+                    }
+                    if (!clickedInside && !icon.contains(event.target)) {
+                        for (let i = 0; i < popupCount; i++) {
+                            document.getElementById('announcementPopup' + i).classList.remove('active');
+                        }
+                    }
+                    if (documentPopup.classList.contains('active') && !documentPopup.contains(event.target) && !documentIcon.contains(event.target)) {
+                        documentPopup.classList.remove('active');
+                    }
+                });
+                // Xử lý popup tài liệu
+                const documentIcon = document.getElementById('documentIcon');
+                const documentPopup = document.getElementById('documentPopup');
+                const closeDocument = document.getElementById('closeDocument');
+                documentIcon.addEventListener('click', function(e) {
+                    documentPopup.classList.toggle('active');
+                    for (let i = 0; i < popupCount; i++) {
+                        document.getElementById('announcementPopup' + i).classList.remove('active');
+                    }
+                });
+                closeDocument.addEventListener('click', function() {
+                    documentPopup.classList.remove('active');
+                });
+            </script>
         </body>
         </html>

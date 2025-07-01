@@ -42,6 +42,26 @@ const Order_API = {
         }
     },
 
+    async getOrderHistoryDone(id_restaurant) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/orders/filterresdone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_restaurant: id_restaurant
+                })
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Get order history error:', error);
+            throw error;
+        }
+    },
+
     async getOrderbyStatus(id_restaurant,status_order) {
         try {
             const response = await fetch(`${this.BASE_URL}/orders/fillerstatus`, {
@@ -80,6 +100,27 @@ const Order_API = {
             return data;
         } catch (error) {
             console.error('Get order history error:', error);
+            throw error;
+        }
+    },
+
+    async updateStatus(id_order,status_order) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/orders/update_status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_order: id_order,
+                    status_order: status_order
+                })
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Update order error:', error);
             throw error;
         }
     }

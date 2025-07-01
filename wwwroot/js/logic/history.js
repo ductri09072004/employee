@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadOrderHistory(restaurantId) {
     try {
-        const data = await window.orderService.getOrderHistory(restaurantId);
+        const data = await window.orderService.getOrderHistoryDone(restaurantId);
         renderOrderList(data);
     } catch (error) {
         console.error('Error loading order history:', error);

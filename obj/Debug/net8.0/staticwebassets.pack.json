@@ -361,6 +361,10 @@
       "PackagePath": "staticwebassets\\svg\\sidebar\\home_icon.svg"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\partner.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar\\partner.svg"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\ql_order.svg",
       "PackagePath": "staticwebassets\\svg\\sidebar\\ql_order.svg"
     },
@@ -371,6 +375,34 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\setting_icon.svg",
       "PackagePath": "staticwebassets\\svg\\sidebar\\setting_icon.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\account.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\account.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\home_icon.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\home_icon.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\notification.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\notification.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\partner.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\partner.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\register.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\register.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\restaurant.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\restaurant.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\setting_icon.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar_admin\\setting_icon.svg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.JOLICOW.Microsoft.AspNetCore.StaticWebAssets.props",

@@ -128,8 +128,12 @@
                     });
 
                     if (sessionResponse.ok) {
-                        // Chuyển hướng đến trang Home
-                        window.location.href = '/Home/Index';
+                        // Chuyển hướng theo role
+                        if (response.user.role === 'superadmin') {
+                            window.location.href = '/Admin/Index';
+                        } else {
+                            window.location.href = '/Home/Index';
+                        }
                     } else {
                         document.getElementById('passwordError').textContent = 'Có lỗi xảy ra khi xác thực';
                         document.getElementById('passwordError').style.display = 'block';

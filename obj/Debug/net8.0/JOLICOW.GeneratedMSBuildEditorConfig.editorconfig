@@ -18,6 +18,30 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\Study\MVC_Web\Employee
 build_property._RazorSourceGeneratorDebug = 
 
+[E:/Study/MVC_Web/Employee/Views/Admin/Check_Request.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2hlY2tfUmVxdWVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Study/MVC_Web/Employee/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Study/MVC_Web/Employee/Views/Admin/QL_Notifi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUUxfTm90aWZpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Study/MVC_Web/Employee/Views/Admin/QL_Res.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUUxfUmVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Study/MVC_Web/Employee/Views/Admin/QL_TK.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUUxfVEsuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Study/MVC_Web/Employee/Views/Admin/Setting.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2V0dGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Study/MVC_Web/Employee/Views/Auth/Create_Restaurant.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxDcmVhdGVfUmVzdGF1cmFudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -50,6 +74,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxRTF9PcmRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/Study/MVC_Web/Employee/Views/Home/QL_Partner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxRTF9QYXJ0bmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Study/MVC_Web/Employee/Views/Home/QL_Table.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxRTF9UYWJsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -80,6 +108,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [E:/Study/MVC_Web/Employee/Views/Shared/Main_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE1haW5fTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Study/MVC_Web/Employee/Views/Shared/Superadmin_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFN1cGVyYWRtaW5fTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Study/MVC_Web/Employee/Views/Shared/_ValidationScriptsPartial.cshtml]

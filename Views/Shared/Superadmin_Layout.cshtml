@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Quản lý</title>
+    <title>@ViewData["Title"] - Superadmin</title>
     <link rel="icon" type="image/x-icon" href="~/logo_web_admin.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="~/png/logo_web_admin.png" />
     <link rel="apple-touch-icon" href="~/png/logo_web_admin.png" />
@@ -250,56 +250,38 @@
         <div class="sidebar" id="sidebar">
             <div class="user-info">
                 <p class="name" id="userName">Đang tải...</p>
-                <p class="role">Quản trị viên</p>
+                <p class="role">Superadmin</p>
             </div>
 
             <div class="nav-menu">
-                <a asp-controller="Home" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
-                    <img src="~/svg/sidebar/home_icon.svg" alt="icon" class="icon" />
-                    Tổng quan
+                <a asp-controller="Admin" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+                    <img src="~/svg/sidebar_admin/home_icon.svg" alt="icon" class="icon" />
+                    Dashboard
                 </a>
-                <a asp-controller="Home" asp-action="QL_Order" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Order" ? "active" : "")">
-                    <img src="~/svg/sidebar/ql_order.svg" alt="icon" class="icon" />
-                    Quản lý đơn gọi món
+                <a asp-controller="Admin" asp-action="QL_TK" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "QL_TK" ? "active" : "")">
+                    <img src="~/svg/sidebar_admin/account.svg" alt="icon" class="icon" />
+                    Quản lý tài khoản
                 </a>
-                <a asp-controller="Home" asp-action="History" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "History" ? "active" : "")">
-                    <img src="~/svg/sidebar/his_icon.svg" alt="icon" class="icon" />
-                    Lịch sử đơn
+               
+
+                <a asp-controller="Admin" asp-action="QL_Res" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Res" ? "active" : "")">
+                    <img src="~/svg/sidebar_admin/restaurant.svg" alt="icon" class="icon" />
+                    Quản lý các nhà hàng
                 </a>
 
-                <div class="nav-item" id="restaurantMenu">
-                    <img src="~/svg/sidebar/ql_restaurant.svg" alt="icon" class="icon" />
-                    Quản lý nhà hàng
-                    <img src="~/svg/sidebar/down_icon.svg" alt="icon" class="icon down-icon" />
-                </div>
-                <div class="submenu" id="restaurantSubmenu">
-                    <a asp-controller="Home" asp-action="QL_Table" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Table" ? "active" : "")">
-                        <span class="icon-placeholder"></span>
-                        Quản lý bàn
-                    </a>
-                
-                    <a asp-controller="Home" asp-action="QL_Menu" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Menu" ? "active" : "")">
-                        <span class="icon-placeholder"></span>
-                        Quản lý thực đơn
-                    </a>
-                         <a asp-controller="Home" asp-action="QL_Categories" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Categories" ? "active" : "")">
-                        <span class="icon-placeholder"></span>
-                        Quản lý danh mục
-                    </a>
-                    <a asp-controller="Home" asp-action="QL_Topping" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Topping" ? "active" : "")">
-                        <span class="icon-placeholder"></span>
-                        Quản lý topping kèm
-                    </a>
-                </div>
-
-                <a asp-controller="Home" asp-action="QL_Partner" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Partner" ? "active" : "")">
-                    <img src="~/svg/sidebar/partner.svg" alt="icon" class="icon" />
-                    Quản lý đặt bàn đối tác
+                 <a asp-controller="Admin" asp-action="QL_Notifi" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Notifi" ? "active" : "")">
+                    <img src="~/svg/sidebar_admin/notification.svg" alt="icon" class="icon" />
+                    Quản lý thông báo hệ thống
                 </a>
- 
-                <a asp-controller="Home" asp-action="Setting" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "Setting" ? "active" : "")">
-                    <img src="~/svg/sidebar/setting_icon.svg" alt="icon" class="icon" />
-                    Cài đặt
+
+                 <a asp-controller="Admin" asp-action="Check_Request" class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Check_Request" ? "active" : "")">
+                    <img src="~/svg/sidebar_admin/register.svg" alt="icon" class="icon" />
+                    Duyệt yêu cầu đăng ký nhà hàng
+                </a>
+              
+                <a asp-controller="Admin" asp-action="Setting" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "Setting" ? "active" : "")">
+                    <img src="~/svg/sidebar_admin/setting_icon.svg" alt="icon" class="icon" />
+                    Cài đặt hệ thống 
                 </a>
             </div>
             
@@ -322,22 +304,6 @@
             const hamburgerMenu = document.getElementById('hamburgerMenu');
             const overlay = document.getElementById('overlay');
             const navItems = document.querySelectorAll('.nav-menu .nav-item, .nav-menu .nav-item-res');
-
-            const restaurantMenu = document.getElementById('restaurantMenu');
-            const restaurantSubmenu = document.getElementById('restaurantSubmenu');
-            const downIcon = restaurantMenu.querySelector('.down-icon');
-
-            // Kiểm tra nếu đang ở một trong các trang con
-            const currentAction = '@ViewContext.RouteData.Values["Action"]';
-            if (['QL_Table', 'QL_Menu', 'QL_Topping','QL_Categories'].includes(currentAction)) {
-                restaurantSubmenu.classList.add('show');
-                downIcon.classList.add('rotate');
-            }
-
-            restaurantMenu.addEventListener('click', function() {
-                restaurantSubmenu.classList.toggle('show');
-                downIcon.classList.toggle('rotate');
-            });
 
             // Mobile menu toggle
             hamburgerMenu.addEventListener('click', function() {

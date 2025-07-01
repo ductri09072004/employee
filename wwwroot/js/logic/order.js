@@ -187,7 +187,7 @@ function renderOrderListPaged(page, perPage) {
                 <td>${order.payment || 'N/A'}</td>
                 <td>${order.status_order || 'N/A'}</td>
                 <td>${notesCount} ghi chú</td>
-                <td><a href="#" class="action-link">${order.status_order || 'N/A'}</a></td>
+                <td><a href="#" class="action-link" data-id="${order.id_order}">${order.status_order || 'N/A'}</a></td>
                 <td><a href="#" class="action-link">[Xem đơn]</a></td>
             </tr>
         `;
@@ -250,4 +250,54 @@ window.onHistoryPageChange = function(page, perPage) {
     // Cập nhật UI phân trang
     updatePaginationUI(currentPage, itemsPerPage, allOrdersArr.length);
 };
+
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('action-link')) {
+        e.preventDefault();
+        const id_order = e.target.getAttribute('data-id');
+        if (!id_order) return;
+        orderService.updateStatus(id_order, 'preparing')
+            .then(data => {
+                alert('Đã chuyển trạng thái sang preparing!');
+                // Reload lại dữ liệu
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    if (user && user.restaurant_id) {
+                        loadOrderHistory(user.restaurant_id, 'pending');
+                        loadOrderCardsConfirmed(user.restaurant_id, 'preparing');
+                    }
+                }
+            })
+            .catch(err => {
+                alert('Có lỗi khi cập nhật trạng thái!');
+            });
+    }
+});
+
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('btn') && e.target.classList.contains('btn-green')) {
+        e.preventDefault();
+        const id_order = e.target.getAttribute('data-order-id');
+        if (!id_order) return;
+        orderService.updateStatus(id_order, 'confirmed')
+            .then(data => {
+                alert('Đã chuyển trạng thái sang confirmed!');
+                // Reload lại dữ liệu
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    if (user && user.restaurant_id) {
+                        loadOrderHistory(user.restaurant_id, 'pending');
+                        loadOrderCardsConfirmed(user.restaurant_id, 'preparing');
+                    }
+                }
+            })
+            .catch(err => {
+                alert('Có lỗi khi cập nhật trạng thái!');
+            });
+    }
+});
 
