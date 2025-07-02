@@ -35,8 +35,8 @@ async function loadOrderHistory(restaurantId) {
 }
 
 function renderOrderList(data) {
-    // Chuyển đổi object thành array để dễ xử lý phân trang
-    allOrdersArr = Object.entries(data).map(([key, order]) => order);
+    // Chuyển đổi object thành array và đảo ngược thứ tự (item cuối cùng lên đầu)
+    allOrdersArr = Object.entries(data).map(([key, order]) => order).reverse();
     
     // Lấy giá trị mặc định từ select nếu có
     const select = document.querySelector('.items-per-page-select');

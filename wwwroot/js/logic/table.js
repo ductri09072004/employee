@@ -333,7 +333,7 @@ window.onTablePageChange = function(page, perPage) {
 
 // Khi load dữ liệu lần đầu
 function renderTableList(tablesArr, restaurant_id, totalCount) {
-    allTablesArr = tablesArr.map(item => ({ ...item, restaurant_id }));
+    allTablesArr = tablesArr.reverse().map(item => ({ ...item, restaurant_id }));
     
     // Lấy giá trị mặc định từ select nếu có
     const select = document.querySelector('.items-per-page-select');
