@@ -1,6 +1,8 @@
 // Restaurant Service
 const Topping_API = {
-    BASE_URL: 'https://jollicowfe-production.up.railway.app/api/admin',
+    get BASE_URL() {
+        return window.apiConfig ? window.apiConfig.BASE_URL : 'https://jollicowfe-production.up.railway.app/api/admin';
+    },
     
 
     async createTopping(toppingData) {

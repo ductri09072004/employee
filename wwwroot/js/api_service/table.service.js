@@ -1,6 +1,8 @@
 // Restaurant Service
 const Table_API = {
-    BASE_URL: 'https://jollicowfe-production.up.railway.app/api/admin',
+    get BASE_URL() {
+        return window.apiConfig ? window.apiConfig.BASE_URL : 'https://jollicowfe-production.up.railway.app/api/admin';
+    },
     
     async getTable(restaurant_id) {
         try {
@@ -39,23 +41,34 @@ const Table_API = {
         }
     },
 
-    async createTable(id_table,restaurant_id) {
+    async createTable(tableData) {
         try {
-            const response = await fetch(`${this.BASE_URL}/tables/create`, {
+            const response = await fetch(`${this.BASE_URL}/tables`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    id_table: id_table,
-                    restaurant_id: restaurant_id
-                })
+                body: JSON.stringify(tableData)
             });
-
-            const data = await response.json();
-            return data;
+            return await response.json();
         } catch (error) {
             console.error('Create table error:', error);
+            throw error;
+        }
+    },
+
+    async updateTable(id, tableData) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/tables/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tableData)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Update table error:', error);
             throw error;
         }
     },
