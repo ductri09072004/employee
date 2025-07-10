@@ -1,11 +1,11 @@
 // Auth Service
 const AUTH_API = {
-    BASE_URL: 'https://jollicowfe-production.up.railway.app/api/admin',
+    BASE_URL: 'https://jollicowfe-production.up.railway.app/api',
     
     // Login API
     async login(phone, password_hash) {
         try {
-            const response = await fetch(`${this.BASE_URL}/staffs/auth`, {
+            const response = await fetch(`${this.BASE_URL}/admin/staffs/auth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
