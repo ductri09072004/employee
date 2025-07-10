@@ -52,20 +52,23 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmBtn.addEventListener('click', async function () {
             const name = nameInput.value.trim();
             if (!name) {
-                // alert('Vui lòng nhập tên danh mục!');
+                showAlert('Vui lòng nhập tên danh mục!', 'warning');
                 return;
             }
             if (!user || !user.restaurant_id) {
-                // alert('Không tìm thấy thông tin nhà hàng!');
+                showAlert('Không tìm thấy thông tin nhà hàng!', 'error');
                 return;
             }
             try {
+                showLoading();
                 await window.cateService.createCate(user.restaurant_id, name);
-                // alert('Thêm danh mục thành công!');
+                showAlert('Thêm danh mục thành công!', 'success');
                 modal.style.display = 'none';
                 loadCategories(user.restaurant_id);
             } catch (err) {
-                // alert('Thêm danh mục thất bại!');
+                showAlert('Thêm danh mục thất bại!', 'error');
+            } finally {
+                hideLoading();
             }
         });
     }
@@ -81,11 +84,14 @@ function displayError(message) {
 // --- Data Loading ---
 async function loadCategories(restaurantId) {
     try {
+        showLoading();
         const data = await window.cateService.getCate(restaurantId);
         renderCategoryList(data);
     } catch (error) {
         console.error('Error loading categories:', error);
         document.getElementById('categories-table-body').innerHTML = '<tr><td colspan="4">Lỗi tải dữ liệu.</td></tr>';
+    } finally {
+        hideLoading();
     }
 }
 
@@ -183,6 +189,7 @@ function editCategory(categoryId) {
     const category = allCategoriesArr.find(cat => cat.id === categoryId);
     if (!category) {
         console.error('Category not found with ID:', categoryId);
+        showAlert('Không tìm thấy danh mục!', 'error');
         return;
     }
     
@@ -232,7 +239,7 @@ function editCategory(categoryId) {
         confirmBtn.onclick = async function() {
             const newName = nameInput.value.trim();
             if (!newName) {
-                alert('Vui lòng nhập tên danh mục!');
+                showAlert('Vui lòng nhập tên danh mục!', 'warning');
                 return;
             }
             
@@ -247,13 +254,14 @@ function editCategory(categoryId) {
                 
                 console.log('Updating category with ID:', categoryId, 'new data:', updatedCategoryData);
                 await window.cateService.editCate(categoryId, updatedCategoryData);
+                showAlert('Cập nhật danh mục thành công!', 'success');
                 modal.style.display = 'none';
                 if (user && user.restaurant_id) {
                     loadCategories(user.restaurant_id);
                 }
             } catch (err) {
                 console.error('Error updating category:', err);
-                alert('Có lỗi xảy ra khi cập nhật danh mục!');
+                showAlert('Có lỗi xảy ra khi cập nhật danh mục!', 'error');
             }
         };
     }
@@ -300,12 +308,14 @@ function showDeleteConfirmation(categoryId) {
             try {
                 console.log('Deleting category with ID:', categoryId);
                 await window.cateService.deleteCate(categoryId);
+                showAlert('Xóa danh mục thành công!', 'success');
                 modal.style.display = 'none';
                 if (user && user.restaurant_id) {
                     loadCategories(user.restaurant_id);
                 }
             } catch (err) {
                 console.error('Error deleting category:', err);
+                showAlert('Có lỗi xảy ra khi xóa danh mục!', 'error');
                 modal.style.display = 'none';
             }
         };

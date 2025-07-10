@@ -41,14 +41,17 @@ const Table_API = {
         }
     },
 
-    async createTable(tableData) {
+    async createTable(id_table, restaurant_id) {
         try {
-            const response = await fetch(`${this.BASE_URL}/tables`, {
+            const response = await fetch(`${this.BASE_URL}/tables/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(tableData)
+                body: JSON.stringify({ 
+                    id_table: id_table,
+                    restaurant_id: restaurant_id 
+                })
             });
             return await response.json();
         } catch (error) {

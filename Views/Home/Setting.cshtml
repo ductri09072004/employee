@@ -120,18 +120,19 @@
 </style>
 
 <div class="setting-container">
-    <h1 class="setting-title">Hướng dẫn lấy IP Port WI-FI cửa hàng</h1>
-    <p class="warning-text">Lưu ý: Nếu tắt mở modem, địa chỉ truy cập (IP và Port) có thể thay đổi. Vui lòng liên hệ kỹ thuật nếu gặp sự cố không vào được hệ thống.</p>
+    <h1 class="setting-title">Cài đặt IP public WI-FI cho cửa hàng</h1>
+    <p class="warning-text">Lưu ý: Nếu IP public có thay đổi hãy cập nhật, 
+        nếu IP public sai hoặc chưa có sẽ không truy cập được vào web khách hàng.</p>
 
-    <ul class="instruction-list">
-        <li>Bước 1: Bấm tổ hợp phím Win+X, chọn Terminal</li>
-        <li>Bước 2: Sau đó gõ "ipconfig"</li>
-        <li>Bước 3: Lướt xuống tìm mục "IPv4 Address" nhìn sang bên phải là IP port Wi-Fi cần tìm</li>
-        <li>Bước 4: Sau khi nhận được kết quả, copy và dán Port vào ô dưới</li>
-    </ul>
-
+    <div id="ip-warning" style="display:none; font-size:14px; margin-bottom: 8px; text-align:center;"></div>
+    
+    <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+        <label for="currentIp" style="margin-bottom: 0; font-size: 14px;">IP hiện tại của nhà hàng:</label>
+        <div id="currentIp" style="color: #0c6e35; font-size: 14px; margin-bottom: 0;">Đang tải...</div>
+    </div>
+  
     <div class="form-group">
-        <label for="portIp">Port IP của nhà hàng</label>
+        <label for="portIp">Port IP thay đổi mới nhất:</label>
         <div class="port-input-group">
             <input type="text" id="portIp" class="port-input" placeholder="VD: 10.21.9.223">
             <button class="update-button">Cập nhật Port</button>
@@ -140,14 +141,19 @@
 
     <h2 class="section-title">Mục đích cài đặt Port:</h2>
     <ul class="purpose-list">
-        <li>Bảo mật: Ngăn chặn người lạ từ bên ngoài truy cập trái phép, đặt hàng giả hoặc làm rối hệ thống.</li>
-        <li>Ổn định: Hệ thống chạy nhanh và mượt hơn vì không cần Internet, chỉ cần Wi-Fi nội bộ.</li>
+        <li>Bảo mật: Ngăn chặn người lạ từ bên ngoài truy cập trái phép, đặt giả đơn hoặc làm rối hệ thống.</li>
         <li>Kiểm soát: Chỉ thiết bị bị trong cửa hàng mới được truy cập, giúp dễ để quản lý và hạn chế lỗi.</li>
     </ul>
 
     <h2 class="section-title">Liên hệ hỗ trợ:</h2>
     <ul class="contact-list">
-        <li><strong>Hotline:</strong> 19001234 (Hỗ trợ 24/7)</li>
+        <li><strong>Hotline:</strong> 0916070054 (Hỗ trợ 24/7)</li>
         <li><strong>Gmail:</strong> ductri09072004@gmail.com</li>
     </ul>
 </div>
+
+@section Scripts {
+    <script src="~/js/config/api.config.js"></script>
+    <script src="~/js/api_service/restaurant.service.js"></script>
+    <script src="~/js/logic/setting.js"></script>
+}

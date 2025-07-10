@@ -61,6 +61,7 @@ async function loadCategoriesForMenu(restaurantId) {
 // --- Data Loading ---
 async function loadMenuList(restaurantId) {
     try {
+        showLoading();
         const menuData = await window.menuService.getMenu(restaurantId);
         if (Array.isArray(menuData)) {
             renderMenuList(menuData);
@@ -71,6 +72,8 @@ async function loadMenuList(restaurantId) {
     } catch (error) {
         console.error('Error loading menu list:', error);
         displayError('Lỗi tải dữ liệu menu.');
+    } finally {
+        hideLoading();
     }
 }
 
@@ -159,7 +162,7 @@ function editMenuItem(menuId) {
     selectedImageFile = null;
     const menuItem = allMenuItems.find(item => item.id === menuId);
     if (!menuItem) {
-        alert('Không tìm thấy món ăn để sửa!');
+        showAlert('Không tìm thấy món ăn để sửa!', 'error');
         return;
     }
     let modal = document.getElementById('edit-menu-modal');
@@ -260,7 +263,7 @@ function editMenuItem(menuId) {
         let newImage = document.getElementById('previewImg').src;
         
         if (!newCategoryId || !newName || !newImage || isNaN(newPrice)) {
-            alert('Vui lòng nhập đầy đủ thông tin hợp lệ!');
+            showAlert('Vui lòng nhập đầy đủ thông tin hợp lệ!', 'warning');
             return;
         }
         
@@ -269,7 +272,7 @@ function editMenuItem(menuId) {
             try {
                 newImage = await uploadToCloudinaryAsync(selectedImageFile);
             } catch (err) {
-                alert('Lỗi tải ảnh lên Cloudinary!');
+                showAlert('Lỗi tải ảnh lên Cloudinary!', 'error');
                 return;
             }
         }
@@ -285,11 +288,12 @@ function editMenuItem(menuId) {
         try {
             await window.menuService.editMenu(menuItem.id, updatedMenuData);
             modal.style.display = 'none';
+            showAlert('Cập nhật món ăn thành công!', 'success');
             if (user && user.restaurant_id) {
                 loadMenuList(user.restaurant_id);
             }
         } catch (err) {
-            alert('Có lỗi xảy ra khi cập nhật món ăn!');
+            showAlert('Có lỗi xảy ra khi cập nhật món ăn!', 'error');
             console.error('Error updating menu:', err);
         }
     };
@@ -337,13 +341,13 @@ function setupImageUpload() {
 function handleImageFile(file) {
     // Validate file type
     if (!file.type.startsWith('image/')) {
-        alert('Vui lòng chọn file ảnh hợp lệ!');
+        showAlert('Vui lòng chọn file ảnh hợp lệ!', 'warning');
         return;
     }
     
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-        alert('File ảnh không được lớn hơn 5MB!');
+        showAlert('File ảnh không được lớn hơn 5MB!', 'warning');
         return;
     }
     
@@ -589,33 +593,37 @@ function openAddMenuModal() {
         }
         
         if (!id_categories || !name || isNaN(price) || !restaurant_id) {
-            alert('Vui lòng nhập đầy đủ thông tin hợp lệ!');
+            showAlert('Vui lòng nhập đầy đủ thông tin hợp lệ!', 'warning');
             return;
         }
         
         if (!selectedAddImageFile) {
-            alert('Vui lòng chọn ảnh món ăn!');
+            showAlert('Vui lòng chọn ảnh món ăn!', 'warning');
             return;
         }
         
         // Upload ảnh lên Cloudinary
         try {
+            showLoading();
             image = await uploadToCloudinaryAddAsync(selectedAddImageFile);
         } catch (err) {
-            alert('Lỗi tải ảnh lên Cloudinary!');
+            showAlert('Lỗi tải ảnh lên Cloudinary!', 'error');
+            hideLoading();
             return;
         }
         
         try {
             await window.menuService.createMenu(id_categories, name, image, restaurant_id, status, price);
             modal.style.display = 'none';
-            showToast('Thêm món ăn thành công!', 'success');
+            showAlert('Thêm món ăn thành công!', 'success');
             if (user && user.restaurant_id) {
                 loadMenuList(user.restaurant_id);
             }
         } catch (err) {
-            showToast('Có lỗi xảy ra khi thêm món ăn!', 'error');
+            showAlert('Có lỗi xảy ra khi thêm món ăn!', 'error');
             console.error('Error creating menu:', err);
+        } finally {
+            hideLoading();
         }
     };
     
@@ -669,11 +677,11 @@ function setupAddImageUpload() {
 
 function handleAddImageFile(file) {
     if (!file.type.startsWith('image/')) {
-        alert('Vui lòng chọn file ảnh hợp lệ!');
+        showAlert('Vui lòng chọn file ảnh hợp lệ!', 'warning');
         return;
     }
     if (file.size > 5 * 1024 * 1024) {
-        alert('File ảnh không được lớn hơn 5MB!');
+        showAlert('File ảnh không được lớn hơn 5MB!', 'warning');
         return;
     }
     const reader = new FileReader();
@@ -807,12 +815,12 @@ function deleteMenuItem(menuId) {
         try {
             await window.menuService.deleteMenu(menuId);
             modal.style.display = 'none';
-            showToast('Xóa món ăn thành công!', 'success');
+            showAlert('Xóa món ăn thành công!', 'success');
             if (user && user.restaurant_id) {
                 loadMenuList(user.restaurant_id);
             }
         } catch (err) {
-            showToast('Có lỗi khi xóa món ăn!', 'error');
+            showAlert('Có lỗi khi xóa món ăn!', 'error');
             modal.style.display = 'none';
         }
     };

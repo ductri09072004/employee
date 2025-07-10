@@ -132,29 +132,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const priceStr = document.getElementById('toppingPriceInput').value.trim();
             const price = Number(priceStr);
             if (!id_dishes || !name_details || !name || !priceStr) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
+                showAlert('Vui lòng nhập đầy đủ thông tin!', 'warning');
                 return;
             }
             if (isNaN(price) || price < 0) {
-                alert('Giá topping không hợp lệ!');
+                showAlert('Giá topping không hợp lệ!', 'warning');
                 return;
             }
             // Construct options as a single-item array
             const options = [{ name, price }];
             try {
+                showLoading();
                 await window.toppingService.createTopping({
                     id_dishes,
                     name_details,
                     options
                 });
-                alert('Thêm topping thành công!');
+                showAlert('Thêm topping thành công!', 'success');
                 document.getElementById('add-topping-modal').style.display = 'none';
                 // Reload lại topping
                 const userStr = localStorage.getItem('user');
                 const user = JSON.parse(userStr);
                 loadToppings(user.restaurant_id);
             } catch (err) {
-                alert('Thêm topping thất bại!');
+                showAlert('Thêm topping thất bại!', 'error');
+            } finally {
+                hideLoading();
             }
         };
     }
@@ -169,11 +172,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadToppings(restaurantId) {
     try {
+        showLoading();
         const data = await window.menuService.getMenu(restaurantId);
         renderToppingList(data);
     } catch (error) {
         console.error('Error loading toppings:', error);
         document.getElementById('table-list-body').innerHTML = '<tr><td colspan="7">Lỗi tải dữ liệu.</td></tr>';
+    } finally {
+        hideLoading();
     }
 }
 
@@ -305,11 +311,11 @@ async function deleteTopping(dishId, optionId) {
     try {
         // TODO: Implement actual deletion logic
         console.log('Delete topping:', { dishId, optionId });
-        alert('Chức năng xóa topping sẽ được implement sau');
+        showAlert('Chức năng xóa topping sẽ được implement sau', 'warning');
         closeModal('delete-table-modal');
     } catch (error) {
         console.error('Error deleting topping:', error);
-        alert('Có lỗi xảy ra khi xóa topping');
+        showAlert('Có lỗi xảy ra khi xóa topping', 'error');
     }
 }
 

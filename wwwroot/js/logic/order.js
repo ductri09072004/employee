@@ -16,24 +16,30 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.error('Không tìm thấy restaurant_id trong thông tin user');
                 document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Không tìm thấy thông tin nhà hàng.</td></tr>';
+                showAlert('Không tìm thấy thông tin nhà hàng!', 'error');
             }
         } catch (error) {
             console.error('Lỗi khi parse user data:', error);
             document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Lỗi dữ liệu người dùng.</td></tr>';
+            showAlert('Lỗi dữ liệu người dùng!', 'error');
         }
     } else {
         console.error('Chưa đăng nhập');
         document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Người dùng chưa đăng nhập.</td></tr>';
+        showAlert('Người dùng chưa đăng nhập!', 'warning');
     }
 });
 
 // Thêm function mới cho order cards với status confirmed
 async function loadOrderCardsConfirmed(restaurantId, status_order) {
     try {
+        showLoading();
         const data = await window.orderService.getOrderby3in1Status(restaurantId, status_order);
         renderOrderCardsConfirmed(data);
     } catch (error) {
         console.error('Error loading order cards confirmed:', error);
+    } finally {
+        hideLoading();
     }
 }
 
@@ -120,11 +126,15 @@ function renderOrderCardsConfirmed(data) {
 
 async function loadOrderHistory(restaurantId,status_order) {
     try {
+        showLoading();
         const data = await window.orderService.getOrderbyStatus(restaurantId,status_order);
         renderOrderList(data);
     } catch (error) {
         console.error('Error loading order history:', error);
         document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Lỗi tải dữ liệu.</td></tr>';
+        showAlert('Lỗi tải dữ liệu đơn hàng!', 'error');
+    } finally {
+        hideLoading();
     }
 }
 
@@ -156,6 +166,7 @@ function renderOrderListPaged(page, perPage) {
     
     if (pageOrders.length === 0) {
         tbody.innerHTML = '<tr><td colspan="10">Không có dữ liệu đơn hàng.</td></tr>';
+        showAlert('Không có dữ liệu đơn hàng.', 'info');
         return;
     }
 
@@ -257,9 +268,10 @@ document.addEventListener('click', function(e) {
         e.preventDefault();
         const id_order = e.target.getAttribute('data-id');
         if (!id_order) return;
+        showLoading();
         orderService.updateStatus(id_order, 'preparing')
             .then(data => {
-                alert('Đã chuyển trạng thái sang preparing!');
+                showAlert('Đã chuyển trạng thái sang preparing!', 'success');
                 // Reload lại dữ liệu
                 const userStr = localStorage.getItem('user');
                 if (userStr) {
@@ -271,7 +283,10 @@ document.addEventListener('click', function(e) {
                 }
             })
             .catch(err => {
-                alert('Có lỗi khi cập nhật trạng thái!');
+                showAlert('Có lỗi khi cập nhật trạng thái!', 'error');
+            })
+            .finally(() => {
+                hideLoading();
             });
     }
 });
@@ -282,9 +297,10 @@ document.addEventListener('click', function(e) {
         e.preventDefault();
         const id_order = e.target.getAttribute('data-order-id');
         if (!id_order) return;
+        showLoading();
         orderService.updateStatus(id_order, 'confirmed')
             .then(data => {
-                alert('Đã chuyển trạng thái sang confirmed!');
+                showAlert('Đã chuyển trạng thái sang confirmed!', 'success');
                 // Reload lại dữ liệu
                 const userStr = localStorage.getItem('user');
                 if (userStr) {
@@ -296,7 +312,10 @@ document.addEventListener('click', function(e) {
                 }
             })
             .catch(err => {
-                alert('Có lỗi khi cập nhật trạng thái!');
+                showAlert('Có lỗi khi cập nhật trạng thái!', 'error');
+            })
+            .finally(() => {
+                hideLoading();
             });
     }
 });

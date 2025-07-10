@@ -11,9 +11,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     if (!restaurant_id) {
         tableBody.innerHTML = '<tr><td colspan="4">Không tìm thấy thông tin bàn.</td></tr>';
+        showAlert('Không tìm thấy thông tin nhà hàng!', 'error');
         return;
     }
     try {
+        showLoading();
         const data = await window.tableService.getTable(restaurant_id);
         console.log('API Response:', data); // Debug log
         
@@ -40,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         
         if (tablesArr.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4">Không có dữ liệu bàn.</td></tr>';
+            showAlert('Không có dữ liệu bàn.', 'info');
             // Cập nhật pagination với count = 0
             updatePaginationUI(1, 15, totalCount);
             return;
@@ -48,8 +51,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     } catch (err) {
         console.error('Error loading tables:', err); // Debug log
         tableBody.innerHTML = '<tr><td colspan="4">Lỗi tải dữ liệu bàn.</td></tr>';
+        showAlert('Lỗi tải dữ liệu bàn!', 'error');
         // Cập nhật pagination với count = 0 khi có lỗi
         updatePaginationUI(1, 15, 0);
+    } finally {
+        hideLoading();
     }
 });
 
@@ -90,24 +96,27 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmBtn.addEventListener('click', async function () {
             const id_table = tableNumberInput.value.trim();
             if (!id_table) {
-                alert('Vui lòng nhập số bàn!');
+                showAlert('Vui lòng nhập số bàn!', 'warning');
                 tableNumberInput.focus();
                 return;
             }
             if (!restaurant_id) {
-                alert('Không tìm thấy restaurant_id!');
+                showAlert('Không tìm thấy restaurant_id!', 'error');
                 return;
             }
             confirmBtn.disabled = true;
             confirmBtn.textContent = 'Đang thêm...';
             try {
+                showLoading();
                 await window.tableService.createTable(id_table, restaurant_id);
                 modal.style.display = 'none';
+                showAlert('Thêm bàn thành công!', 'success');
                 // Reload lại danh sách bàn
                 location.reload();
             } catch (err) {
-                alert('Thêm bàn thất bại!');
+                showAlert('Thêm bàn thất bại!', 'error');
             } finally {
+                hideLoading();
                 confirmBtn.disabled = false;
                 confirmBtn.textContent = 'Thêm';
             }
@@ -158,12 +167,15 @@ function setupDeleteTableModalEvents() {
             confirmBtn.disabled = true;
             confirmBtn.textContent = 'Đang xóa...';
             try {
+                showLoading();
                 await window.tableService.deleteTable(deleteTableId);
                 hideDeleteTableModal();
+                showAlert('Xóa bàn thành công!', 'success');
                 location.reload();
             } catch (err) {
-                alert('Xóa bàn thất bại!');
+                showAlert('Xóa bàn thất bại!', 'error');
             } finally {
+                hideLoading();
                 confirmBtn.disabled = false;
                 confirmBtn.textContent = 'Xóa';
             }

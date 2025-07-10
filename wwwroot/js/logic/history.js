@@ -13,24 +13,31 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.error('Không tìm thấy restaurant_id trong thông tin user');
                 document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Không tìm thấy thông tin nhà hàng.</td></tr>';
+                showAlert('Không tìm thấy thông tin nhà hàng!', 'error');
             }
         } catch (error) {
             console.error('Lỗi khi parse user data:', error);
             document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Lỗi dữ liệu người dùng.</td></tr>';
+            showAlert('Lỗi dữ liệu người dùng!', 'error');
         }
     } else {
         console.error('Chưa đăng nhập');
         document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Người dùng chưa đăng nhập.</td></tr>';
+        showAlert('Người dùng chưa đăng nhập!', 'warning');
     }
 });
 
 async function loadOrderHistory(restaurantId) {
     try {
+        showLoading();
         const data = await window.orderService.getOrderHistoryDone(restaurantId);
         renderOrderList(data);
     } catch (error) {
         console.error('Error loading order history:', error);
         document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Lỗi tải dữ liệu.</td></tr>';
+        showAlert('Lỗi tải dữ liệu lịch sử đơn hàng!', 'error');
+    } finally {
+        hideLoading();
     }
 }
 
@@ -52,7 +59,6 @@ function renderOrderList(data) {
     updatePaginationUI(currentPage, itemsPerPage, allOrdersArr.length);
 }
 
-
 //cụm chuyển trang
 function renderOrderListPaged(page, perPage) {
     const tbody = document.getElementById('orderHistoryBody');
@@ -62,6 +68,7 @@ function renderOrderListPaged(page, perPage) {
     
     if (pageOrders.length === 0) {
         tbody.innerHTML = '<tr><td colspan="10">Không có dữ liệu đơn hàng.</td></tr>';
+        showAlert('Không có dữ liệu đơn hàng.', 'info');
         return;
     }
 
