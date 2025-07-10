@@ -1,6 +1,6 @@
 // Restaurant Service
 const Menus_API = {
-    BASE_URL: 'https://jollicowfe-production.up.railway.app/api',
+    BASE_URL: 'https://jollicowfe-production.up.railway.app/api/admin',
     
 
     async getMenu(id_restaurant) {

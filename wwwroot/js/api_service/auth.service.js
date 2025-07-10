@@ -1,6 +1,6 @@
 // Auth Service
 const AUTH_API = {
-    BASE_URL: 'https://jollicowfe-production.up.railway.app/api',
+    BASE_URL: 'https://jollicowfe-production.up.railway.app/api/admin',
     
     // Login API
     async login(phone, password_hash) {

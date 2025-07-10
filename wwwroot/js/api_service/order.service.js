@@ -1,6 +1,6 @@
 // Restaurant Service
 const Order_API = {
-    BASE_URL: 'https://jollicowfe-production.up.railway.app/api',
+    BASE_URL: 'https://jollicowfe-production.up.railway.app/api/admin',
     
     async create_restaurant(id_restaurant) {
         try {
