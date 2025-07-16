@@ -75,7 +75,10 @@ function renderOrderListPaged(page, perPage) {
     tbody.innerHTML = pageOrders.map((order, idx) => {
         // Format date
         const orderDate = new Date(order.date_create);
-        const formattedTime = orderDate.toLocaleTimeString('vi-VN', {
+        const formattedDateTime = orderDate.toLocaleString('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
         });
@@ -91,7 +94,7 @@ function renderOrderListPaged(page, perPage) {
                 <td>${String(startIdx + idx + 1).padStart(2, '0')}</td>
                 <td>${order.id_order}</td>
                 <td>Bàn ${order.id_table}</td>
-                <td>${formattedTime}</td>
+                <td>${formattedDateTime}</td>
                 <td>${formattedPrice}</td>
                 <td>${order.payment}</td>
                 <td>${order.status_order}</td>

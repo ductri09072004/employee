@@ -78,6 +78,19 @@
         justify-content: center;
         align-items: center;
         color: #ccc;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Cho phép legend của biểu đồ tròn cuộn nếu quá dài */
+    .menu-pie-legend-scroll .chartjs-legend {
+        max-width: 220px;
+        word-break: break-word;
+        white-space: normal;
+    }
+    .menu-pie-legend-scroll .chartjs-legend li {
+        white-space: normal !important;
+        word-break: break-word;
+        line-height: 1.2;
     }
 
     .revenue-percentage {
@@ -95,13 +108,14 @@
 </style>
 
 <div class="dashboard">
+    
     <div class="dashboard-grid">
         <div class="stat-card">
             <div class="stat-icon icon-orange">
                 <img src="~/svg/index/icon1.svg" alt="user icon" />
             </div>
             <div class="stat-content">
-                <h3>34</h3>
+                <h3 id="stat-total">0</h3>
                 <p>Tổng đơn gọi món</p>
             </div>
         </div>
@@ -110,16 +124,16 @@
                 <img src="~/svg/index/icon2.svg" alt="user icon"/>
             </div>
             <div class="stat-content">
-                <h3>1</h3>
+                <h3 id="stat-pending">0</h3>
                 <p>Đơn chờ xử lý</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon icon-blue">
-                <img src="~/svg/index/icon2.svg" alt="user icon"/>
+                <img src="~/svg/index/icon6.svg" alt="user icon"/>
             </div>
             <div class="stat-content">
-                <h3>1</h3>
+                <h3 id="stat-preparing">0</h3>
                 <p>Đơn đang chế biến</p>
             </div>
         </div>
@@ -128,32 +142,51 @@
                 <img src="~/svg/index/icon3.svg" alt="percent icon"/>
             </div>
             <div class="stat-content">
-                <h3>12</h3>
+                <h3 id="stat-confirmed">0</h3>
                 <p>Đơn đã hoàn thành</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon icon-purple">
-                <img src="~/svg/index/icon3.svg" alt="percent icon" />
+                <img src="~/svg/index/icon4.svg" alt="percent icon" />
             </div>
             <div class="stat-content">
-                <h3>12</h3>
-                <p>Đơn chưa thanh toán</p>
+                <h3 id="stat-closed">0</h3>
+                <p>Đơn đã đóng</p>
+            </div>
+        </div>
+
+         <div class="stat-card">
+            <div class="stat-icon icon-purple">
+                <img src="~/svg/index/icon5.svg" alt="percent icon" />
+            </div>
+            <div class="stat-content">
+                <h3 id="stat-cancelled">0</h3>
+                <p>Đơn đã hủy</p>
             </div>
         </div>
     </div>
 
-    <div class="chart-grid">
-        <div class="chart-card">
-            <h2 class="chart-title">Món bán chạy trong ngày</h2>
-            <div class="chart-placeholder"><!-- Biểu đồ món bán chạy sẽ ở đây --></div>
-        </div>
+    <div class="chart-grid"> 
         <div class="chart-card">
             <h2 class="chart-title">
                 <span>Doanh thu</span>
                 <span class="revenue-percentage">14% <span class="arrow-icon">&#8599;</span></span>
             </h2>
-            <div class="chart-placeholder"> <!-- Biểu đồ doanh thu sẽ ở đây --></div>
+            <div class="chart-placeholder">
+                <canvas id="monthly-revenue-chart" width="400" height="250"></canvas>
+            </div>
+        </div>
+        <div class="chart-card menu-pie-legend-scroll">
+            <h2 class="chart-title">Thống kê món bán chạy</h2>
+            <div class="chart-placeholder">
+                <canvas id="menu-pie-chart" width="400" height="250"></canvas>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/logic/index.js"></script>
+}

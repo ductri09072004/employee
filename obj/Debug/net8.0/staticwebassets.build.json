@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dt48e9cyaK84teHTeud87xp0K1XJFakOEapp1BHUmOU=",
+  "Hash": "Pt8cQid2PSaqZAvx5CSMvKDvtq3Ce8H9uTzR1+PGVHg=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -395,6 +395,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\logic\\history.js"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\index.js",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "js/logic/index.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\logic\\index.js"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\menu.js",

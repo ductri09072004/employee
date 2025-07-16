@@ -125,7 +125,7 @@ const Order_API = {
             console.error('Update order error:', error);
             throw error;
         }
-    }
+    },
 };
 
 // Export service

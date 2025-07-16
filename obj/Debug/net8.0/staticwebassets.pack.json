@@ -77,6 +77,10 @@
       "PackagePath": "staticwebassets\\js\\logic\\history.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\index.js",
+      "PackagePath": "staticwebassets\\js\\logic\\index.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\menu.js",
       "PackagePath": "staticwebassets\\js\\logic\\menu.js"
     },
