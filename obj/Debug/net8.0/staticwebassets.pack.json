@@ -37,6 +37,10 @@
       "PackagePath": "staticwebassets\\js\\api_service\\categories.service.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\index.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\index.service.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\menu.service.js",
       "PackagePath": "staticwebassets\\js\\api_service\\menu.service.js"
     },
@@ -351,6 +355,18 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon3.svg",
       "PackagePath": "staticwebassets\\svg\\index\\icon3.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon4.svg",
+      "PackagePath": "staticwebassets\\svg\\index\\icon4.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon5.svg",
+      "PackagePath": "staticwebassets\\svg\\index\\icon5.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon6.svg",
+      "PackagePath": "staticwebassets\\svg\\index\\icon6.svg"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\cart.svg",
