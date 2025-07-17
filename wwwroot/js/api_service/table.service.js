@@ -1,7 +1,7 @@
 // Restaurant Service
 const Table_API = {
     get BASE_URL() {
-        return window.apiConfig ? window.apiConfig.BASE_URL : 'https://jollicowfe-production.up.railway.app/api/admin';
+        return window.apiConfig ? window.apiConfig.BASE_URL : 'https://jollicowbe-admin.up.railway.app/api/admin';
     },
     
     async getTable(restaurant_id) {
