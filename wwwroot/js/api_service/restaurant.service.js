@@ -66,6 +66,22 @@ const Restaurant_API = {
             throw error;
         }
     },
+
+    async getRes() {
+        try {
+            const response = await fetch(`${this.BASE_URL}/restaurants`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Get restaurants error:', error);
+            throw error;
+        }
+    },
 };
 
 // Export service

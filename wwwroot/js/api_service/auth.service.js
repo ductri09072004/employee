@@ -46,7 +46,7 @@ const AUTH_API = {
             throw error;
         }
     },
-    
+ 
     async add_id_restaurant(restaurant_id,id_staff) {
         try {
             const response = await fetch(`${this.BASE_URL}/staffs/addID`, {
@@ -64,6 +64,22 @@ const AUTH_API = {
             return data;
         } catch (error) {
             console.error('Login error:', error);
+            throw error;
+        }
+    },
+
+    async getstaff() {
+        try {
+            const response = await fetch(`${this.BASE_URL}/staffs`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Get staffs error:', error);
             throw error;
         }
     },

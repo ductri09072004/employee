@@ -290,6 +290,10 @@
                         <span class="icon-placeholder"></span>
                         Quản lý topping kèm
                     </a>
+                      <a asp-controller="Home" asp-action="QL_Promotion" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "QL_Promotion" ? "active" : "")">
+                        <span class="icon-placeholder"></span>
+                        Quản lý khuyến mãi
+                    </a>
                 </div>
 
                 <a asp-controller="Home" asp-action="Setting" class="nav-item-res @(ViewContext.RouteData.Values["Action"].ToString() == "Setting" ? "active" : "")">
@@ -324,7 +328,7 @@
 
             // Kiểm tra nếu đang ở một trong các trang con
             const currentAction = '@ViewContext.RouteData.Values["Action"]';
-            if (['QL_Table', 'QL_Menu', 'QL_Topping','QL_Categories'].includes(currentAction)) {
+            if (['QL_Table', 'QL_Menu', 'QL_Topping','QL_Categories','QL_Promotion'].includes(currentAction)) {
                 restaurantSubmenu.classList.add('show');
                 downIcon.classList.add('rotate');
             }
@@ -409,6 +413,7 @@
     <script src="~/js/api_service/restaurant.service.js"></script>
     <script src="~/js/api_service/index.service.js"></script>
     <script src="~/js/common/alert.component.js"></script>
+    <script src="~/js/api_service/promotion.service.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

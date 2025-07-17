@@ -31,6 +31,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         id_restaurant = localStorage.getItem('id_restaurant') || 'CHA1001';
     }
     try {
+        showLoading();
         const data = await window.indexService.count_order(id_restaurant);
         // Hiển thị id_restaurant từ API
         const idElemApi = document.getElementById('restaurant-id-api');
@@ -46,6 +47,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error('Failed to load dashboard stats:', error);
+    } finally {
+        hideLoading();
     }
 });
 
@@ -64,6 +67,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         id_restaurant = localStorage.getItem('id_restaurant');
     }
     try {
+        showLoading();
         const data = await window.indexService.statistics_order(id_restaurant);
         if (data && data.monthlyRevenue) {
             const ctx = document.getElementById('monthly-revenue-chart').getContext('2d');
@@ -99,6 +103,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error('Failed to load monthly revenue chart:', error);
+    } finally {
+        hideLoading();
     }
 });
 
@@ -117,6 +123,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         id_restaurant = localStorage.getItem('id_restaurant');
     }
     try {
+        showLoading();
         const data = await window.indexService.statistics_menus(id_restaurant);
         if (data && data.counts) {
             const ctx = document.getElementById('menu-pie-chart').getContext('2d');
@@ -179,5 +186,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error('Failed to load menu pie chart:', error);
+    } finally {
+        hideLoading();
     }
 });

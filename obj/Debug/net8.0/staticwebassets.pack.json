@@ -93,6 +93,14 @@
       "PackagePath": "staticwebassets\\js\\logic\\order.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\qlres_admin.js",
+      "PackagePath": "staticwebassets\\js\\logic\\qlres_admin.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\qltk_admin.js",
+      "PackagePath": "staticwebassets\\js\\logic\\qltk_admin.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\setting.js",
       "PackagePath": "staticwebassets\\js\\logic\\setting.js"
     },

@@ -3,19 +3,28 @@
     Layout = "~/Views/Shared/Superadmin_Layout.cshtml";
 }
 
-<style>
-.center-dashboard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 70vh;
-    font-size: 3rem;
-    color: black;
-    letter-spacing: 2px;
-}
-</style>
+<div class="history-container">
+    <div class="history-table-container">
+        <!-- Components table  -->
+           @await Component.InvokeAsync("Table", new { 
+            columnNames = new List<string> { "ID", "Name", "Phone",
+                "ID_Restaurant", "Role", "Status","Action"
+                }, 
+            tableBodyId = "staffBody" 
+        })
+    </div>
 
-<div class="center-dashboard">
-   Quản lý tài khoản
+    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+        CurrentPage = 1,
+        TotalPages = 1,
+        TotalItems = 1,
+        ItemsPerPage = 15,
+        PageAction = "staffPageChange"
+    })
 </div>
+
+@section Scripts {
+    <script src="~/js/logic/qltk_admin.js"></script>
+}
+
 
