@@ -46,10 +46,6 @@
             confirmBtn.style.background = '#0d6efd';
              confirmBtn.onmouseover = () => confirmBtn.style.background = '#0b5ed7';
             confirmBtn.onmouseout = () => confirmBtn.style.background = '#0d6efd';
-        } else if (confirmButtonClass === 'btn-success') {
-            confirmBtn.style.background = '#198754';
-            confirmBtn.onmouseover = () => confirmBtn.style.background = '#146c43';
-            confirmBtn.onmouseout = () => confirmBtn.style.background = '#198754';
         }
 
         const cancelBtn = modal.querySelector('#globalCancelBtn');

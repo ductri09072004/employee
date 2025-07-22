@@ -4,18 +4,97 @@
 }
 
 <style>
-.center-dashboard {
+.dashboard-stats {
     display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
     justify-content: center;
-    align-items: center;
-    height: 70vh;
-    font-size: 3rem;
-    color: black;
-    letter-spacing: 2px;
+    margin: 24px;
 }
+.stat-card {
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(60,60,60,0.10);
+    padding: 32px 38px 28px 38px;
+    min-width: 220px;
+    text-align: center;
+    transition: box-shadow 0.2s;
+    position: relative;
+    background: #fff;
+    color: #1976d2;
+}
+.stat-card:hover {
+    box-shadow: 0 8px 32px rgba(60,60,60,0.18);
+}
+.stat-title {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: inherit;
+    margin-bottom: 6px;
+}
+.stat-icon {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 32px;
+    opacity: 0.18;
+    color: inherit;
+}
+/* Màu riêng cho từng thẻ */
+.stat-card.visits      { background: #e3f2fd; color: #1976d2; }
+.stat-card.restaurants { background: #fff3e0; color: #ff9800; }
+.stat-card.staff       { background: #f3e5f5; color: #8e24aa; }
+.stat-card.orders      { background: #e8f5e9; color: #43a047; }
+.stat-card.revenue     { background: #e0f7fa; color: #0097a7; }
+.stat-card.requests    { background: #ffebee; color: #e53935; }
 </style>
 
-<div class="center-dashboard">
-    Dashboard
+<div class="dashboard-stats">
+    <div class="stat-card visits">
+        <div class="stat-title">Tổng số lượt truy cập</div>
+        <div class="stat-value" id="total-visits">0</div>
+        <div class="stat-icon">📝</div>
+    </div>
+    <div class="stat-card restaurants">
+        <div class="stat-title">Tổng số nhà hàng</div>
+        <div class="stat-value" id="total-restaurants">0</div>
+        <div class="stat-icon">🏢</div>
+    </div>
+    <div class="stat-card staff">
+        <div class="stat-title">Tổng số tài khoản</div>
+        <div class="stat-value" id="total-staff">0</div>
+        <div class="stat-icon">👨‍🍳</div>
+    </div>
+    <div class="stat-card orders">
+        <div class="stat-title">Tổng số đơn hàng</div>
+        <div class="stat-value" id="total-orders">0</div>
+        <div class="stat-icon">🧾</div>
+    </div>
+    <div class="stat-card revenue">
+        <div class="stat-title">Tổng doanh thu</div>
+        <div class="stat-value" id="total-revenue">0₫</div>
+        <div class="stat-icon">💰</div>
+    </div>
+    <div class="stat-card requests">
+        <div class="stat-title">Yêu cầu đăng ký hệ thống</div>
+        <div class="stat-value" id="total-requests">0</div>
+        <div class="stat-icon">📝</div>
+    </div>
 </div>
+
+@section Scripts {
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.updateDashboardStats) window.updateDashboardStats();
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/logic/index.js"></script>
+}
+
 

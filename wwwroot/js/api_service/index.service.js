@@ -63,6 +63,22 @@ const Index_API = {
             throw error;
         }
     },
+
+    async countAdmin() {
+        try {
+            const response = await fetch(`${this.BASE_URL}/track/total`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Get total error:', error);
+            throw error;
+        }
+    },
 };
 
 // Export service

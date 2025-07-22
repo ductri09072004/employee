@@ -69,6 +69,10 @@
       "PackagePath": "staticwebassets\\js\\common\\alert.component.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\common\\confirm.modal.js",
+      "PackagePath": "staticwebassets\\js\\common\\confirm.modal.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\common\\loading.component.js",
       "PackagePath": "staticwebassets\\js\\common\\loading.component.js"
     },
@@ -363,6 +367,26 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\logo_web_admin.ico",
       "PackagePath": "staticwebassets\\logo_web_admin.ico"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\add.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\add.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\delete.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\delete.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\lock.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\lock.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\unlock.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\unlock.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\write.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\write.svg"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\index\\icon1.svg",

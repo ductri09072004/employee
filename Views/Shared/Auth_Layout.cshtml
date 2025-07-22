@@ -491,6 +491,12 @@
                 });
             </script>
             <script src="~/js/common/alert.component.js"></script>
-            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('https://jollicowbe-admin.up.railway.app/api/admin/track/increase', {
+                    method: 'POST'
+                }).catch(() => {});
+            });
+            </script>
         </body>
         </html>

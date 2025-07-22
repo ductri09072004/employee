@@ -201,12 +201,14 @@ function setupShowQRButtons() {
             const urlCell = tr.querySelector('td:nth-child(3) a');
             if (!urlCell) return;
             const url = urlCell.getAttribute('href');
-            showQRModal(url);
+            // Lấy số bàn từ cột thứ 2 (id_table)
+            const tableNumber = tr.querySelector('td:nth-child(2)')?.textContent?.trim() || '';
+            showQRModal(url, tableNumber);
         });
     });
 }
 
-function showQRModal(url) {
+function showQRModal(url, tableNumber) {
     const modal = document.getElementById('show-qr-modal');
     const qrContainer = document.getElementById('qrCodeContainer');
     const urlText = document.getElementById('qrUrlText');
@@ -223,6 +225,11 @@ function showQRModal(url) {
         correctLevel: QRCode.CorrectLevel.H
     });
     urlText.textContent = url;
+    // Cập nhật tiêu đề modal
+    const titleEl = modal.querySelector('.modal-title');
+    if (titleEl) {
+        titleEl.textContent = tableNumber ? `Mã QR bàn ${tableNumber}` : 'Mã QR bàn';
+    }
     modal.style.display = 'block';
 }
 

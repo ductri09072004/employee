@@ -52,6 +52,65 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// Counter animation for dashboard
+function animateCountUp(element, endValue, duration = 1200, isMoney = false) {
+    const start = 0;
+    const startTime = performance.now();
+    const end = Number(endValue) || 0;
+    function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        element.textContent = isMoney
+            ? value.toLocaleString('vi-VN') + '₫'
+            : value.toLocaleString('vi-VN');
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            // Đảm bảo số cuối cùng chính xác
+            element.textContent = isMoney
+                ? end.toLocaleString('vi-VN') + '₫'
+                : end.toLocaleString('vi-VN');
+        }
+    }
+    requestAnimationFrame(update);
+}
+
+// Dashboard admin: cập nhật số liệu tổng quan
+window.updateDashboardStats = async function() {
+    try {
+        showLoading();
+        // Đợi indexService sẵn sàng (nếu cần)
+        let retry = 0;
+        while ((!window.indexService || !window.indexService.countAdmin) && retry < 20) {
+            await new Promise(res => setTimeout(res, 100));
+            retry++;
+        }
+        if (!window.indexService || !window.indexService.countAdmin) {
+            showAlert('Không thể tải dữ liệu thống kê (service chưa sẵn sàng)!', 'error');
+            return;
+        }
+        const stats = await window.indexService.countAdmin();
+        if (document.getElementById('total-visits'))
+            animateCountUp(document.getElementById('total-visits'), stats.totalVisits ?? 0);
+        if (document.getElementById('total-restaurants'))
+            animateCountUp(document.getElementById('total-restaurants'), stats.totalRestaurants ?? 0);
+        if (document.getElementById('total-staff'))
+            animateCountUp(document.getElementById('total-staff'), stats.totalStaffs ?? 0);
+        if (document.getElementById('total-orders'))
+            animateCountUp(document.getElementById('total-orders'), stats.totalOrders ?? 0);
+        if (document.getElementById('total-revenue'))
+            animateCountUp(document.getElementById('total-revenue'), stats.totalRevenue ?? 0, 1200, true);
+        if (document.getElementById('total-requests'))
+            animateCountUp(document.getElementById('total-requests'), stats.totalRegisterRequests ?? 0);
+    } catch (error) {
+        showAlert('Không thể tải dữ liệu thống kê!', 'error');
+        console.error(error);
+    } finally {
+        hideLoading();
+    }
+}
+
 // Vẽ biểu đồ doanh thu theo tháng
 window.addEventListener('DOMContentLoaded', async () => {
     let id_restaurant = 'CHA1001';
