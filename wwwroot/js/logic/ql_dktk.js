@@ -4,11 +4,9 @@ let currentPage = 1;
 let itemsPerPage = 15;
 
 window.addEventListener('DOMContentLoaded', async () => {
-    showLoading();
     try {
-        const data = await window.authService.getstaff();
+        const data = await window.authService.getInactivestaff();
         // data là object, mỗi key là 1 staff
-        // Dùng Object.entries để lấy key (-OS...) làm id cho mỗi staff
         allStaffArr = Object.entries(data)
             .filter(([key, staff]) => staff && staff.id_staff)
             .map(([key, staff]) => ({ ...staff, id: key }));
@@ -25,90 +23,58 @@ window.addEventListener('DOMContentLoaded', async () => {
         console.error('Lỗi khi lấy danh sách staff:', error);
         const staffBody = document.getElementById('staffBody');
         if (staffBody) staffBody.innerHTML = '<tr><td colspan="6">Lỗi khi tải dữ liệu nhân viên.</td></tr>';
-    } finally {
-        hideLoading();
     }
 
     // Xử lý sự kiện click cho các nút action
     const staffBody = document.getElementById('staffBody');
     if (staffBody) {
         staffBody.addEventListener('click', async function(e) {
+            // Duyệt tài khoản
             const editLink = e.target.closest('a.action-link.edit');
             if (editLink) {
                 e.preventDefault();
-                const staffId = editLink.dataset.id; // This is the '-OS...' key
+                const staffId = editLink.dataset.id; // Lấy id (-OS...)
                 if (!staffId) return;
 
-                const staff = allStaffArr.find(s => s.id === staffId);
-                if (!staff) {
-                    showAlert('Không tìm thấy nhân viên!', 'error');
-                    return;
-                }
-                
-                const staffName = staff.name;
-                const isLocking = staff.status === 'active';
-                const title = isLocking ? 'Xác nhận khóa tài khoản' : 'Xác nhận mở khóa tài khoản';
-                const message = isLocking 
-                    ? `Bạn có chắc chắn muốn khóa tài khoản của nhân viên "<strong>${staffName}</strong>"?`
-                    : `Bạn có chắc chắn muốn mở khóa tài khoản cho nhân viên "<strong>${staffName}</strong>"?`;
-                const confirmText = isLocking ? 'Khóa' : 'Mở khóa';
-                const confirmButtonClass = isLocking ? 'btn-danger' : 'btn-primary';
-
-                showConfirmModal({
-                    title: title,
-                    message: message,
-                    confirmText: confirmText,
-                    confirmButtonClass: confirmButtonClass,
-                    onConfirm: async () => {
-                        try {
-                            showLoading();
-                            let response;
-                            if (isLocking) {
-                                // API for locking requires 'id_staff' (e.g., NVI...)
-                                response = await window.authService.put_staff_inactive(staff.id_staff);
-                            } else {
-                                // API for unlocking requires the main key (e.g., -OS...)
-                                response = await window.authService.put_staff(staff.id_staff);
-                            }
-
-                            if (response) {
-                                showAlert(isLocking ? 'Đã khóa tài khoản thành công!' : 'Đã mở khóa tài khoản thành công!', 'success');
-                                staff.status = isLocking ? 'inactive' : 'active';
-                                renderStaffListPaged(currentPage, itemsPerPage);
-                            } else {
-                               showAlert(isLocking ? 'Khóa tài khoản thất bại!' : 'Mở khóa tài khoản thất bại!', 'error');
-                            }
-                        } catch (error) {
-                            console.error('Lỗi khi cập nhật trạng thái:', error);
-                            showAlert('Có lỗi xảy ra khi cập nhật trạng thái.', 'error');
-                        } finally {
-                            hideLoading();
-                        }
+                try {
+                    const response = await window.authService.put_staff(staffId);
+                    if (response && response.message) {
+                        showAlert('Duyệt tài khoản thành công!', 'success');
+                        // Xóa tài khoản đã duyệt khỏi danh sách và render lại
+                        allStaffArr = allStaffArr.filter(s => s.id_staff !== staffId); // Lọc bằng id (-OS...)
+                        renderStaffListPaged(currentPage, itemsPerPage);
+                        updatePaginationUI(currentPage, itemsPerPage, allStaffArr.length);
+                    } else {
+                        showAlert('Duyệt thất bại. ' + (response?.message || ''), 'error');
                     }
-                });
+                } catch (error) {
+                    console.error('Lỗi khi duyệt tài khoản:', error);
+                    showAlert('Có lỗi xảy ra!', 'error');
+                }
                 return;
             }
 
+            // Xóa yêu cầu
             const deleteLink = e.target.closest('a.action-link.delete');
             if (deleteLink) {
                 e.preventDefault();
-                const staffId = deleteLink.dataset.id; // Lấy id (-OS...) từ data-id
+                const staffId = deleteLink.dataset.id; // Lấy id (-OS...)
                 if (!staffId) return;
 
-                const staff = allStaffArr.find(s => s.id === staffId); // Tìm staff bằng id (-OS...)
+                const staff = allStaffArr.find(s => s.id === staffId);
                 const staffName = staff ? staff.name : staffId;
 
                 showConfirmModal({
-                    title: 'Xác nhận xóa nhân viên',
-                    message: `Bạn có chắc chắn muốn xóa nhân viên "<strong>${staffName}</strong>"? Thao tác này sẽ xóa cả nhà hàng liên kết.`,
-                    confirmText: 'Xóa vĩnh viễn',
+                    title: 'Xác nhận xóa yêu cầu',
+                    message: `Bạn có chắc muốn xóa yêu cầu đăng ký của nhân viên "<strong>${staffName}</strong>"?`,
+                    confirmText: 'Xóa',
                     confirmButtonClass: 'btn-danger',
                     onConfirm: async () => {
                         try {
                             showLoading();
                             const response = await window.authService.deleteAccRes(staffId);
                             if (response) {
-                                showAlert('Đã xóa nhân viên và nhà hàng liên kết thành công!', 'success');
+                                showAlert('Đã xóa yêu cầu thành công!', 'success');
                                 allStaffArr = allStaffArr.filter(s => s.id !== staffId); // Lọc bằng id (-OS...)
                                 renderStaffListPaged(currentPage, itemsPerPage);
                                 updatePaginationUI(currentPage, itemsPerPage, allStaffArr.length);
@@ -116,8 +82,8 @@ window.addEventListener('DOMContentLoaded', async () => {
                                showAlert('Xóa thất bại!', 'error');
                             }
                         } catch (error) {
-                            console.error('Lỗi khi xóa nhân viên:', error);
-                            showAlert('Có lỗi xảy ra khi xóa nhân viên.', 'error');
+                            console.error('Lỗi khi xóa yêu cầu:', error);
+                            showAlert('Có lỗi xảy ra khi xóa yêu cầu.', 'error');
                         } finally {
                             hideLoading();
                         }
@@ -144,25 +110,19 @@ function renderStaffListPaged(page, perPage) {
             <td>${staff.phone}</td>
             <td>${staff.restaurant_id || ''}</td>
             <td>${staff.role}</td>
-            <td style="color: ${staff.status === 'active' ? '#198754' : staff.status === 'inactive' ? '#e31616' : '#000'}; font-weight: 600;">
-                ${staff.status}
-            </td>
+            <td>${staff.status}</td>
             <td>
-                ${staff.status === 'active'
-                    ? `<a href="#" class="action-link edit" data-id="${staff.id}" style="color: #1976d2;">
-                         <img src="/svg/icon_action/lock.svg" alt="Khóa" title="Khóa TK" style="width:20px;height:20px;vertical-align:middle;">
-                       </a>`
-                    : `<a href="#" class="action-link edit" data-id="${staff.id}" style="color: #198754;">
-                         <img src="/svg/icon_action/unlock.svg" alt="Mở khóa" title="Mở khóa TK" style="width:20px;height:20px;vertical-align:middle;">
-                       </a>`
-                }
+                <a href="#" class="action-link edit" data-id="${staff.id_staff}" style="color: #1976d2;">
+                    <img src="/svg/icon_action/write.svg" alt="Duyệt" title="Duyệt TK" style="width:20px;height:20px;vertical-align:middle;">
+                </a>
                 <a href="#" class="action-link delete" data-id="${staff.id}" style="color: #e31616;">
-                    <img src="/svg/icon_action/delete.svg" alt="Xóa" title="Xóa" style="width:20px;height:20px;vertical-align:middle;">
+                    <img src="/svg/icon_action/delete.svg" alt="Xóa" title="${staff.id}Xóa yêu cầu" style="width:20px;height:20px;vertical-align:middle;">
                 </a>
             </td>
         </tr>
     `).join('');
 }
+
 function updatePaginationUI(page, perPage, totalItems) {
     const totalPages = Math.ceil(totalItems / perPage) || 1;
     currentPage = parseInt(page, 10);
@@ -209,4 +169,3 @@ window.staffPageChange = function(page, perPage) {
     renderStaffListPaged(currentPage, itemsPerPage);
     updatePaginationUI(currentPage, itemsPerPage, allStaffArr.length);
 };
-

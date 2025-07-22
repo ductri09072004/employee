@@ -267,6 +267,16 @@ function editCategory(categoryId) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtn = document.querySelector('.filter-button');
+    if (filterBtn) {
+        filterBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAlert('Tính năng còn đang trong quá trình phát triển', 'info');
+        });
+    }
+});
+
 // --- Delete Confirmation Modal ---
 function showDeleteConfirmation(categoryId) {
     console.log('showDeleteConfirmation called with categoryId:', categoryId);

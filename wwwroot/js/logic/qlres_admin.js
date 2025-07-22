@@ -39,10 +39,11 @@ function renderStaffListPaged(page, perPage) {
             <td>${staff.ip_wifi}</td>
             <td>${staff.name_restaurant}</td>
             <td>${staff.number_tax}</td>
-            <td>
-                <a href="#" class="action-link show" style="color: #198754;">[Thêm]</a>
-                <a href="#" class="action-link edit" style="color: #1976d2;">[Sửa]</a>
-                <a href="#" class="action-link delete" style="color: #e31616;">[Xóa]</a>
+            <td>           
+                <a href="#" class="action-link edit" style="color: #1976d2;">
+                    <img src="/svg/icon_action/write.svg" alt="Sửa" title="Sửa" style="width:20px;height:20px;vertical-align:middle;">
+                </a>
+              
             </td>
         </tr>
     `).join('');

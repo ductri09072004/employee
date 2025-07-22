@@ -49,6 +49,10 @@
       "PackagePath": "staticwebassets\\js\\api_service\\order.service.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\promotion.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\promotion.service.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\restaurant.service.js",
       "PackagePath": "staticwebassets\\js\\api_service\\restaurant.service.js"
     },
@@ -91,6 +95,14 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\order.js",
       "PackagePath": "staticwebassets\\js\\logic\\order.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\promotion.js",
+      "PackagePath": "staticwebassets\\js\\logic\\promotion.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\ql_dktk.js",
+      "PackagePath": "staticwebassets\\js\\logic\\ql_dktk.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\qlres_admin.js",

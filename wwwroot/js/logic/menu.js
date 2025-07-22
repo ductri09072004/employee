@@ -30,6 +30,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtn = document.querySelector('.filter-button');
+    if (filterBtn) {
+        filterBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAlert('Tính năng còn đang trong quá trình phát triển', 'info');
+        });
+    }
+});
+
 function displayError(message) {
     const tbody = document.getElementById('menu-table-body');
     if (tbody) {
@@ -785,43 +795,30 @@ function showToast(message, type = 'success') {
 
 // --- Delete Menu Item Function ---
 function deleteMenuItem(menuId) {
-    let modal = document.getElementById('delete-menu-modal');
-    if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'delete-menu-modal';
-        modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content" style="max-width:340px;">
-                <span class="close-modal" id="closeDeleteMenuModal">&times;</span>
-                <h2 class="modal-title" style="color:#B24242;">Xác nhận xóa món ăn khum</h2>
-                <div style="margin: 18px 0 24px 0; text-align:center; color:#333; font-size:15px;">Bạn có chắc chắn muốn xóa món ăn này không?</div>
-                <div style="display:flex; gap:12px; width:100%; justify-content:center;">
-                    <button id="cancelDeleteMenuBtn" style="background:#e9ecef; color:#333; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:500;">Hủy</button>
-                    <button id="confirmDeleteMenuBtn" style="background:#B24242; color:#fff; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:600;">Xóa</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
+    const menuItem = allMenuItems.find(item => item.id === menuId);
+    if (!menuItem) {
+        showAlert('Không tìm thấy món ăn để xóa!', 'error');
+        return;
     }
-    modal.style.display = 'block';
-    // Đóng modal
-    document.getElementById('closeDeleteMenuModal').onclick = () => { modal.style.display = 'none'; };
-    document.getElementById('cancelDeleteMenuBtn').onclick = () => { modal.style.display = 'none'; };
-    window.onclick = function(event) {
-        if (event.target === modal) modal.style.display = 'none';
-    };
-    // Xác nhận xóa
-    document.getElementById('confirmDeleteMenuBtn').onclick = async function() {
-        try {
-            await window.menuService.deleteMenu(menuId);
-            modal.style.display = 'none';
-            showAlert('Xóa món ăn thành công!', 'success');
-            if (user && user.restaurant_id) {
-                loadMenuList(user.restaurant_id);
+
+    showConfirmModal({
+        title: 'Xác nhận xóa món ăn',
+        message: `Bạn có chắc chắn muốn xóa món ăn "<strong>${menuItem.name}</strong>"? Hành động này không thể hoàn tác.`,
+        confirmText: 'Xóa',
+        confirmButtonClass: 'btn-danger',
+        onConfirm: async () => {
+            try {
+                showLoading();
+                await window.menuService.deleteMenu(menuId);
+                showAlert('Xóa món ăn thành công!', 'success');
+                if (user && user.restaurant_id) {
+                    loadMenuList(user.restaurant_id);
+                }
+            } catch (err) {
+                showAlert('Có lỗi khi xóa món ăn!', 'error');
+            } finally {
+                hideLoading();
             }
-        } catch (err) {
-            showAlert('Có lỗi khi xóa món ăn!', 'error');
-            modal.style.display = 'none';
         }
-    };
+    });
 }

@@ -226,14 +226,14 @@
             const taxCode = document.getElementById('taxCode').value;
             
             if (!restaurantName || !provinceCode || !districtCode || !wardCode || !streetName || !taxCode) {
-                alert('Vui lòng điền đầy đủ thông tin');
+                showAlert('Vui lòng điền đầy đủ thông tin', 'warning');
                 return;
             }
 
             // Kiểm tra dữ liệu staff tạm thời
             const tempStaffData = localStorage.getItem('temp_staff_data');
             if (!tempStaffData) {
-                alert('Không tìm thấy dữ liệu staff. Vui lòng quay lại trang đăng ký staff.');
+                showAlert('Không tìm thấy dữ liệu staff. Vui lòng quay lại trang đăng ký staff.', 'error');
                 return;
             }
 
@@ -261,7 +261,7 @@
                 console.log('Staff creation response:', staffResponse);
 
                 if (!staffResponse || !staffResponse.id_staff) {
-                    alert('Có lỗi xảy ra khi tạo staff');
+                    showAlert('Có lỗi xảy ra khi tạo staff', 'error');
                     return;
                 }
 
@@ -282,7 +282,7 @@
                 console.log('Restaurant response:', restaurantResponse);
 
                 if (!restaurantResponse || !restaurantResponse.id_restaurant) {
-                    alert('Có lỗi xảy ra khi tạo restaurant');
+                    showAlert('Có lỗi xảy ra khi tạo restaurant', 'error');
                     return;
                 }
 
@@ -309,18 +309,19 @@
                     localStorage.removeItem('temp_staff_form_data');
                     localStorage.removeItem('temp_restaurant_form_data');
                     
-                    alert('Tạo restaurant và liên kết staff thành công!');
+                    showAlert('Tạo tài khoản thành công', 'success');
+                    
                     setTimeout(() => {
                         window.location.replace('/Auth/Login');
                     }, 100);
                 } else {
                     console.log('No success message in response');
-                    alert('Tạo thành công nhưng có lỗi khi liên kết staff với restaurant');
+                    showAlert('Tạo thành công nhưng có lỗi khi liên kết staff với restaurant', 'warning');
                 }
                 
             } catch (error) {
                 console.error('Error in the process:', error);
-                alert('Có lỗi xảy ra trong quá trình tạo. Vui lòng thử lại.');
+                showAlert('Có lỗi xảy ra trong quá trình tạo. Vui lòng thử lại.', 'error');
             }
         });
 
@@ -342,7 +343,7 @@
                     container.style.display = 'block';
                     console.log('Staff info displayed successfully from localStorage'); // Debug log
                 } else {
-                    console.log('No temporary staff data found');
+                    showAlert('Không tìm thấy dữ liệu nhân viên tạm thời', 'warning');
                     document.getElementById('staffInfoContainer').style.display = 'none';
                 }
             } catch (error) {

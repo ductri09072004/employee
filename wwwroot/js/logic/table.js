@@ -317,7 +317,6 @@ function renderTableListPaged(page, perPage) {
                 <td><a href="${qrUrl}" target="_blank">${qrUrl}</a></td>
                 <td>
                     <a href="#" class="action-link upload">[Hiện]</a>
-                    <a href="#" class="action-link">[Chỉnh sửa]</a>
                     <a href="#" class="action-link delete" data-id="${item.id}">[Xóa]</a>
                 </td>
             </tr>
