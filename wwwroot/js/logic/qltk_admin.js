@@ -4,10 +4,32 @@ let currentPage = 1;
 let itemsPerPage = 15;
 
 window.addEventListener('DOMContentLoaded', async () => {
+    // Thêm nút làm mới nếu chưa có
+    if (!document.getElementById('refreshBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'refreshBtn';
+        btn.innerHTML = '<span style="font-size: 14px;">&#x21bb;</span>';
+        btn.style = 'margin: 12px; background: #1976d2; color: #fff; border: none; border-radius: 6px; padding: 8px 18px; font-weight: 600; cursor: pointer;';
+        const table = document.getElementById('staffBody');
+        if (table && table.parentElement) {
+            // Tạo div bọc để căn phải
+            const wrapper = document.createElement('div');
+            wrapper.style = 'text-align: right; width: 100%;';
+            wrapper.appendChild(btn);
+            table.parentElement.insertAdjacentElement('beforebegin', wrapper);
+        }
+    }
+
     showLoading();
     try {
-        const data = await window.authService.getstaff();
-        // data là object, mỗi key là 1 staff
+        let data;
+        const cached = localStorage.getItem('staff_list');
+        if (cached) {
+            data = JSON.parse(cached);
+        } else {
+            data = await window.authService.getstaff();
+            localStorage.setItem('staff_list', JSON.stringify(data));
+        }
         // Dùng Object.entries để lấy key (-OS...) làm id cho mỗi staff
         allStaffArr = Object.entries(data)
             .filter(([key, staff]) => staff && staff.id_staff)
@@ -27,6 +49,30 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (staffBody) staffBody.innerHTML = '<tr><td colspan="6">Lỗi khi tải dữ liệu nhân viên.</td></tr>';
     } finally {
         hideLoading();
+    }
+
+    // Nút làm mới
+    const refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) {
+        refreshBtn.onclick = async function() {
+            showLoading();
+            try {
+                localStorage.removeItem('staff_list');
+                const data = await window.authService.getstaff();
+                localStorage.setItem('staff_list', JSON.stringify(data));
+                allStaffArr = Object.entries(data)
+                    .filter(([key, staff]) => staff && staff.id_staff)
+                    .map(([key, staff]) => ({ ...staff, id: key }));
+                currentPage = 1;
+                renderStaffListPaged(currentPage, itemsPerPage);
+                updatePaginationUI(currentPage, itemsPerPage, allStaffArr.length);
+                showAlert('Đã làm mới dữ liệu!', 'success');
+            } catch (error) {
+                showAlert('Lỗi khi làm mới dữ liệu!', 'error');
+            } finally {
+                hideLoading();
+            }
+        };
     }
 
     // Xử lý sự kiện click cho các nút action

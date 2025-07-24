@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\js\\api_service\\menu.service.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\notification.service.js",
+      "PackagePath": "staticwebassets\\js\\api_service\\notification.service.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\api_service\\order.service.js",
       "PackagePath": "staticwebassets\\js\\api_service\\order.service.js"
     },
@@ -95,6 +99,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\menu.js",
       "PackagePath": "staticwebassets\\js\\logic\\menu.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\noti.js",
+      "PackagePath": "staticwebassets\\js\\logic\\noti.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\order.js",

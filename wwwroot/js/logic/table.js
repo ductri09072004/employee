@@ -316,8 +316,8 @@ function renderTableListPaged(page, perPage) {
 
     tableBody.innerHTML = pageTables.map((item, idx) => {
         const tableId = item.id_table || `B${(startIdx + idx + 1).toString().padStart(2, '0')}`;
-        const qrUrl = `https://jollicow-client-production.up.railway.app/menu/generate?id_table=${tableId}&restaurant_id=${item.restaurant_id || ''}`;
-        return `
+        const qrUrl = `https://jollicow.up.railway.app/menu/generate?id_table=${tableId}&restaurant_id=${item.restaurant_id || ''}`;
+        return ` 
             <tr>
                 <td>${(startIdx + idx + 1).toString().padStart(2, '0')}</td>
                 <td>${tableId}</td>
