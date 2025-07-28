@@ -1,0 +1,278 @@
+@{
+    ViewData["Title"] = "Giới Thiệu - JolliServe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "Organization",
+    "name": "JolliServe",
+    "description": "Công ty cung cấp giải pháp quản lý nhà hàng toàn diện",
+    "url": "https://employee.jollicow.store/",
+    "logo": "https://employee.jollicow.store/png/logo_web_admin.png",
+    "contactPoint": {
+        "@@type": "ContactPoint",
+        "telephone": "+84-389-105-492",
+        "contactType": "customer service",
+        "areaServed": "VN",
+        "availableLanguage": "Vietnamese"
+    },
+    "sameAs": [
+        "https://employee.jollicow.store/"
+    ]
+}
+</script>
+
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+        margin: -24px -24px 40px -24px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .about-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .about-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .about-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .about-section {
+        margin-bottom: 40px;
+    }
+
+    .about-section h2 {
+        color: #EB455F;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #EB455F;
+        padding-bottom: 10px;
+    }
+
+    .about-section p {
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .benefits-list {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+    }
+
+    .benefits-list h3 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.4rem;
+    }
+
+    .benefits-list ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .benefits-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+        color: #555;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .benefits-list li:before {
+        content: "✓";
+        color: #EB455F;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+        font-size: 1.2rem;
+    }
+
+    .benefits-list li:last-child {
+        border-bottom: none;
+    }
+
+    .team-section {
+        background: #f8f9fa;
+        padding: 40px 20px;
+        margin: 40px -24px;
+        text-align: center;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .team-member {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .team-member h4 {
+        color: #EB455F;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+
+    .team-member p {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .contact-info {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-top: 30px;
+    }
+
+    .contact-info h3 {
+        color: #EB455F;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .contact-item i {
+        color: #EB455F;
+        margin-right: 15px;
+        font-size: 1.2rem;
+        width: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .about-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .about-hero p {
+            font-size: 1rem;
+        }
+        
+        .team-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="about-hero">
+    <h1>Về JolliServe</h1>
+    <p>Chúng tôi là đối tác tin cậy của hàng trăm nhà hàng trong việc số hóa và tối ưu hóa quy trình quản lý</p>
+</div>
+
+<div class="about-content">
+    <div class="about-section">
+        <h2>Chúng Tôi Là Ai?</h2>
+        <p>JolliServe được thành lập với sứ mệnh mang đến giải pháp quản lý nhà hàng toàn diện, hiện đại và dễ sử dụng. Chúng tôi hiểu rằng mỗi nhà hàng có những nhu cầu riêng biệt, và đó là lý do tại sao chúng tôi phát triển một hệ thống linh hoạt có thể thích ứng với mọi quy mô kinh doanh.</p>
+        
+        <p>Từ những nhà hàng nhỏ gia đình đến các chuỗi nhà hàng lớn, JolliServe đã và đang đồng hành cùng họ trên hành trình số hóa và tối ưu hóa hoạt động kinh doanh.</p>
+    </div>
+
+    <div class="benefits-list">
+        <h3>Lợi Ích Khi Sử Dụng JolliServe</h3>
+        <ul>
+            <li><strong>Tăng hiệu quả quản lý:</strong> Giảm 50% thời gian xử lý đơn hàng và quản lý nhân viên</li>
+            <li><strong>Giảm thời gian chờ đợi:</strong> QR code đặt món giúp khách hàng đặt món nhanh chóng</li>
+            <li><strong>Tăng doanh thu:</strong> Quản lý khuyến mãi hiệu quả và báo cáo doanh thu chi tiết</li>
+            <li><strong>Tiết kiệm chi phí:</strong> Giảm thiểu lãng phí và tối ưu hóa nguồn lực</li>
+            <li><strong>Bảo mật dữ liệu:</strong> Hệ thống bảo mật cao, đảm bảo an toàn thông tin</li>
+            <li><strong>Hỗ trợ 24/7:</strong> Đội ngũ hỗ trợ kỹ thuật luôn sẵn sàng hỗ trợ</li>
+        </ul>
+    </div>
+
+    <div class="about-section">
+        <h2>Sứ Mệnh</h2>
+        <p>Chúng tôi cam kết mang đến những giải pháp công nghệ tiên tiến nhất để giúp các nhà hàng Việt Nam phát triển bền vững trong thời đại số. Mỗi tính năng của JolliServe đều được thiết kế dựa trên nhu cầu thực tế và phản hồi từ khách hàng.</p>
+    </div>
+
+    <div class="about-section">
+        <h2>Tầm Nhìn</h2>
+        <p>JolliServe mong muốn trở thành nền tảng quản lý nhà hàng hàng đầu tại Việt Nam, đồng thời mở rộng ra thị trường Đông Nam Á. Chúng tôi tin rằng công nghệ có thể thay đổi cách thức hoạt động của ngành F&B, mang lại trải nghiệm tốt hơn cho cả chủ nhà hàng và khách hàng.</p>
+    </div>
+
+    <div class="about-section">
+        <h2>Giá Trị Cốt Lõi</h2>
+        <p><strong>Đổi mới:</strong> Luôn cập nhật và cải tiến sản phẩm theo xu hướng công nghệ mới nhất.</p>
+        <p><strong>Tin cậy:</strong> Cam kết cung cấp dịch vụ ổn định, bảo mật và hỗ trợ khách hàng tận tâm.</p>
+        <p><strong>Đơn giản:</strong> Thiết kế giao diện thân thiện, dễ sử dụng cho mọi đối tượng người dùng.</p>
+        <p><strong>Hiệu quả:</strong> Tập trung vào việc tối ưu hóa quy trình, tiết kiệm thời gian và chi phí.</p>
+    </div>
+</div>
+
+<div class="team-section">
+    <h2>Đội Ngũ Hỗ Trợ</h2>
+    <div class="team-grid">
+        <div class="team-member">
+            <h4>Anh Trí Công Nghệ</h4>
+            <p>Hỗ trợ kỹ thuật chuyên môn</p>
+            <p>Hotline: 0389105492</p>
+        </div>
+        <div class="team-member">
+            <h4>Đội Ngũ Phát Triển</h4>
+            <p>Phát triển và cải tiến sản phẩm</p>
+            <p>Liên tục cập nhật tính năng mới</p>
+        </div>
+        <div class="team-member">
+            <h4>Đội Ngũ Hỗ Trợ</h4>
+            <p>Hỗ trợ khách hàng 24/7</p>
+            <p>Giải đáp mọi thắc mắc</p>
+        </div>
+    </div>
+</div>
+
+<div class="about-content">
+    <div class="contact-info">
+        <h3>Thông Tin Liên Hệ</h3>
+        <div class="contact-item">
+            <i>📧</i>
+            <span>Email: support@jollicow.store</span>
+        </div>
+        <div class="contact-item">
+            <i>📞</i>
+            <span>Hotline: 0389105492 (A. Trí công nghệ)</span>
+        </div>
+        <div class="contact-item">
+            <i>🌐</i>
+            <span>Website: https://employee.jollicow.store</span>
+        </div>
+        <div class="contact-item">
+            <i>⏰</i>
+            <span>Thời gian hỗ trợ: 24/7</span>
+        </div>
+    </div>
+</div> 
