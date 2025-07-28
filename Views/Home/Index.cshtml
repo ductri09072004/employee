@@ -1,7 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Dashboard - Hệ Thống Quản Lý Nhà Hàng JolliServe";
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
+
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "WebPage",
+    "name": "Dashboard Quản Lý Nhà Hàng",
+    "description": "Bảng điều khiển quản lý nhà hàng - Theo dõi doanh thu, đơn hàng, menu và nhân viên",
+    "url": "https://employee.jollicow.store/Home",
+    "isPartOf": {
+        "@@type": "WebApplication",
+        "name": "JolliServe - Hệ Thống Quản Lý Nhà Hàng"
+    }
+}
+</script>
 
 <style>
     .dashboard-grid {

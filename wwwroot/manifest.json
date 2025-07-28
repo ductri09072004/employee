@@ -1,0 +1,30 @@
+{
+  "name": "JolliServe - Hệ Thống Quản Lý Nhà Hàng",
+  "short_name": "JolliServe",
+  "description": "Giải pháp quản lý nhà hàng toàn diện - Quản lý menu, đơn hàng, bàn ăn và nhân viên hiệu quả",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#EB455F",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/png/logo_web_admin.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/png/logo_web_admin.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/png/logo_web_admin.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "vi",
+  "dir": "ltr"
+} 

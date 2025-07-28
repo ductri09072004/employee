@@ -1,7 +1,30 @@
 @{
     Layout = "~/Views/Shared/Auth_Layout.cshtml";
-    ViewData["Title"] = "Login Page";
+    ViewData["Title"] = "Đăng Nhập - Hệ Thống Quản Lý Nhà Hàng JolliServe";
 }
+
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "WebApplication",
+    "name": "JolliServe - Hệ Thống Quản Lý Nhà Hàng",
+    "description": "Giải pháp quản lý nhà hàng toàn diện - Quản lý menu, đơn hàng, bàn ăn và nhân viên hiệu quả",
+    "url": "https://employee.jollicow.store/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "VND"
+    },
+    "provider": {
+        "@@type": "Organization",
+        "name": "JolliServe",
+        "url": "https://employee.jollicow.store/"
+    }
+}
+</script>
 
 <style>
     .input-clean {

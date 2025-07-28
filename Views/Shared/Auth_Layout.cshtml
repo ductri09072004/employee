@@ -2,12 +2,41 @@
         <html lang="vi">
         <head>
             <meta charset="utf-8" />
-            <title>@ViewData["Title"] - JolliServe</title>
+            <title>@ViewData["Title"] - Hệ Thống Quản Lý Nhà Hàng JolliServe</title>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
+            
+            <!-- SEO Meta Tags -->
+            <meta name="description" content="Hệ thống quản lý nhà hàng toàn diện JolliServe - Giải pháp quản lý menu, đơn hàng, bàn ăn và nhân viên hiệu quả. Đăng nhập để bắt đầu quản lý nhà hàng của bạn." />
+            <meta name="keywords" content="quản lý nhà hàng, hệ thống nhà hàng, quản lý menu, quản lý đơn hàng, quản lý bàn ăn, nhà hàng, restaurant management, JolliServe" />
+            <meta name="author" content="JolliServe" />
+            <meta name="robots" content="index, follow" />
+            
+            <!-- Open Graph Meta Tags -->
+            <meta property="og:title" content="Hệ Thống Quản Lý Nhà Hàng JolliServe" />
+            <meta property="og:description" content="Giải pháp quản lý nhà hàng toàn diện - Quản lý menu, đơn hàng, bàn ăn và nhân viên hiệu quả" />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://employee.jollicow.store/" />
+            <meta property="og:site_name" content="JolliServe" />
+            
+            <!-- Twitter Card Meta Tags -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content="Hệ Thống Quản Lý Nhà Hàng JolliServe" />
+            <meta name="twitter:description" content="Giải pháp quản lý nhà hàng toàn diện - Quản lý menu, đơn hàng, bàn ăn và nhân viên hiệu quả" />
+            
+            <!-- Canonical URL -->
+            <link rel="canonical" href="https://employee.jollicow.store/" />
+            
+            <!-- PWA Manifest -->
+            <link rel="manifest" href="/manifest.json" />
+            
+            <!-- Favicon -->
             <link rel="icon" type="image/x-icon" href="~/logo_web_admin.ico" />
             <link rel="icon" type="image/png" sizes="32x32" href="~/png/logo_web_admin.png" />
             <link rel="apple-touch-icon" href="~/png/logo_web_admin.png" />
             <link rel="stylesheet" href="~/css/site.css" />
+            
+            <!-- Google Analytics -->
+            @await Html.PartialAsync("_GoogleAnalytics")
         <!-- Không thay đổi phần <head> -->
         <style>
             /* Ẩn thanh cuộn cho tất cả các trình duyệt */

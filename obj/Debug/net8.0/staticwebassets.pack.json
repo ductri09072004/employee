@@ -377,6 +377,18 @@
       "PackagePath": "staticwebassets\\logo_web_admin.ico"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\manifest.json",
+      "PackagePath": "staticwebassets\\manifest.json"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\robots.txt",
+      "PackagePath": "staticwebassets\\robots.txt"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\sitemap.xml",
+      "PackagePath": "staticwebassets\\sitemap.xml"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\add.svg",
       "PackagePath": "staticwebassets\\svg\\icon_action\\add.svg"
     },
