@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "fZJ/zOe+uvFKUpuVBJGcqNkIIsWFepm9n3isAA/49dM=",
+  "Hash": "bmnJOMuWubL4jOTiOgRhUU48HZEja2tks30H02ZwnQ0=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -148,6 +148,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\google9ec17f9b148abed0.html",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "google9ec17f9b148abed0.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\google9ec17f9b148abed0.html"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\jpg\\background.jpg",

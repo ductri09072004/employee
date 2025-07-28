@@ -25,16 +25,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Landing()
-    {
-        return View();
-    }
-
-    public IActionResult About()
-    {
-        return View();
-    }
-
     public IActionResult QL_Order()
     {
         return View();
