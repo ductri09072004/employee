@@ -6,10 +6,12 @@ Sitemap: https://employee.jollicow.store/sitemap.xml
 
 # Disallow admin areas that shouldn't be indexed
 Disallow: /Admin/
-Disallow: /Home/
 Disallow: /api/
 
 # Allow important pages
+Allow: /Home/
+Allow: /Home/Landing
+Allow: /Home/About
 Allow: /Auth/Login
 Allow: /Auth/Create_Restaurant
 Allow: /Auth/Create_Staff
