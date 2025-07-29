@@ -101,6 +101,14 @@
       "PackagePath": "staticwebassets\\js\\logic\\categories.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\create_res.js",
+      "PackagePath": "staticwebassets\\js\\logic\\create_res.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\create_staff.js",
+      "PackagePath": "staticwebassets\\js\\logic\\create_staff.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\history.js",
       "PackagePath": "staticwebassets\\js\\logic\\history.js"
     },

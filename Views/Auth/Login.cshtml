@@ -86,12 +86,19 @@
         <div id="passwordError" class="error-message"></div>
     </div>
 
+    <!-- Quên mật khẩu -->
+    <div style="text-align: right; margin-bottom: 10px;">
+        <a asp-action="Reset_Acc" style="color: #000; font-weight: w400; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#666'" onmouseout="this.style.color='#000'">
+            Quên mật khẩu?
+        </a>
+    </div>
+
     <!-- Nút -->
     <button type="submit" class="btn-submit" style="width: 100%; border-radius: 8px;">Đăng nhập</button>
     <p style="margin-bottom: 60px; color: #000;">
-        Don't have account?
-        <a asp-action="Create_Staff" style="color: #000; text-decoration: underline;">
-            Register
+        Chưa có tài khoản?
+        <a asp-action="Create_Staff" style="color: #000; font-weight: bold; text-decoration: none;transition: color 0.3s ease;" onmouseover="this.style.color='#666'" onmouseout="this.style.color='#000'">
+            Đăng kí
         </a>
     </p>
 </form>

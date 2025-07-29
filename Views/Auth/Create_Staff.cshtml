@@ -33,7 +33,7 @@
 
 <!-- Tiêu đề -->
 <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 20px;">
-    <p style="color: #EB455F; font-weight: 700; font-size: 20px; margin: 0;">Đăng ký nhà hàng</p>
+    <p style="color: #EB455F; font-weight: 700; font-size: 20px; margin: 0;">Đăng ký tài khoản</p>
     <p style="color: #4A4A4A; font-weight: 400; font-size: 12px; margin: 0;">Tinh hoa ẩm thực – Phục vụ hoàn hảo</p>
 </div>
 
@@ -68,115 +68,16 @@
     </div>
 
     <!-- Nút -->
-    <button type="submit" class="btn-submit" style="width: 100%; border-radius: 8px; margin-bottom: 60px">Tiếp theo</button>
+    <button type="submit" class="btn-submit" style="width: 100%; border-radius: 8px; margin-bottom: 20px">Tiếp theo</button>
+    
+    <p style="text-align: left; margin-bottom: 60px; color: #000;">
+        Đã có tài khoản? <a asp-action="Login" style="color: #000; font-weight: bold;text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#666'" onmouseout="this.style.color='#000'">Đăng nhập</a>
+    </p>
 </form>
 
 @section Scripts {
+    <script src="~/js/common/alert.component.js"></script>
     <script src="~/js/config/api.config.js"></script>
     <script src="~/js/api_service/auth.service.js"></script>
-    <script>
-        console.log('Script loaded'); // Debug log to verify script loading
-
-        // Hàm lưu dữ liệu form vào localStorage
-        function saveFormData() {
-            const formData = {
-                lastName: document.getElementById('lastName').value,
-                firstName: document.getElementById('firstName').value,
-                phone: document.getElementById('phone').value,
-                password_hash: document.getElementById('passwordInput').value
-            };
-            localStorage.setItem('temp_staff_form_data', JSON.stringify(formData));
-        }
-
-        // Hàm khôi phục dữ liệu form từ localStorage
-        function restoreFormData() {
-            console.log('Attempting to restore form data...'); // Debug log
-            const savedData = localStorage.getItem('temp_staff_form_data');
-            console.log('Saved data from localStorage:', savedData); // Debug log
-            
-            if (savedData) {
-                try {
-                    const formData = JSON.parse(savedData);
-                    console.log('Parsed form data:', formData); // Debug log
-                    
-                    document.getElementById('lastName').value = formData.lastName || '';
-                    document.getElementById('firstName').value = formData.firstName || '';
-                    document.getElementById('phone').value = formData.phone || '';
-                    document.getElementById('passwordInput').value = formData.password_hash || '';
-                    
-                    console.log('Form data restored successfully from localStorage');
-                    console.log('Current form values:', {
-                        lastName: document.getElementById('lastName').value,
-                        firstName: document.getElementById('firstName').value,
-                        phone: document.getElementById('phone').value,
-                        password_hash: document.getElementById('passwordInput').value
-                    });
-                } catch (error) {
-                    console.error('Error parsing saved form data:', error);
-                }
-            } else {
-                console.log('No saved form data found in localStorage');
-            }
-        }
-
-        // Thêm event listeners để lưu dữ liệu khi user nhập
-        document.getElementById('lastName').addEventListener('input', saveFormData);
-        document.getElementById('firstName').addEventListener('input', saveFormData);
-        document.getElementById('phone').addEventListener('input', saveFormData);
-        document.getElementById('passwordInput').addEventListener('input', saveFormData);
-
-        function togglePassword() {
-            const passwordInput = document.getElementById('passwordInput');
-            const toggleIcon = document.getElementById('toggleIcon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.src = "/svg/cart.svg";
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.src = "/svg/hidden.svg";
-            }
-        }
-
-        document.getElementById('staffForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            console.log('Form submitted'); // Debug log
-            
-            const lastName = document.getElementById('lastName').value;
-            const firstName = document.getElementById('firstName').value;
-            const phone = document.getElementById('phone').value;
-            const password_hash = document.getElementById('passwordInput').value;
-            
-            // Validate form
-            if (!lastName || !firstName || !phone || !password_hash) {
-                alert('Vui lòng điền đầy đủ thông tin');
-                return;
-            }
-            
-            const name = lastName + ' ' + firstName;
-            
-            console.log('Saving staff data temporarily:', { name, phone, password_hash }); // Debug log
-            
-            // Lưu dữ liệu staff tạm thời vào localStorage
-            localStorage.setItem('temp_staff_data', JSON.stringify({
-                name: name,
-                phone: phone,
-                password_hash: password_hash
-            }));
-            
-            // KHÔNG xóa dữ liệu form tạm thời ở đây
-            // Chỉ xóa khi thực sự tạo thành công ở trang restaurant
-            
-            console.log('Staff data saved to localStorage, redirecting to Create_Restaurant page...'); // Debug log
-                    setTimeout(() => {
-                        // Sử dụng đường dẫn đầy đủ
-                        window.location.replace('/Auth/Create_Restaurant');
-                    }, 100);
-        });
-
-        // Khôi phục dữ liệu form khi trang được load
-        document.addEventListener('DOMContentLoaded', function() {
-            restoreFormData();
-        });
-    </script>
+    <script src="~/js/logic/create_staff.js"></script>
 }

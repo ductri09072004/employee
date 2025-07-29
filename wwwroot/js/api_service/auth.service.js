@@ -156,6 +156,44 @@ const AUTH_API = {
             throw error;
         }
     },
+
+    async reset_acc(phone,newPassword) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/staffs/reset`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    newPassword: newPassword,
+                })
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Reset pass error:', error);
+            throw error;
+        }
+    },
+
+    async checkPhone(phone) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/staffs/checkPhone/${phone}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Check phone error:', error);
+            throw error;
+        }
+    },
+
 };
 
 // Export service

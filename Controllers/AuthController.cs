@@ -97,6 +97,11 @@ public class AuthController : Controller
             return StatusCode(500);
         }
     }
+    
+    public IActionResult Reset_Acc()
+    {
+        return View();
+    }
 }
 
 public class StaffData

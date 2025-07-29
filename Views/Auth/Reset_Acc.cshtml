@@ -1,0 +1,83 @@
+@{
+    Layout = "~/Views/Shared/Auth_Layout.cshtml";
+    ViewData["Title"] = "Reset Password";
+}
+
+<style>
+    .input-clean {
+        width: 100%;
+        border-radius: 6px;
+        padding: 6px 16px;
+        border: 1px solid #CBCBCB;
+        box-shadow: none;
+        outline: none;
+        color: #000;
+    }
+
+    .input-clean::placeholder {
+        color: #CBCBCB;
+        opacity: 1;
+    }
+
+    .btn-submit {
+        width: 100%;
+        border-radius: 6px;
+        padding: 10px;
+        color: #fff;
+        background-color: #EB455F;
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+    }
+</style>
+
+<!-- Tiêu đề -->
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 20px;">
+    <p style="color: #EB455F; font-weight: 700; font-size: 20px; margin: 0;">Đặt lại mật khẩu</p>
+    <p style="color: #4A4A4A; font-weight: 400; font-size: 12px; margin: 0;">Nhập số điện thoại và mật khẩu mới</p>
+</div>
+
+<form id="resetPasswordForm" style="margin-top: 20px; max-width: 400px; width: 100%; margin-left: auto; margin-right: auto;">
+    <!-- Số điện thoại -->
+    <div class="form-group" style="margin-bottom: 15px;">
+        <p style="margin-bottom: 5px;">Số điện thoại</p>
+        <input type="text" id="phone" placeholder="Sô điện thoại" class="input-clean" style="width: 100%; box-sizing: border-box;" />
+        <p style="font-size: 12px; color: #666; margin-top: 5px;">Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, số và ký tự đặc biệt</p>
+    </div>
+
+    <!-- Mật khẩu mới -->
+    <div class="form-group" style="position: relative; margin-bottom: 15px;">
+        <p style="margin-bottom: 5px;">Mật khẩu mới</p>
+        <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="newPassword" placeholder="Mật khẩu mới" class="input-clean" style="width: 100%; box-sizing: border-box; padding-right: 40px;" />
+            <span onclick="togglePassword()" style="position: absolute; right: 12px; cursor: pointer; display: flex; align-items: center; height: 100%;">
+                <img src="~/svg/sidebar/hidden.svg" alt="Toggle password visibility" id="toggleIcon" style="width: 20px; height: 20px;" />
+            </span>
+        </div>
+    </div>
+
+    <!-- Xác nhận mật khẩu -->
+    <div class="form-group" style="position: relative; margin-bottom: 20px;">
+        <p style="margin-bottom: 5px;">Xác nhận mật khẩu</p>
+        <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" class="input-clean" style="width: 100%; box-sizing: border-box; padding-right: 40px;" />
+            <span onclick="toggleConfirmPassword()" style="position: absolute; right: 12px; cursor: pointer; display: flex; align-items: center; height: 100%;">
+                <img src="~/svg/sidebar/hidden.svg" alt="Toggle password visibility" id="toggleConfirmIcon" style="width: 20px; height: 20px;" />
+            </span>
+        </div>
+    </div>
+
+    <!-- Nút -->
+    <button type="submit" class="btn-submit" style="width: 100%; border-radius: 8px; margin-bottom: 20px">Đặt lại mật khẩu</button>
+    
+    <p style="text-align: left; margin-bottom: 60px; color: #000;">
+        Đã có tài khoản? <a asp-action="Login" style="color: #000; font-weight: bold; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#666'" onmouseout="this.style.color='#000'">Đăng nhập</a>
+    </p>
+</form>
+
+@section Scripts {
+    <script src="~/js/common/alert.component.js"></script>
+    <script src="~/js/config/api.config.js"></script>
+    <script src="~/js/api_service/auth.service.js"></script>
+    <script src="~/js/logic/reset_password.js"></script>
+}
