@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\JOLICOW.bundle.scp.css"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\.htaccess",
+      "PackagePath": "staticwebassets\\.htaccess"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\pagination.css",
       "PackagePath": "staticwebassets\\css\\pagination.css"
     },
@@ -19,6 +23,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\css\\topping-modal.css",
       "PackagePath": "staticwebassets\\css\\topping-modal.css"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\favicon-test.html",
+      "PackagePath": "staticwebassets\\favicon-test.html"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\favicon.ico",
@@ -503,6 +511,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar_admin\\setting_icon.svg",
       "PackagePath": "staticwebassets\\svg\\sidebar_admin\\setting_icon.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\web.config",
+      "PackagePath": "staticwebassets\\web.config"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.JOLICOW.Microsoft.AspNetCore.StaticWebAssets.props",
