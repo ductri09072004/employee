@@ -117,6 +117,10 @@
       "PackagePath": "staticwebassets\\js\\logic\\index.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\login.js",
+      "PackagePath": "staticwebassets\\js\\logic\\login.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\menu.js",
       "PackagePath": "staticwebassets\\js\\logic\\menu.js"
     },
@@ -143,6 +147,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\qltk_admin.js",
       "PackagePath": "staticwebassets\\js\\logic\\qltk_admin.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\reset_password.js",
+      "PackagePath": "staticwebassets\\js\\logic\\reset_password.js"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\setting.js",

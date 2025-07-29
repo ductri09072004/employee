@@ -145,11 +145,9 @@ async function handleFormSubmit(e) {
         // Sử dụng authService để reset password
         const response = await window.authService.reset_acc(phone, newPassword);
         
-        if (response.success) {
-            showSuccess('Đặt lại mật khẩu thành công!');
+        if (response) {
+            showSuccess('Đã đặt lại mật khẩu thành công');
             clearFormData();
-            
-            // Chuyển hướng về trang login sau 2 giây
             setTimeout(() => {
                 window.location.href = '/Auth/Login';
             }, 2000);
