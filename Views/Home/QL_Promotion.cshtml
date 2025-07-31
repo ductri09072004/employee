@@ -4,6 +4,7 @@
 }
 
 <style>
+/* Modal popup thêm promotion - đồng bộ với topping modal */
 #add-promotion-modal {
     display: none;
     position: fixed;
@@ -16,94 +17,136 @@
 }
 #add-promotion-modal .modal-content {
     background: #fff;
-    padding: 12px 10px 10px 10px;
-    border-radius: 9px;
-    min-width: 200px;
-    max-width: 350px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+    max-width: 400px;
+    padding: 36px 36px 28px 36px;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px rgba(66,103,178,0.13);
     position: relative;
     margin: auto;
     transition: box-shadow 0.2s, transform 0.2s;
 }
 #add-promotion-modal h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 17px;
-    color: #198754;
+    font-size: 24px;
+    color: #4267B2;
+    margin-bottom: 22px;
     text-align: center;
     font-weight: bold;
     letter-spacing: 0.5px;
 }
 #add-promotion-modal label {
+    font-size: 15px;
+    margin-bottom: 8px;
     font-weight: 500;
     color: #333;
-    font-size: 14px;
 }
 #add-promotion-modal input, #add-promotion-modal select {
     width: 100%;
-    padding: 5px 8px;
-    border: 1px solid #d0d0d0;
-    border-radius: 5px;
-    margin-top: 2px;
-    margin-bottom: 7px;
-    font-size: 14px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.5px solid #e9ecef;
+    font-size: 15px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
     background: #fafbfc;
     transition: border 0.2s;
 }
 #add-promotion-modal input:focus, #add-promotion-modal select:focus {
-    border: 1.5px solid #198754;
+    border: 1.5px solid #4267B2;
     outline: none;
 }
 #add-promotion-modal .modal-actions {
-    text-align: right;
-    margin-top: 7px;
+    text-align: center;
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
 }
 #add-promotion-modal button[type="submit"] {
-    background: #198754;
+    background: linear-gradient(90deg, #4267B2 60%, #3498db 100%);
     color: #fff;
     border: none;
-    padding: 5px 14px;
-    border-radius: 5px;
-    font-weight: bold;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 17px;
     cursor: pointer;
-    margin-left: 6px;
-    font-size: 14px;
-    transition: background 0.2s;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(66,103,178,0.10);
+    transition: background 0.2s, box-shadow 0.2s;
 }
 #add-promotion-modal button[type="submit"]:hover {
-    background: #145c32;
+    background: linear-gradient(90deg, #3498db 60%, #4267B2 100%);
+    box-shadow: 0 4px 16px rgba(66,103,178,0.13);
 }
 #add-promotion-modal button[type="button"] {
-    background: #e0e0e0;
+    background: #e9ecef;
     color: #333;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    font-size: 14px;
     transition: background 0.2s;
 }
 #add-promotion-modal button[type="button"]:hover {
-    background: #bdbdbd;
+    background: #d0d7de;
 }
 #add-promotion-modal .close-x {
     position: absolute;
-    top: 8px; right: 10px;
-    font-size: 18px;
-    color: #888;
+    right: 18px;
+    top: 12px;
+    font-size: 26px;
+    color: #bbb;
     cursor: pointer;
     font-weight: bold;
     transition: color 0.2s;
 }
 #add-promotion-modal .close-x:hover {
-    color: #e31616;
+    color: #e74c3c;
+}
+@@media (max-width: 600px) {
+    #add-promotion-modal .modal-content {
+        max-width: 98vw;
+        padding: 18px 6vw 18px 6vw;
+    }
+}
+
+/* CSS cho nút thêm khuyến mãi */
+#openAddPromotionModal:hover {
+    background-color: #0056b3 !important;
+    border-color: #0056b3 !important;
+}
+
+/* CSS cho nút reset */
+.reset-promotion-button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    margin-left: 10px;
+}
+
+.reset-promotion-button:hover {
+    background-color: #0056b3;
+}
+
+.reset-promotion-button img {
+    filter: brightness(0) invert(1);
 }
 </style>
 
 <div class="history-container">
-    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 16px;">
-        <button id="openAddPromotionModal" style="background: #198754; color: #fff; border: none;margin: 12px; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer;">+ Thêm khuyến mãi</button>
+    <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 20px;">
+        <button id="openAddPromotionModal" style="background-color: #007bff; color: #fff; border: 1px solid #007bff; border-radius: 4px; padding: 8px 15px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background-color 0.2s, border-color 0.2s;">+ Thêm khuyến mãi</button>
+        <button class="reset-promotion-button" id="refreshBtn" onclick="window.refreshPromotionData()">
+            <img src="~/svg/icon_action/reset.svg" alt="Reset" style="width: 16px; height: 16px;">
+        </button>
     </div>
     <div class="history-table-container">
         <!-- Components table  -->
@@ -134,13 +177,13 @@
       <label>Ngày kết thúc:</label>
       <input type="datetime-local" id="add-date-end" required>
       <label>Giảm tối đa (VNĐ):</label>
-      <input type="number" id="add-max-discount" required min="0">
+      <input type="number" id="add-max-discount" required min="0" max="99999999">
       <label>Giá trị đơn tối thiểu (VNĐ):</label>
-      <input type="number" id="add-min-order-value" required min="0">
+      <input type="number" id="add-min-order-value" required min="0" max="99999999">
       <label>Phần trăm giảm (%):</label>
-      <input type="number" id="add-percent" required min="0" max="100">
+      <input type="number" id="add-percent" required min="1" max="100">
       <label>Số lượng:</label>
-      <input type="number" id="add-quantity" required min="1">
+      <input type="number" id="add-quantity" required min="1" max="9999">
       <label>Trạng thái:</label>
       <select id="add-status" required>
         <option value="active">active</option>

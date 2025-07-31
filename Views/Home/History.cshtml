@@ -104,12 +104,50 @@
         color: #e74c3c;
         font-weight: 600;
     }
+
+    /* CSS cho nút reset dữ liệu */
+    .top-actions {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .reset-button {
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .reset-button:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .reset-icon {
+        font-size: 14px;
+    }
+
+    .reset-button img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
+    }
 </style>
 
 <div class="history-container">
-    <div class="filter-button-container">
-        <button class="filter-button">
-            <span class="filter-icon">+</span> Thêm bộ lọc
+    <div class="top-actions">
+        <button class="reset-button" onclick="window.refreshOrderHistory()">
+            <img src="~/svg/icon_action/reset.svg" alt="Reset" width="16" height="16">
         </button>
     </div>
 
@@ -117,8 +155,8 @@
         <!-- Components table  -->
            @await Component.InvokeAsync("Table", new { 
             columnNames = new List<string> { "STT", "Mã đơn", "Bàn số",
-                "Giờ đặt", "Tổng tiền", "Phương thức thanh toán", "Trạng thái",
-                "Ghi chú", "Duyệt đơn", "Chi tiết đơn" 
+                "Giờ đặt", "Tổng tiền", "PT thanh toán", "Trạng thái",
+                 "Chi tiết đơn" 
                 }, 
             tableBodyId = "orderHistoryBody" 
         })

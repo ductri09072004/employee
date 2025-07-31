@@ -4,10 +4,10 @@ function togglePassword() {
     var icon = document.getElementById("toggleIcon");
     if (input.type === "password") {
         input.type = "text";
-        icon.src = "/svg/cart.svg";
+        icon.src = "/svg/sidebar/eye-slash.svg";
     } else {
         input.type = "password";
-        icon.src = "/svg/hidden.svg";
+        icon.src = "/svg/sidebar/hidden.svg";
     }
 }
 
@@ -116,6 +116,100 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         document.head.appendChild(style);
+    }
+    
+    // Thêm validation cho ô nhập số điện thoại
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        // Giới hạn chỉ nhập số và tối đa 10 ký tự
+        phoneInput.addEventListener('input', function(e) {
+            // Loại bỏ tất cả ký tự không phải số
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Giới hạn tối đa 10 chữ số
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            
+            // Cập nhật giá trị input
+            e.target.value = value;
+        });
+        
+        // Ngăn chặn paste nội dung không phải số
+        phoneInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+            const numericValue = pastedText.replace(/\D/g, '');
+            
+            if (numericValue.length > 10) {
+                this.value = numericValue.substring(0, 10);
+            } else {
+                this.value = numericValue;
+            }
+        });
+        
+        // Ngăn chặn nhập ký tự không phải số từ bàn phím
+        phoneInput.addEventListener('keypress', function(e) {
+            const charCode = e.which ? e.which : e.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    // Thêm validation cho ô nhập mật khẩu
+    const passwordInput = document.getElementById('passwordInput');
+    if (passwordInput) {
+        let lastLength = 0; // Theo dõi độ dài trước đó
+        
+        // Giới hạn tối đa 20 ký tự
+        passwordInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Giới hạn tối đa 20 ký tự
+            if (value.length > 20) {
+                value = value.substring(0, 20);
+                e.target.value = value;
+            }
+            
+            // Hiển thị thông báo khi đạt 20 ký tự
+            if (value.length === 20 && lastLength < 20) {
+                showAlert('Đã đạt giới hạn tối đa 20 ký tự', 'error');
+            }
+            
+            lastLength = value.length;
+        });
+        
+        // Ngăn chặn paste quá 20 ký tự
+        passwordInput.addEventListener('paste', function(e) {
+            const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+            const currentValue = this.value;
+            const selectionStart = this.selectionStart;
+            const selectionEnd = this.selectionEnd;
+            
+            // Tính toán độ dài sau khi paste
+            const newValue = currentValue.substring(0, selectionStart) + 
+                           pastedText + 
+                           currentValue.substring(selectionEnd);
+            
+            if (newValue.length > 20) {
+                e.preventDefault();
+                // Chỉ paste phần có thể vừa trong giới hạn
+                const maxPasteLength = 20 - (currentValue.length - (selectionEnd - selectionStart));
+                if (maxPasteLength > 0) {
+                    const truncatedPaste = pastedText.substring(0, maxPasteLength);
+                    this.value = currentValue.substring(0, selectionStart) + 
+                                truncatedPaste + 
+                                currentValue.substring(selectionEnd);
+                    
+                    // Hiển thị thông báo nếu đạt 20 ký tự sau khi paste
+                    if (this.value.length === 20 && lastLength < 20) {
+                        showAlert('Đã đạt giới hạn tối đa 20 ký tự', 'error');
+                    }
+                    lastLength = this.value.length;
+                }
+            }
+        });
     }
     
     // Thêm event listener cho form submission

@@ -153,9 +153,52 @@ document.getElementById('district').addEventListener('change', function() {
     saveRestaurantFormData();
 });
 
+// Thêm validation cho ô nhập Tên nhà hàng
+let lastRestaurantNameLength = 0;
+document.getElementById('restaurantName').addEventListener('input', function(e) {
+    let value = e.target.value;
+    
+    // Giới hạn tối đa 25 ký tự
+    if (value.length > 25) {
+        value = value.substring(0, 25);
+        e.target.value = value;
+    }
+    // Hiển thị thông báo khi vừa đạt 25 ký tự
+    if (value.length === 25 && lastRestaurantNameLength < 25) {
+        if (typeof showAlert === 'function') {
+            showAlert('Tên nhà hàng chỉ tối đa 25 ký tự', 'warning');
+        } else {
+            alert('Tên nhà hàng chỉ tối đa 25 ký tự');
+        }
+    }
+    lastRestaurantNameLength = value.length;
+    saveRestaurantFormData();
+});
+
+// Thêm validation cho ô nhập Số nhà
+let lastStreetNameLength = 0;
+document.getElementById('streetName').addEventListener('input', function(e) {
+    let value = e.target.value;
+    
+    // Giới hạn tối đa 50 ký tự
+    if (value.length > 40) {
+        value = value.substring(0, 40);
+        e.target.value = value;
+    }
+    
+    // Hiển thị thông báo khi vừa đạt 50 ký tự
+    if (value.length === 40 && lastStreetNameLength < 40) {
+        if (typeof showAlert === 'function') {
+            showAlert('Số nhà chỉ tối đa 40 ký tự', 'warning');
+        } else {
+            alert('Số nhà chỉ tối đa 40 ký tự');
+        }
+    }
+    lastStreetNameLength = value.length;
+    saveRestaurantFormData();
+});
+
 // Thêm event listeners để lưu dữ liệu khi user nhập
-document.getElementById('restaurantName').addEventListener('input', saveRestaurantFormData);
-document.getElementById('streetName').addEventListener('input', saveRestaurantFormData);
 document.getElementById('taxCode').addEventListener('input', saveRestaurantFormData);
 document.getElementById('province').addEventListener('change', saveRestaurantFormData);
 document.getElementById('district').addEventListener('change', saveRestaurantFormData);

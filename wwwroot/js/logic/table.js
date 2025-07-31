@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
+
     const tableBody = document.getElementById('table-list-body');
     let restaurantInfo = localStorage.getItem('user');
     let restaurant_id = '';
@@ -14,50 +15,85 @@ document.addEventListener('DOMContentLoaded', async function () {
         showAlert('Không tìm thấy thông tin nhà hàng!', 'error');
         return;
     }
+
+    // Kiểm tra cache trước
+    const cacheKey = `tableData_${restaurant_id}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+        try {
+            const data = JSON.parse(cached);
+            let tablesArr = [];
+            let totalCount = 0;
+            
+            if (data && typeof data === 'object' && data.tables && typeof data.total === 'number') {
+                tablesArr = Array.isArray(data.tables) ? data.tables : [];
+                totalCount = data.total;
+            } else if (Array.isArray(data)) {
+                tablesArr = data;
+                totalCount = data.length;
+            }
+            
+            if (tablesArr.length > 0) {
+                renderTableList(tablesArr, restaurant_id, totalCount);
+                console.log('Đã load dữ liệu từ cache');
+                return;
+            }
+        } catch (e) {
+            console.error('Lỗi parse cache, fallback về API:', e);
+        }
+    }
+
+    // Load từ API nếu không có cache
+    await loadTableData(restaurant_id, cacheKey);
+});
+
+async function loadTableData(restaurant_id, cacheKey) {
+    const tableBody = document.getElementById('table-list-body');
     try {
         showLoading();
         const data = await window.tableService.getTable(restaurant_id);
-        console.log('API Response:', data); // Debug log
+        console.log('API Response:', data);
         
         let tablesArr = [];
         let totalCount = 0;
         
-        // Kiểm tra format response
         if (data && typeof data === 'object' && data.tables && typeof data.total === 'number') {
-            // Format mới: { tables: [...], total: number }
             tablesArr = Array.isArray(data.tables) ? data.tables : [];
             totalCount = data.total;
         } else if (Array.isArray(data)) {
-            // Format cũ: chỉ mảng
             tablesArr = data;
             totalCount = data.length;
         } else {
-            // Fallback
             tablesArr = [];
             totalCount = 0;
         }
         
-        console.log('Tables array:', tablesArr); // Debug log
-        console.log('Total count:', totalCount); // Debug log
+        // Lưu vào cache
+        if (cacheKey) {
+            try {
+                localStorage.setItem(cacheKey, JSON.stringify(data));
+                console.log('Đã lưu dữ liệu vào cache');
+            } catch (e) {
+                console.warn('Không thể lưu vào localStorage:', e);
+            }
+        }
         
         if (tablesArr.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4">Không có dữ liệu bàn.</td></tr>';
             showAlert('Không có dữ liệu bàn.', 'info');
-            // Cập nhật pagination với count = 0
             updatePaginationUI(1, 15, totalCount);
             return;
         }
         renderTableList(tablesArr, restaurant_id, totalCount);
     } catch (err) {
-        console.error('Error loading tables:', err); // Debug log
+        console.error('Error loading tables:', err);
         tableBody.innerHTML = '<tr><td colspan="4">Lỗi tải dữ liệu bàn.</td></tr>';
         showAlert('Lỗi tải dữ liệu bàn!', 'error');
-        // Cập nhật pagination với count = 0 khi có lỗi
         updatePaginationUI(1, 15, 0);
     } finally {
         hideLoading();
     }
-});
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     // Popup logic
@@ -76,6 +112,30 @@ document.addEventListener('DOMContentLoaded', function () {
             restaurant_id = '';
         }
     }
+    // Thêm validation cho ô nhập số bàn
+    let lastTableNumberLength = 0;
+    if (tableNumberInput) {
+        tableNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Giới hạn tối đa 3 ký tự
+            if (value.length > 3) {
+                value = value.substring(0, 3);
+                e.target.value = value;
+            }
+            
+            // Hiển thị thông báo khi vừa đạt 3 ký tự
+            if (value.length === 3 && lastTableNumberLength < 3) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Số bàn chỉ tối đa 3 ký tự', 'warning');
+                } else {
+                    alert('Số bàn chỉ tối đa 3 ký tự');
+                }
+            }
+            lastTableNumberLength = value.length;
+        });
+    }
+    
     if (openBtn && modal && closeBtn) {
         openBtn.addEventListener('click', function () {
             modal.style.display = 'block';
@@ -111,8 +171,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 await window.tableService.createTable(id_table, restaurant_id);
                 modal.style.display = 'none';
                 showAlert('Thêm bàn thành công!', 'success');
-                // Reload lại danh sách bàn
-                location.reload();
+                // Xóa cache và load lại dữ liệu
+                const cacheKey = `tableData_${restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                await loadTableData(restaurant_id, cacheKey);
             } catch (err) {
                 showAlert('Thêm bàn thất bại!', 'error');
             } finally {
@@ -171,7 +233,16 @@ function setupDeleteTableModalEvents() {
                 await window.tableService.deleteTable(deleteTableId);
                 hideDeleteTableModal();
                 showAlert('Xóa bàn thành công!', 'success');
-                location.reload();
+                // Xóa cache và load lại dữ liệu
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    if (user && user.restaurant_id) {
+                        const cacheKey = `tableData_${user.restaurant_id}`;
+                        localStorage.removeItem(cacheKey);
+                        await loadTableData(user.restaurant_id, cacheKey);
+                    }
+                }
             } catch (err) {
                 showAlert('Xóa bàn thất bại!', 'error');
             } finally {
@@ -366,3 +437,26 @@ function renderTableList(tablesArr, restaurant_id, totalCount) {
     renderTableListPaged(currentPage, itemsPerPage);
     updatePaginationUI(currentPage, itemsPerPage, totalCount || allTablesArr.length);
 }
+
+// Function để refresh dữ liệu bàn
+window.refreshTableData = async function() {
+    showLoading();
+    try {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user && user.restaurant_id) {
+                const cacheKey = `tableData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                console.log('Đã xóa cache, load lại từ API');
+                await loadTableData(user.restaurant_id, cacheKey);
+                showAlert('Đã làm mới dữ liệu!', 'success');
+            }
+        }
+    } catch (error) {
+        console.error('Lỗi khi refresh:', error);
+        showAlert('Lỗi khi làm mới dữ liệu!', 'error');
+    } finally {
+        hideLoading();
+    }
+};

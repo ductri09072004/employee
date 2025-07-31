@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5uYtF6RQ49YjClC9/UxT0ilCUjdePLUYhR1A33dnIDU=",
+  "Hash": "rHmbBnJi+FmDiAqwmZL5dFwTUKe0CMAEH5q58dyevnM=",
   "Source": "JOLICOW",
   "BasePath": "_content/JOLICOW",
   "Mode": "Default",
@@ -2069,6 +2069,25 @@
       "OriginalItemSpec": "wwwroot\\svg\\icon_action\\lock.svg"
     },
     {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\reset.svg",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "svg/icon_action/reset.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icon_action\\reset.svg"
+    },
+    {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\unlock.svg",
       "SourceId": "JOLICOW",
       "SourceType": "Discovered",
@@ -2409,6 +2428,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\svg\\sidebar\\down_icon.svg"
+    },
+    {
+      "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\eye-slash.svg",
+      "SourceId": "JOLICOW",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\",
+      "BasePath": "_content/JOLICOW",
+      "RelativePath": "svg/sidebar/eye-slash.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\sidebar\\eye-slash.svg"
     },
     {
       "Identity": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\hidden.svg",

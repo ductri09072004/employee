@@ -9,13 +9,46 @@ let selectedAddImageFile = null;
 
 // --- DOMContentLoaded: Entry point ---
 document.addEventListener('DOMContentLoaded', async function() {
+    // Thêm nút làm mới nếu chưa có
+    if (!document.getElementById('refreshBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'refreshBtn';
+        btn.innerHTML = '<img src="/svg/icon_action/reset.svg" alt="Reset" width="16" height="16">';
+        btn.style = 'margin: 12px; background: #007bff; color: #fff; border: none; border-radius: 6px; padding: 8px 18px; font-weight: 600; cursor: pointer;';
+        const table = document.getElementById('menu-table-body');
+        if (table && table.parentElement) {
+            const wrapper = document.createElement('div');
+            wrapper.style = 'text-align: right; width: 100%;';
+            wrapper.appendChild(btn);
+            table.parentElement.insertAdjacentElement('beforebegin', wrapper);
+        }
+    }
+
     const userStr = localStorage.getItem('user');
     if (userStr) {
         try {
             user = JSON.parse(userStr);
             if (user && user.restaurant_id) {
                 await loadCategoriesForMenu(user.restaurant_id); // load categories trước
-                loadMenuList(user.restaurant_id);
+                
+                // Kiểm tra cache trước
+                const cacheKey = `menuData_${user.restaurant_id}`;
+                const cached = localStorage.getItem(cacheKey);
+                if (cached) {
+                    try {
+                        const data = JSON.parse(cached);
+                        if (Array.isArray(data) && data.length > 0) {
+                            renderMenuList(data);
+                            console.log('Đã load dữ liệu menu từ cache');
+                            return;
+                        }
+                    } catch (e) {
+                        console.error('Lỗi parse cache, fallback về API:', e);
+                    }
+                }
+                
+                // Load từ API nếu không có cache
+                await loadMenuList(user.restaurant_id, cacheKey);
             } else {
                 console.error('Restaurant ID not found in user data.');
                 displayError('Không tìm thấy thông tin nhà hàng.');
@@ -38,6 +71,37 @@ document.addEventListener('DOMContentLoaded', function() {
             showAlert('Tính năng còn đang trong quá trình phát triển', 'info');
         });
     }
+
+    // Event handler cho nút refresh
+    setTimeout(() => {
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.onclick = async function() {
+                showLoading();
+                try {
+                    const userStr = localStorage.getItem('user');
+                    if (userStr) {
+                        const user = JSON.parse(userStr);
+                        if (user && user.restaurant_id) {
+                            const cacheKey = `menuData_${user.restaurant_id}`;
+                            localStorage.removeItem(cacheKey);
+                            console.log('Đã xóa cache, load lại từ API');
+                            await loadMenuList(user.restaurant_id, cacheKey);
+                            showAlert('Đã làm mới dữ liệu!', 'success');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi refresh:', error);
+                    showAlert('Lỗi khi làm mới dữ liệu!', 'error');
+                } finally {
+                    hideLoading();
+                }
+            };
+            console.log('Đã thiết lập event handler cho nút refresh menu');
+        } else {
+            console.log('Không tìm thấy nút refresh menu');
+        }
+    }, 100);
 });
 
 function displayError(message) {
@@ -69,11 +133,20 @@ async function loadCategoriesForMenu(restaurantId) {
 }
 
 // --- Data Loading ---
-async function loadMenuList(restaurantId) {
+async function loadMenuList(restaurantId, cacheKey) {
     try {
         showLoading();
         const menuData = await window.menuService.getMenu(restaurantId);
         if (Array.isArray(menuData)) {
+            // Lưu vào cache
+            if (cacheKey) {
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify(menuData));
+                    console.log('Đã lưu dữ liệu menu vào cache');
+                } catch (e) {
+                    console.warn('Không thể lưu vào localStorage:', e);
+                }
+            }
             renderMenuList(menuData);
         } else {
             console.error('Expected an array of menu items, but received:', menuData);
@@ -144,7 +217,7 @@ function renderMenuListPaged(page, perPage) {
                 </td>
             </tr>
         `;
-    }).join('');
+    }).reverse().join('');
 
     setupMenuActionButtons();
 }
@@ -191,7 +264,7 @@ function editMenuItem(menuId) {
                     </div>
                     <div>
                         <label for="editMenuNameInput" style="font-weight:500; margin-bottom:6px; display:block;">Tên món</label>
-                        <input type="text" id="editMenuNameInput" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
+                        <input type="text" id="editMenuNameInput" maxlength="30" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
                     </div>
                     <div>
                         <label style="font-weight:500; margin-bottom:6px; display:block;">Ảnh món ăn</label>
@@ -215,7 +288,7 @@ function editMenuItem(menuId) {
                     </div>
                     <div>
                         <label for="editMenuPriceInput" style="font-weight:500; margin-bottom:6px; display:block;">Giá</label>
-                        <input type="number" id="editMenuPriceInput" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
+                        <input type="number" id="editMenuPriceInput" max="99999999" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
                     </div>
                     <div>
                         <label for="editMenuStatusInput" style="font-weight:500; margin-bottom:6px; display:block;">Trạng thái</label>
@@ -246,6 +319,68 @@ function editMenuItem(menuId) {
     document.getElementById('editMenuNameInput').value = menuItem.name || '';
     document.getElementById('editMenuPriceInput').value = menuItem.price || '';
     document.getElementById('editMenuStatusInput').value = menuItem.status || 'active';
+    
+    // Thêm validation cho ô nhập tên món trong modal sửa
+    let lastEditNameLength = 0;
+    const editNameInput = document.getElementById('editMenuNameInput');
+    if (editNameInput) {
+        editNameInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Hiển thị thông báo khi vừa đạt 30 ký tự
+            if (value.length === 30 && lastEditNameLength < 30) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Tên món chỉ tối đa 30 ký tự', 'warning');
+                } else {
+                    alert('Tên món chỉ tối đa 30 ký tự');
+                }
+            }
+            lastEditNameLength = value.length;
+        });
+    }
+    
+    // Thêm validation cho ô nhập giá trong modal sửa
+    const editPriceInput = document.getElementById('editMenuPriceInput');
+    if (editPriceInput) {
+        editPriceInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá không được nhập số âm', 'warning');
+                } else {
+                    alert('Giá không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Giá không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            // Kiểm tra nếu giá vượt quá 99,999,999
+            let numValue = parseFloat(value);
+            if (numValue > 99999999) {
+                e.target.value = 99999999;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá không được lớn hơn 99,999,999 VNĐ', 'warning');
+                } else {
+                    alert('Giá không được lớn hơn 99,999,999 VNĐ');
+                }
+            }
+        });
+    }
     
     // Hiển thị ảnh hiện tại nếu có
     if (menuItem.image) {
@@ -300,7 +435,10 @@ function editMenuItem(menuId) {
             modal.style.display = 'none';
             showAlert('Cập nhật món ăn thành công!', 'success');
             if (user && user.restaurant_id) {
-                loadMenuList(user.restaurant_id);
+                // Xóa cache và load lại dữ liệu
+                const cacheKey = `menuData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                await loadMenuList(user.restaurant_id, cacheKey);
             }
         } catch (err) {
             showAlert('Có lỗi xảy ra khi cập nhật món ăn!', 'error');
@@ -506,7 +644,7 @@ function openAddMenuModal() {
                     </div>
                     <div>
                         <label for="addMenuNameInput" style="font-weight:500; margin-bottom:6px; display:block;">Tên món</label>
-                        <input type="text" id="addMenuNameInput" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
+                        <input type="text" id="addMenuNameInput" maxlength="30" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
                     </div>
                     <div>
                         <label style="font-weight:500; margin-bottom:6px; display:block;">Ảnh món ăn</label>
@@ -530,7 +668,7 @@ function openAddMenuModal() {
                     </div>
                     <div>
                         <label for="addMenuPriceInput" style="font-weight:500; margin-bottom:6px; display:block;">Giá</label>
-                        <input type="number" id="addMenuPriceInput" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
+                        <input type="number" id="addMenuPriceInput" max="99999999" style="width:100%; padding:10px 12px; border:1px solid #d0d7de; border-radius:7px; font-size:15px; background:#f8f9fa;">
                     </div>
                     <div>
                         <label for="addMenuStatusInput" style="font-weight:500; margin-bottom:6px; display:block;">Trạng thái</label>
@@ -566,6 +704,67 @@ function openAddMenuModal() {
     document.getElementById('addImagePreview').style.display = 'none';
     document.getElementById('addImageUploadArea').style.display = 'block';
     document.getElementById('addImageFileInput').value = '';
+    
+    // Thêm validation cho ô nhập tên món trong modal thêm
+    let lastAddNameLength = 0;
+    const addNameInput = document.getElementById('addMenuNameInput');
+    if (addNameInput) {
+        addNameInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Hiển thị thông báo khi vừa đạt 30 ký tự
+            if (value.length === 30 && lastAddNameLength < 30) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Tên món chỉ tối đa 30 ký tự', 'warning');
+                } else {
+                    alert('Tên món chỉ tối đa 30 ký tự');
+                }
+            }
+            lastAddNameLength = value.length;
+        });
+    }
+    
+    // Thêm validation cho ô nhập giá trong modal thêm
+    const addPriceInput = document.getElementById('addMenuPriceInput');
+    if (addPriceInput) {
+        addPriceInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá không được nhập số âm', 'warning');
+                } else {
+                    alert('Giá không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Giá không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            let numValue = parseFloat(value);
+            if (numValue > 99999999) {
+                e.target.value = 99999999;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá không được lớn hơn 99,999,999 VNĐ', 'warning');
+                } else {
+                    alert('Giá không được lớn hơn 99,999,999 VNĐ');
+                }
+            }
+        });
+    }
     
     // Setup drag & drop
     setupAddImageUpload();
@@ -627,7 +826,10 @@ function openAddMenuModal() {
             modal.style.display = 'none';
             showAlert('Thêm món ăn thành công!', 'success');
             if (user && user.restaurant_id) {
-                loadMenuList(user.restaurant_id);
+                // Xóa cache và load lại dữ liệu
+                const cacheKey = `menuData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                await loadMenuList(user.restaurant_id, cacheKey);
             }
         } catch (err) {
             showAlert('Có lỗi xảy ra khi thêm món ăn!', 'error');
@@ -765,6 +967,29 @@ function uploadToCloudinaryAddAsync(file) {
 // Thêm nút mở modal thêm menu vào trang (nếu cần)
 window.openAddMenuModal = openAddMenuModal;
 
+// Function để refresh dữ liệu menu
+window.refreshMenuData = async function() {
+    showLoading();
+    try {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user && user.restaurant_id) {
+                const cacheKey = `menuData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                console.log('Đã xóa cache, load lại từ API');
+                await loadMenuList(user.restaurant_id, cacheKey);
+                showAlert('Đã làm mới dữ liệu!', 'success');
+            }
+        }
+    } catch (error) {
+        console.error('Lỗi khi refresh:', error);
+        showAlert('Lỗi khi làm mới dữ liệu!', 'error');
+    } finally {
+        hideLoading();
+    }
+};
+
 // --- Toast Notification ---
 function showToast(message, type = 'success') {
     let toast = document.createElement('div');
@@ -812,7 +1037,10 @@ function deleteMenuItem(menuId) {
                 await window.menuService.deleteMenu(menuId);
                 showAlert('Xóa món ăn thành công!', 'success');
                 if (user && user.restaurant_id) {
-                    loadMenuList(user.restaurant_id);
+                    // Xóa cache và load lại dữ liệu
+                    const cacheKey = `menuData_${user.restaurant_id}`;
+                    localStorage.removeItem(cacheKey);
+                    await loadMenuList(user.restaurant_id, cacheKey);
                 }
             } catch (err) {
                 showAlert('Có lỗi khi xóa món ăn!', 'error');

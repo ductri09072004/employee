@@ -13,34 +13,53 @@
 
     .add-table-button-container {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
         margin-bottom: 20px;
-        background-color: #fff;
-        padding: 12px;
-        width: fit-content;
-        margin-left: auto;
-        border-radius: 8px;
     }
 
     .add-table-button {
-        background: none;
-        border: none;
-        color: #4267B2;
-        font-size: 12px;
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        padding: 8px 15px;
         cursor: pointer;
-        padding: 0;
+        font-size: 14px;
+        font-weight: bold;
         display: flex;
         align-items: center;
         gap: 5px;
-        font-weight: 400;
+        transition: background-color 0.2s, border-color 0.2s;
     }
 
     .add-table-button:hover {
-        color: #3498db;
+        background-color: #0056b3;
+        border-color: #0056b3;
     }
 
     .add-icon {
-        font-size: 12px;
+        font-size: 14px;
+    }
+
+    .reset-toppings-button {
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+        margin-left: 10px;
+    }
+
+    .reset-toppings-button:hover {
+        background-color: #0056b3;
+    }
+
+    .reset-toppings-button img {
+        filter: brightness(0) invert(1);
     }
 
     .table-list-container {
@@ -197,6 +216,9 @@
         <button class="add-table-button" id="openAddToppingModal">
             <span class="add-icon">+</span> Thêm topping
         </button>
+        <button class="reset-toppings-button" id="refreshBtn" onclick="window.refreshToppingsData()">
+            <img src="~/svg/icon_action/reset.svg" alt="Reset" style="width: 16px; height: 16px;">
+        </button>
     </div>
 
     <!-- Popup modal thêm bàn -->
@@ -276,15 +298,15 @@
                 <option value="">-- Chọn phân loại --</option>
                 <option value="__new__">+ Nhập phân loại mới</option>
             </select>
-            <input type="text" id="toppingNameDetailsInput" placeholder="Nhập phân loại topping..." style="display:none;" />
+            <input type="text" id="toppingNameDetailsInput" maxlength="20" placeholder="Nhập phân loại topping..." style="display:none;" />
         </div>
         <div class="modal-form-group">
             <label for="toppingNameInput">Tên topping</label>
-            <input type="text" id="toppingNameInput" placeholder="Nhập tên topping..." />
+            <input type="text" id="toppingNameInput" maxlength="20" placeholder="Nhập tên topping..." />
         </div>
         <div class="modal-form-group">
             <label for="toppingPriceInput">Giá topping (VND)</label>
-            <input type="number" id="toppingPriceInput" placeholder="Nhập giá topping..." min="0" />
+            <input type="number" id="toppingPriceInput" placeholder="Nhập giá topping..." min="0" max="99999999" />
         </div>
         <button id="confirmAddToppingBtn">Thêm topping</button>
     </div>

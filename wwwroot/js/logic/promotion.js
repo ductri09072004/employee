@@ -27,6 +27,249 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Thêm validation cho ô nhập ngày kết thúc
+    const dateEndInput = document.getElementById('add-date-end');
+    if (dateEndInput) {
+        dateEndInput.addEventListener('change', function(e) {
+            const selectedDate = new Date(e.target.value);
+            const currentDate = new Date();
+            
+            // Tính khoảng cách giữa ngày được chọn và ngày hiện tại (tính bằng ngày)
+            const timeDiff = selectedDate.getTime() - currentDate.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            // Kiểm tra nếu ngày kết thúc cách ngày hiện tại ít hơn 3 ngày
+            if (daysDiff < 3) {
+                // Tính ngày tối thiểu (ngày hiện tại + 3 ngày)
+                const minDate = new Date();
+                minDate.setDate(currentDate.getDate() + 3);
+                
+                // Format ngày tối thiểu thành định dạng datetime-local
+                const year = minDate.getFullYear();
+                const month = String(minDate.getMonth() + 1).padStart(2, '0');
+                const day = String(minDate.getDate()).padStart(2, '0');
+                const hours = String(minDate.getHours()).padStart(2, '0');
+                const minutes = String(minDate.getMinutes()).padStart(2, '0');
+                const minDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
+                
+                // Đặt giá trị tối thiểu cho input
+                e.target.value = minDateString;
+                
+                if (typeof showAlert === 'function') {
+                    showAlert('Ngày kết thúc phải cách ngày hiện tại ít nhất 3 ngày', 'warning');
+                } else {
+                    alert('Ngày kết thúc phải cách ngày hiện tại ít nhất 3 ngày');
+                }
+            }
+        });
+        
+        // Đặt ngày tối thiểu cho input khi trang được load
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 3);
+        
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const hours = String(currentDate.getHours()).padStart(2, '0');
+        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        const minDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
+        
+        dateEndInput.setAttribute('min', minDateString);
+    }
+    
+    // Thêm validation cho ô nhập giảm tối đa
+    const maxDiscountInput = document.getElementById('add-max-discount');
+    if (maxDiscountInput) {
+        maxDiscountInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giảm tối đa không được nhập số âm', 'warning');
+                } else {
+                    alert('Giảm tối đa không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giảm tối đa không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Giảm tối đa không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            // Kiểm tra nếu giá trị vượt quá 99,999,999
+            const numValue = parseFloat(value);
+            if (numValue > 99999999) {
+                e.target.value = 99999999;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giảm tối đa không được lớn hơn 99,999,999 VNĐ', 'warning');
+                } else {
+                    alert('Giảm tối đa không được lớn hơn 99,999,999 VNĐ');
+                }
+            }
+        });
+    }
+    
+    // Thêm validation cho ô nhập giá trị đơn tối thiểu
+    const minOrderValueInput = document.getElementById('add-min-order-value');
+    if (minOrderValueInput) {
+        minOrderValueInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá trị đơn tối thiểu không được nhập số âm', 'warning');
+                } else {
+                    alert('Giá trị đơn tối thiểu không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá trị đơn tối thiểu không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Giá trị đơn tối thiểu không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            // Kiểm tra nếu giá trị vượt quá 99,999,999
+            const numValue = parseFloat(value);
+            if (numValue > 99999999) {
+                e.target.value = 99999999;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá trị đơn tối thiểu không được lớn hơn 99,999,999 VNĐ', 'warning');
+                } else {
+                    alert('Giá trị đơn tối thiểu không được lớn hơn 99,999,999 VNĐ');
+                }
+            }
+        });
+    }
+    
+    // Thêm validation cho ô nhập phần trăm giảm
+    const percentInput = document.getElementById('add-percent');
+    if (percentInput) {
+        percentInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Phần trăm giảm không được nhập số âm', 'warning');
+                } else {
+                    alert('Phần trăm giảm không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Phần trăm giảm không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Phần trăm giảm không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            // Kiểm tra nếu phần trăm vượt quá 100
+            const numValue = parseFloat(value);
+            if (numValue > 100) {
+                e.target.value = 100;
+                if (typeof showAlert === 'function') {
+                    showAlert('Phần trăm giảm không được lớn hơn 100%', 'warning');
+                } else {
+                    alert('Phần trăm giảm không được lớn hơn 100%');
+                }
+            }
+            
+            // Kiểm tra nếu phần trăm nhỏ hơn 1
+            if (numValue < 1 && value !== '') {
+                e.target.value = 1;
+                if (typeof showAlert === 'function') {
+                    showAlert('Phần trăm giảm phải từ 1% trở lên', 'warning');
+                } else {
+                    alert('Phần trăm giảm phải từ 1% trở lên');
+                }
+            }
+        });
+    }
+    
+    // Thêm validation cho ô nhập số lượng
+    const quantityInput = document.getElementById('add-quantity');
+    if (quantityInput) {
+        quantityInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Số lượng không được nhập số âm', 'warning');
+                } else {
+                    alert('Số lượng không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Số lượng không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Số lượng không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            // Kiểm tra nếu số lượng vượt quá 9999
+            const numValue = parseFloat(value);
+            if (numValue > 9999) {
+                e.target.value = 9999;
+                if (typeof showAlert === 'function') {
+                    showAlert('Số lượng không được lớn hơn 9999', 'warning');
+                } else {
+                    alert('Số lượng không được lớn hơn 9999');
+                }
+            }
+            
+            // Kiểm tra nếu số lượng nhỏ hơn 1
+            if (numValue < 1 && value !== '') {
+                e.target.value = 1;
+                if (typeof showAlert === 'function') {
+                    showAlert('Số lượng phải từ 1 trở lên', 'warning');
+                } else {
+                    alert('Số lượng phải từ 1 trở lên');
+                }
+            }
+        });
+    }
+    
     // Xử lý submit form thêm promotion
     if (form) {
         form.addEventListener('submit', async function(e) {
@@ -64,8 +307,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
                 if (result && (result.success || result.id_promotion)) {              
                     modal.style.display = 'none';
-                    localStorage.setItem('promotion_success', 'Thêm khuyến mãi thành công!');
-                    setTimeout(() => location.reload(), 1200); 
+                    showAlert('Thêm khuyến mãi thành công!', 'success');
+                    
+                    // Clear cache and reload data
+                    const userStr = localStorage.getItem('user');
+                    if (userStr) {
+                        const user = JSON.parse(userStr);
+                        if (user && user.restaurant_id) {
+                            const cacheKey = `promotionData_${user.restaurant_id}`;
+                            localStorage.removeItem(cacheKey);
+                            loadPromotionData(user.restaurant_id);
+                        }
+                    }
                 } else {
                     showAlert('Thêm khuyến mãi thất bại!', 'error' + (result && result.message ? result.message : ''));
                 }
@@ -91,11 +344,41 @@ window.addEventListener('DOMContentLoaded', async () => {
     } else {
         id_restaurant = localStorage.getItem('id_restaurant');
     }
+    
+    if (id_restaurant) {
+        loadPromotionData(id_restaurant);
+    }
+});
+
+async function loadPromotionData(restaurantId) {
     try {
         showLoading();
-        const data = await window.promotionService.getPromotionByRes(id_restaurant);
+        
+        // Check cache first
+        const cacheKey = `promotionData_${restaurantId}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        
+        let data;
+        if (cachedData) {
+            try {
+                data = JSON.parse(cachedData);
+                console.log('Loaded promotion data from cache');
+            } catch (parseError) {
+                console.error('Error parsing cached data:', parseError);
+                localStorage.removeItem(cacheKey);
+            }
+        }
+        
+        // If no cached data or parsing failed, fetch from API
+        if (!data) {
+            data = await window.promotionService.getPromotionByRes(restaurantId);
+            // Cache the data
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+            console.log('Loaded promotion data from API and cached');
+        }
+        
         // data là object, mỗi key là 1 staff
-        allStaffArr = Object.values(data).filter(staff => staff.id_promotion);
+        allStaffArr = Object.values(data).filter(staff => staff.id_promotion).reverse();
         // Lấy giá trị mặc định từ select nếu có
         const select = document.querySelector('.items-per-page-select');
         if (select) {
@@ -105,21 +388,35 @@ window.addEventListener('DOMContentLoaded', async () => {
         renderStaffListPaged(currentPage, itemsPerPage);
         updatePaginationUI(currentPage, itemsPerPage, allStaffArr.length);
     } catch (error) {
-        console.error('Lỗi khi lấy danh sách staff:', error);
+        console.error('Lỗi khi lấy danh sách promotion:', error);
         const staffBody = document.getElementById('staffBody');
-        if (staffBody) staffBody.innerHTML = '<tr><td colspan="6">Lỗi khi tải dữ liệu nhân viên.</td></tr>';
+        if (staffBody) staffBody.innerHTML = '<tr><td colspan="6">Lỗi khi tải dữ liệu khuyến mãi.</td></tr>';
     } finally {
         hideLoading();
     }
-});
+}
 
-window.addEventListener('DOMContentLoaded', function() {
-    const msg = localStorage.getItem('promotion_success');
-    if (msg) {
-        showAlert(msg, 'success');
-        localStorage.removeItem('promotion_success');
+// --- Refresh Promotion Data ---
+window.refreshPromotionData = function() {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            if (user && user.restaurant_id) {
+                const cacheKey = `promotionData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                // Show loading effect when refreshing
+                showLoading();
+                loadPromotionData(user.restaurant_id);
+            }
+        } catch (error) {
+            console.error('Error refreshing promotion data:', error);
+            hideLoading();
+        }
     }
-});
+};
+
+// Removed old success message handling since we now use direct showAlert
 
 function formatDateTimeVN(dateStr) {
     if (!dateStr) return '';
@@ -147,9 +444,10 @@ function renderStaffListPaged(page, perPage) {
     const endIdx = startIdx + perPage;
     const pageStaff = allStaffArr.slice(startIdx, endIdx);
     if (pageStaff.length === 0) {
-        staffBody.innerHTML = '<tr><td colspan="7">Không có dữ liệu nhân viên.</td></tr>';
+        staffBody.innerHTML = '<tr><td colspan="7">Không có dữ liệu khuyến mãi.</td></tr>';
         return;
     }
+    
     staffBody.innerHTML = pageStaff.map(staff => `
         <tr>
             <td>${staff.id_promotion}</td>

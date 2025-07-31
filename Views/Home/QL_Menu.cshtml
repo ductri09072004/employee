@@ -130,7 +130,7 @@
     .menu-action-link {
         color: #007bff;
         text-decoration: none;
-        margin-right: 10px; /* Space between links */
+        margin-right: 10px;
     }
 
     .menu-action-link.delete {
@@ -140,16 +140,40 @@
     .menu-action-link:hover {
         text-decoration: underline;
     }
+
+    /* CSS cho nút reset */
+    .reset-menu-button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .reset-menu-button:hover {
+        background: #0056b3;
+    }
+
+    .reset-menu-button img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
+    }
 </style>
 
 <div class="menu-management-container">
     <div class="top-actions">
-        <button class="filter-button">
-            <span class="filter-icon">+</span> Thêm bộ lọc
-        </button>
         <div class="action-buttons">
-          
             <button class="action-btn primary" onclick="openAddMenuModal()">+ Thêm món</button>
+            <button class="reset-menu-button" id="refreshBtn" onclick="window.refreshMenuData()">
+                <img src="~/svg/icon_action/reset.svg" alt="Reset" width="16" height="16">
+            </button>
         </div>
     </div>
 

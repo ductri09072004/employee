@@ -13,34 +13,59 @@
 
     .add-table-button-container {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
         margin-bottom: 20px;
-        background-color: #fff;
-        padding: 12px;
-        width: fit-content;
-        margin-left: auto;
-        border-radius: 8px;
     }
 
     .add-table-button {
-        background: none;
-        border: none;
-        color: #4267B2;
-        font-size: 12px;
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        padding: 8px 15px;
         cursor: pointer;
-        padding: 0;
+        font-size: 14px;
+        font-weight: bold;
         display: flex;
         align-items: center;
         gap: 5px;
-        font-weight: 400;
+        transition: background-color 0.2s, border-color 0.2s;
     }
 
     .add-table-button:hover {
-        color: #3498db;
+        background-color: #0056b3;
+        border-color: #0056b3;
     }
 
     .add-icon {
-        font-size: 12px;
+        font-size: 14px;
+    }
+
+    /* CSS cho nút reset */
+    .reset-table-button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .reset-table-button:hover {
+        background: #0056b3;
+    }
+
+    .reset-table-button img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
     }
 
     .table-list-container {
@@ -189,6 +214,9 @@
     <div class="add-table-button-container">
         <button class="add-table-button" id="openAddTableModal">
             <span class="add-icon">+</span> Thêm bàn
+        </button>
+        <button class="reset-table-button" id="refreshBtn" onclick="window.refreshTableData()">
+            <img src="~/svg/icon_action/reset.svg" alt="Reset" width="16" height="16">
         </button>
     </div>
 

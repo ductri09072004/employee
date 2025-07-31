@@ -68,6 +68,26 @@
         border-color: #0056b3;
     }
 
+    .reset-categories-button {
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+    }
+
+    .reset-categories-button:hover {
+        background-color: #0056b3;
+    }
+
+    .reset-categories-button img {
+        filter: brightness(0) invert(1);
+    }
+
     .menu-table-container {
         background-color: #fff;
         border-radius: 8px;
@@ -209,12 +229,12 @@
 
 <div class="menu-management-container" style="display: flex; flex-direction: column; min-height: 95vh;">
     <div class="top-actions">
-        <button class="filter-button">
-            <span class="filter-icon">+</span> Thêm bộ lọc
-        </button>
         <div class="action-buttons">
             <button class="action-btn primary" id="openAddCategoryModal">
                 + Thêm danh mục
+            </button>
+            <button class="reset-categories-button" id="refreshBtn" onclick="window.refreshCategoriesData()">
+                <img src="~/svg/icon_action/reset.svg" alt="Reset" style="width: 16px; height: 16px;">
             </button>
         </div>
     </div>
@@ -244,7 +264,7 @@
         <h2 class="modal-title">Thêm danh mục mới</h2>
         <div class="modal-form-group">
             <label for="categoryNameInput">Tên danh mục</label>
-            <input type="text" id="categoryNameInput" placeholder="Nhập tên danh mục..." />
+            <input type="text" id="categoryNameInput" maxlength="20" placeholder="Nhập tên danh mục..." />
         </div>
         <button id="confirmAddCategoryBtn">Thêm</button>
     </div>

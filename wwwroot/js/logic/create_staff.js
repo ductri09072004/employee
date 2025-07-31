@@ -1,11 +1,11 @@
 console.log('Script loaded'); // Debug log to verify script loading
 
-// Hàm kiểm tra số điện thoại hợp lệ (10 số)
+// Hàm kiểm tra số điện thoại hợp lệ (10 số, bắt đầu bằng 0)
 function isValidPhone(phone) {
     // Loại bỏ tất cả ký tự không phải số
     const cleanPhone = phone.replace(/\D/g, '');
-    // Kiểm tra có đúng 10 số không
-    return cleanPhone.length === 10;
+    // Kiểm tra có đúng 10 số và bắt đầu bằng 0
+    return cleanPhone.length === 10 && cleanPhone.startsWith('0');
 }
 
 // Hàm kiểm tra mật khẩu hợp lệ (không chứa ký tự # do Razor lỗi)
@@ -77,16 +77,52 @@ function restoreFormData() {
 // Biến để lưu trạng thái kiểm tra số điện thoại
 let phoneCheckResult = { exists: false, message: '' };
 
-document.getElementById('lastName').addEventListener('input', saveFormData);
-document.getElementById('firstName').addEventListener('input', saveFormData);
+// Thêm validation cho ô nhập Họ
+document.getElementById('lastName').addEventListener('input', function(e) {
+    let value = e.target.value;
+    
+
+    if (value.length > 20) {
+        value = value.substring(0, 20);
+        e.target.value = value;
+    }
+    
+    saveFormData();
+});
+
+// Thêm validation cho ô nhập Tên
+document.getElementById('firstName').addEventListener('input', function(e) {
+    let value = e.target.value;
+    
+    // Giới hạn tối đa 12 ký tự
+    if (value.length > 12) {
+        value = value.substring(0, 12);
+        e.target.value = value;
+    }
+    
+    saveFormData();
+});
+
 document.getElementById('phone').addEventListener('input', saveFormData);
-document.getElementById('passwordInput').addEventListener('input', saveFormData);
+
+// Thêm validation cho ô nhập mật khẩu
+document.getElementById('passwordInput').addEventListener('input', function(e) {
+    let value = e.target.value;
+    
+    // Giới hạn tối đa 20 ký tự
+    if (value.length > 20) {
+        value = value.substring(0, 20);
+        e.target.value = value;
+    }
+    
+    saveFormData();
+});
 
 document.getElementById('phone').addEventListener('input', function(e) {
     let value = e.target.value;
     value = value.replace(/[^\d+]/g, '');
-    if (value.length > 12) {
-        value = value.substring(0, 12);
+    if (value.length > 10) {
+        value = value.substring(0, 10);
     }
     e.target.value = value;
     saveFormData();
@@ -111,10 +147,10 @@ function togglePassword() {
     const toggleIcon = document.getElementById('toggleIcon');
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleIcon.src = "/svg/cart.svg";
+        toggleIcon.src ="/svg/sidebar/eye-slash.svg";
     } else {
         passwordInput.type = 'password';
-        toggleIcon.src = "/svg/hidden.svg";
+        toggleIcon.src ="/svg/sidebar/hidden.svg";
     }
 }
 
@@ -132,7 +168,7 @@ document.getElementById('staffForm').addEventListener('submit', async function(e
     }
     
     if (!isValidPhone(phone)) {
-        showError('Số điện thoại phải có đúng 10 chữ số');
+        showError('Số điện thoại phải có đúng 10 chữ số và bắt đầu bằng số 0');
         return;
     }
     

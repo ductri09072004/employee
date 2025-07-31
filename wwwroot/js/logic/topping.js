@@ -113,6 +113,87 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('toppingNameDetailsInput').style.display = 'none';
         }
     });
+    
+    // Thêm validation cho ô nhập phân loại topping
+    const toppingNameDetailsInput = document.getElementById('toppingNameDetailsInput');
+    if (toppingNameDetailsInput) {
+        let lastDetailsLength = 0;
+        toppingNameDetailsInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Hiển thị thông báo khi vừa đạt 20 ký tự
+            if (value.length === 20 && lastDetailsLength < 20) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Phân loại topping chỉ tối đa 20 ký tự', 'warning');
+                } else {
+                    alert('Phân loại topping chỉ tối đa 20 ký tự');
+                }
+            }
+            lastDetailsLength = value.length;
+        });
+    }
+    
+    // Thêm validation cho ô nhập tên topping
+    const toppingNameInput = document.getElementById('toppingNameInput');
+    if (toppingNameInput) {
+        let lastToppingNameLength = 0;
+        toppingNameInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Hiển thị thông báo khi vừa đạt 20 ký tự
+            if (value.length === 20 && lastToppingNameLength < 20) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Tên topping chỉ tối đa 20 ký tự', 'warning');
+                } else {
+                    alert('Tên topping chỉ tối đa 20 ký tự');
+                }
+            }
+            lastToppingNameLength = value.length;
+        });
+    }
+    
+    // Thêm validation cho ô nhập giá topping
+    const toppingPriceInput = document.getElementById('toppingPriceInput');
+    if (toppingPriceInput) {
+        toppingPriceInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Chặn nhập dấu "-"
+            if (value.includes('-')) {
+                value = value.replace(/-/g, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá topping không được nhập số âm', 'warning');
+                } else {
+                    alert('Giá topping không được nhập số âm');
+                }
+                return;
+            }
+            
+            // Chặn bắt đầu bằng số 0 (trừ khi chỉ có 1 số 0)
+            if (value.length > 1 && value.startsWith('0')) {
+                value = value.replace(/^0+/, '');
+                e.target.value = value;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá topping không được bắt đầu bằng số 0', 'warning');
+                } else {
+                    alert('Giá topping không được bắt đầu bằng số 0');
+                }
+                return;
+            }
+            
+            // Kiểm tra nếu giá vượt quá 99,999,999
+            const numValue = parseFloat(value);
+            if (numValue > 99999999) {
+                e.target.value = 99999999;
+                if (typeof showAlert === 'function') {
+                    showAlert('Giá topping không được lớn hơn 99,999,999 VNĐ', 'warning');
+                } else {
+                    alert('Giá topping không được lớn hơn 99,999,999 VNĐ');
+                }
+            }
+        });
+    }
 
     // Xác nhận thêm topping
     const confirmBtn = document.getElementById('confirmAddToppingBtn');
@@ -173,7 +254,30 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadToppings(restaurantId) {
     try {
         showLoading();
-        const data = await window.menuService.getMenu(restaurantId);
+        
+        // Check cache first
+        const cacheKey = `toppingsData_${restaurantId}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        
+        let data;
+        if (cachedData) {
+            try {
+                data = JSON.parse(cachedData);
+                console.log('Loaded toppings from cache');
+            } catch (parseError) {
+                console.error('Error parsing cached data:', parseError);
+                localStorage.removeItem(cacheKey);
+            }
+        }
+        
+        // If no cached data or parsing failed, fetch from API
+        if (!data) {
+            data = await window.menuService.getMenu(restaurantId);
+            // Cache the data
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+            console.log('Loaded toppings from API and cached');
+        }
+        
         renderToppingList(data);
     } catch (error) {
         console.error('Error loading toppings:', error);
@@ -182,6 +286,23 @@ async function loadToppings(restaurantId) {
         hideLoading();
     }
 }
+
+// --- Refresh Toppings Data ---
+window.refreshToppingsData = function() {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            if (user && user.restaurant_id) {
+                const cacheKey = `toppingsData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                loadToppings(user.restaurant_id);
+            }
+        } catch (error) {
+            console.error('Error refreshing toppings data:', error);
+        }
+    }
+};
 
 function renderToppingList(data) {
     // Chuyển đổi object thành array để dễ xử lý phân trang
@@ -279,7 +400,7 @@ function renderToppingListPaged(page, perPage) {
         }
     });
 
-    tbody.innerHTML = htmlContent;
+    tbody.innerHTML = htmlContent.split('</tr>').reverse().join('</tr>');
 }
 
 function showDeleteConfirmation(dishId, optionId) {
@@ -313,6 +434,17 @@ async function deleteTopping(dishId, optionId) {
         console.log('Delete topping:', { dishId, optionId });
         showAlert('Chức năng xóa topping sẽ được implement sau', 'warning');
         closeModal('delete-table-modal');
+        
+        // Clear cache and reload data
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user && user.restaurant_id) {
+                const cacheKey = `toppingsData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
+                loadToppings(user.restaurant_id);
+            }
+        }
     } catch (error) {
         console.error('Error deleting topping:', error);
         showAlert('Có lỗi xảy ra khi xóa topping', 'error');

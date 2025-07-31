@@ -48,6 +48,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Thêm validation cho ô nhập tên danh mục trong modal thêm
+    if (nameInput) {
+        let lastAddNameLength = 0;
+        nameInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Hiển thị thông báo khi vừa đạt 20 ký tự
+            if (value.length === 20 && lastAddNameLength < 20) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Tên danh mục chỉ tối đa 20 ký tự', 'warning');
+                } else {
+                    alert('Tên danh mục chỉ tối đa 20 ký tự');
+                }
+            }
+            lastAddNameLength = value.length;
+        });
+    }
     if (confirmBtn) {
         confirmBtn.addEventListener('click', async function () {
             const name = nameInput.value.trim();
@@ -64,6 +82,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 await window.cateService.createCate(user.restaurant_id, name);
                 showAlert('Thêm danh mục thành công!', 'success');
                 modal.style.display = 'none';
+                
+                // Clear cache and reload data
+                const cacheKey = `categoriesData_${user.restaurant_id}`;
+                localStorage.removeItem(cacheKey);
                 loadCategories(user.restaurant_id);
             } catch (err) {
                 showAlert('Thêm danh mục thất bại!', 'error');
@@ -85,7 +107,30 @@ function displayError(message) {
 async function loadCategories(restaurantId) {
     try {
         showLoading();
-        const data = await window.cateService.getCate(restaurantId);
+        
+        // Check cache first
+        const cacheKey = `categoriesData_${restaurantId}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        
+        let data;
+        if (cachedData) {
+            try {
+                data = JSON.parse(cachedData);
+                console.log('Loaded categories from cache');
+            } catch (parseError) {
+                console.error('Error parsing cached data:', parseError);
+                localStorage.removeItem(cacheKey);
+            }
+        }
+        
+        // If no cached data or parsing failed, fetch from API
+        if (!data) {
+            data = await window.cateService.getCate(restaurantId);
+            // Cache the data
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+            console.log('Loaded categories from API and cached');
+        }
+        
         renderCategoryList(data);
     } catch (error) {
         console.error('Error loading categories:', error);
@@ -94,6 +139,15 @@ async function loadCategories(restaurantId) {
         hideLoading();
     }
 }
+
+// --- Refresh Categories Data ---
+window.refreshCategoriesData = function() {
+    if (user && user.restaurant_id) {
+        const cacheKey = `categoriesData_${user.restaurant_id}`;
+        localStorage.removeItem(cacheKey);
+        loadCategories(user.restaurant_id);
+    }
+};
 
 // --- Initial Rendering Logic ---
 function renderCategoryList(data) {
@@ -150,7 +204,7 @@ function renderCategoryListPaged(page, perPage) {
                 </td>
             </tr>
         `;
-    }).join('');
+    }).reverse().join('');
     
     console.log('Generated HTML for table:', htmlContent);
     tbody.innerHTML = htmlContent;
@@ -203,10 +257,10 @@ function editCategory(categoryId) {
             <div class="modal-content" style="max-width:400px;">
                 <span class="close-modal" id="closeEditCategoryModal">&times;</span>
                 <h2 class="modal-title">Sửa danh mục</h2>
-                <div style="margin: 20px 0;">
-                    <label for="editCategoryNameInput" style="display:block; margin-bottom:8px; font-weight:500;">Tên danh mục:</label>
-                    <input type="text" id="editCategoryNameInput" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px; font-size:14px;">
-                </div>
+                                 <div style="margin: 20px 0;">
+                     <label for="editCategoryNameInput" style="display:block; margin-bottom:8px; font-weight:500;">Tên danh mục:</label>
+                     <input type="text" id="editCategoryNameInput" maxlength="20" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px; font-size:14px;">
+                 </div>
                 <div style="display:flex; gap:12px; width:100%; justify-content:center;">
                     <button id="cancelEditCategoryBtn" style="background:#e9ecef; color:#333; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:500;">Hủy</button>
                     <button id="confirmEditCategoryBtn" style="background:#007bff; color:#fff; border:none; border-radius:7px; padding:10px 24px; font-size:15px; cursor:pointer; font-weight:600;">Lưu</button>
@@ -221,6 +275,22 @@ function editCategory(categoryId) {
     if (nameInput) {
         nameInput.value = category.name;
         nameInput.focus();
+        
+        // Thêm validation cho ô nhập tên danh mục trong modal sửa
+        let lastEditNameLength = 0;
+        nameInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            
+            // Hiển thị thông báo khi vừa đạt 20 ký tự
+            if (value.length === 20 && lastEditNameLength < 20) {
+                if (typeof showAlert === 'function') {
+                    showAlert('Tên danh mục chỉ tối đa 20 ký tự', 'warning');
+                } else {
+                    alert('Tên danh mục chỉ tối đa 20 ký tự');
+                }
+            }
+            lastEditNameLength = value.length;
+        });
     }
     modal.style.display = 'block';
 
@@ -257,6 +327,9 @@ function editCategory(categoryId) {
                 showAlert('Cập nhật danh mục thành công!', 'success');
                 modal.style.display = 'none';
                 if (user && user.restaurant_id) {
+                    // Clear cache and reload data
+                    const cacheKey = `categoriesData_${user.restaurant_id}`;
+                    localStorage.removeItem(cacheKey);
                     loadCategories(user.restaurant_id);
                 }
             } catch (err) {
@@ -321,6 +394,9 @@ function showDeleteConfirmation(categoryId) {
                 showAlert('Xóa danh mục thành công!', 'success');
                 modal.style.display = 'none';
                 if (user && user.restaurant_id) {
+                    // Clear cache and reload data
+                    const cacheKey = `categoriesData_${user.restaurant_id}`;
+                    localStorage.removeItem(cacheKey);
                     loadCategories(user.restaurant_id);
                 }
             } catch (err) {

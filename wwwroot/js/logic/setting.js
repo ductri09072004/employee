@@ -72,15 +72,20 @@ document.addEventListener('DOMContentLoaded', function() {
             checkIpDiff();
         });
 
-    portIpInput.addEventListener('input', function() {
-        newIpValue = portIpInput.value.trim();
-        checkIpDiff();
-    });
+    // Disable input để chỉ cho phép xem, không cho nhập
+    portIpInput.disabled = true;
+    portIpInput.style.backgroundColor = '#f5f5f5';
+    portIpInput.style.cursor = 'not-allowed';
+    
+    // Thêm tooltip hoặc placeholder để thông báo
+    portIpInput.title = 'IP được tự động lấy từ hệ thống, không thể chỉnh sửa';
+    portIpInput.placeholder = 'IP được tự động lấy từ hệ thống';
 
     updateBtn.addEventListener('click', async function() {
-        const ip = portIpInput.value.trim();
+        // Sử dụng IP được tự động lấy từ API thay vì từ input
+        const ip = newIpValue;
         if (!ip) {
-            showAlert('Vui lòng nhập IP Wi-Fi', 'warning');
+            showAlert('Không thể lấy được IP từ hệ thống. Vui lòng thử lại sau.', 'warning');
             return;
         }
 

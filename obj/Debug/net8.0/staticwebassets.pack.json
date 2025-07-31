@@ -429,6 +429,10 @@
       "PackagePath": "staticwebassets\\svg\\icon_action\\lock.svg"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\reset.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\reset.svg"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\unlock.svg",
       "PackagePath": "staticwebassets\\svg\\icon_action\\unlock.svg"
     },
@@ -471,6 +475,10 @@
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\down_icon_small.svg",
       "PackagePath": "staticwebassets\\svg\\sidebar\\down_icon_small.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\eye-slash.svg",
+      "PackagePath": "staticwebassets\\svg\\sidebar\\eye-slash.svg"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\sidebar\\hidden.svg",

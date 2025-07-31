@@ -9,7 +9,23 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const user = JSON.parse(userStr);
             if (user && user.restaurant_id) {
-                loadOrderHistory(user.restaurant_id);
+                // Thử lấy dữ liệu từ localStorage trước
+                const cacheKey = `orderHistory_${user.restaurant_id}`;
+                const cached = localStorage.getItem(cacheKey);
+                if (cached) {
+                    try {
+                        const data = JSON.parse(cached);
+                        renderOrderList(data);
+                        console.log('Đã load dữ liệu từ cache');
+                    } catch (e) {
+                        console.error('Lỗi parse cache, fallback về API:', e);
+                        // Nếu lỗi parse, fallback về API
+                        loadOrderHistory(user.restaurant_id, cacheKey);
+                    }
+                } else {
+                    // Chưa có cache, load từ API
+                    loadOrderHistory(user.restaurant_id, cacheKey);
+                }
             } else {
                 console.error('Không tìm thấy restaurant_id trong thông tin user');
                 document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Không tìm thấy thông tin nhà hàng.</td></tr>';
@@ -27,10 +43,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-async function loadOrderHistory(restaurantId) {
+async function loadOrderHistory(restaurantId, cacheKey) {
     try {
         showLoading();
         const data = await window.orderService.getOrderHistoryDone(restaurantId);
+        
+        // Lưu vào localStorage nếu có cacheKey
+        if (cacheKey) {
+            try {
+                localStorage.setItem(cacheKey, JSON.stringify(data));
+                console.log('Đã lưu dữ liệu vào cache');
+            } catch (e) {
+                console.warn('Không thể lưu vào localStorage:', e);
+            }
+        }
+        
         renderOrderList(data);
     } catch (error) {
         console.error('Error loading order history:', error);
@@ -98,8 +125,6 @@ function renderOrderListPaged(page, perPage) {
                 <td>${formattedPrice}</td>
                 <td>${order.payment}</td>
                 <td>${order.status_order}</td>
-                <td>0 ghi chú</td>
-                <td><a href="#" class="action-link">${order.status_order}</a></td>
                 <td><a href="#" class="action-link">[Xem đơn]</a></td>
             </tr>
         `;
@@ -161,4 +186,25 @@ window.onHistoryPageChange = function(page, perPage) {
     
     // Cập nhật UI phân trang
     updatePaginationUI(currentPage, itemsPerPage, allOrdersArr.length);
+};
+
+// Hàm làm mới dữ liệu (xóa cache và load lại từ API)
+window.refreshOrderHistory = function() {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            if (user && user.restaurant_id) {
+                const cacheKey = `orderHistory_${user.restaurant_id}`;
+                // Xóa cache
+                localStorage.removeItem(cacheKey);
+                console.log('Đã xóa cache, load lại từ API');
+                // Load lại từ API
+                loadOrderHistory(user.restaurant_id, cacheKey);
+            }
+        } catch (error) {
+            console.error('Lỗi khi refresh:', error);
+            showAlert('Lỗi khi làm mới dữ liệu!', 'error');
+        }
+    }
 };
