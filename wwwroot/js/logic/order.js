@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadOrderHistory(user.restaurant_id,status_order);
                 // Thêm load order cards với status confirmed
                 loadOrderCardsConfirmed(user.restaurant_id, 'preparing');
+                
+                // Bắt đầu auto refresh cho orders
+                startOrderAutoRefresh(user.restaurant_id);
             } else {
                 console.error('Không tìm thấy restaurant_id trong thông tin user');
                 document.getElementById('orderHistoryBody').innerHTML = '<tr><td colspan="10">Không tìm thấy thông tin nhà hàng.</td></tr>';
@@ -327,3 +330,46 @@ document.addEventListener('click', function(e) {
 
 });
 
+// Hàm bắt đầu tự động refresh cho orders
+function startOrderAutoRefresh(restaurantId) {
+    if (!window.autoRefreshManager) {
+        console.warn('AutoRefreshManager chưa được load');
+        return;
+    }
+    
+    // Auto refresh cho order history
+    const refreshOrderHistoryFunction = window.autoRefreshManager.createRefreshFunction(
+        () => window.orderService.getOrderbyStatus(restaurantId, 'pending'),
+        `orderHistory_${restaurantId}`,
+        (data) => {
+            renderOrderList(data);
+        },
+        (message, type) => {
+            // Hiển thị thông báo nhỏ khi có đơn hàng mới
+            if (type === 'info') {
+                showAlert('Có đơn hàng mới!', 'info');
+            }
+        }
+    );
+    
+    // Auto refresh cho order cards (đơn đã xác nhận)
+    const refreshOrderCardsFunction = window.autoRefreshManager.createRefreshFunction(
+        () => window.orderService.getOrderby3in1Status(restaurantId, 'preparing'),
+        `orderCards_${restaurantId}`,
+        (data) => {
+            renderOrderCardsConfirmed(data);
+        }
+    );
+    
+    // Bắt đầu auto refresh mỗi 15 giây cho orders (nhanh hơn menu)
+    window.autoRefreshManager.start('orderHistory', refreshOrderHistoryFunction, 15000, true);
+    window.autoRefreshManager.start('orderCards', refreshOrderCardsFunction, 15000, true);
+}
+
+// Hàm dừng tự động refresh cho orders
+function stopOrderAutoRefresh() {
+    if (window.autoRefreshManager) {
+        window.autoRefreshManager.stop('orderHistory');
+        window.autoRefreshManager.stop('orderCards');
+    }
+}

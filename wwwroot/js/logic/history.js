@@ -193,7 +193,7 @@ function renderOrderListPaged(page, perPage) {
                 <td>Bàn ${order.id_table}</td>
                 <td>${formattedDateTime}</td>
                 <td>${formattedPrice}</td>
-                <td>${order.payment}</td>
+       
                 <td>${order.status_order}</td>
                 <td>
                     ${actionHtml}
