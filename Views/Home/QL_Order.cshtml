@@ -212,27 +212,32 @@
 
 </style>
 
-<div class="order-management-container">
+<div class="order-management-container" style="display: flex; flex-direction: column; min-height: 95vh;">
     <p class="section-title">Hóa đơn đặt món đã duyệt</p>
 
     <div class="order-cards-grid">
         <!-- Dữ liệu sẽ được load từ JavaScript -->
     </div>
 
-    <table class="order-details-table">        
-         @await Component.InvokeAsync("Table", new { 
-            columnNames = new List<string> { "STT","Mã đơn" ,"Bàn số", "Giờ đặt", "Tổng tiền",
-                 "Thanh toán","Trạng thái" ,"Duyệt đơn" }, 
-            tableBodyId = "orderHistoryBody" 
-        })
-    </table>
+    <div style="flex: 1 0 auto;">
+        <table class="order-details-table">        
+             @await Component.InvokeAsync("Table", new { 
+                columnNames = new List<string> { "STT","Mã đơn" ,"Bàn số", "Giờ đặt", "Tổng tiền",
+                     "Thanh toán","Trạng thái" ,"Duyệt đơn" }, 
+                tableBodyId = "orderHistoryBody" 
+            })
+        </table>
+    </div>
+    
+    <div style="flex-shrink: 0;">
         @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
-        CurrentPage = 1,
-        TotalPages = 1,
-        TotalItems = 1,
-        ItemsPerPage = 15,
-        PageAction = "onHistoryPageChange"
-    })
+            CurrentPage = 1,
+            TotalPages = 1,
+            TotalItems = 1,
+            ItemsPerPage = 15,
+            PageAction = "onHistoryPageChange"
+        })
+    </div>
 </div>
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JOLICOW")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9773625f941303f155b7c8ebfeebad70302bb5bc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8abe9479d43142ce664b2910d0592cba7f75d907")]
 [assembly: System.Reflection.AssemblyProductAttribute("JOLICOW")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JOLICOW")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

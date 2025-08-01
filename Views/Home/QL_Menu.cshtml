@@ -167,7 +167,7 @@
     }
 </style>
 
-<div class="menu-management-container">
+<div class="menu-management-container" style="display: flex; flex-direction: column; min-height: 95vh;">
     <div class="top-actions">
         <div class="action-buttons">
             <button class="action-btn primary" onclick="openAddMenuModal()">+ Thêm món</button>
@@ -177,7 +177,7 @@
         </div>
     </div>
 
-    <div class="menu-table-container">
+    <div class="menu-table-container" style="flex: 1 0 auto;">
        @await Component.InvokeAsync("Table", new { 
             columnNames = new List<string> { "Danh mục", "Tên món", "Hình ảnh",
                 "Giá", "Topping", "Trạng thái", "Hành động"}, 
@@ -185,13 +185,15 @@
         })
     </div>
 
-    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
-        CurrentPage = 1,
-        TotalPages = 1,
-        TotalItems = 1,
-        ItemsPerPage = 15,
-        PageAction = "onMenuPageChange"
-    })
+    <div style="flex-shrink: 0;">
+        @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+            CurrentPage = 1,
+            TotalPages = 1,
+            TotalItems = 1,
+            ItemsPerPage = 15,
+            PageAction = "onMenuPageChange"
+        })
+    </div>
 </div>
 
 @section Scripts {

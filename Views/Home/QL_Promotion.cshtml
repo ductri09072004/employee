@@ -141,14 +141,14 @@
 }
 </style>
 
-<div class="history-container">
+<div class="history-container" style="display: flex; flex-direction: column; min-height: 95vh;">
     <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 20px;">
         <button id="openAddPromotionModal" style="background-color: #007bff; color: #fff; border: 1px solid #007bff; border-radius: 4px; padding: 8px 15px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background-color 0.2s, border-color 0.2s;">+ Thêm khuyến mãi</button>
         <button class="reset-promotion-button" id="refreshBtn" onclick="window.refreshPromotionData()">
             <img src="~/svg/icon_action/reset.svg" alt="Reset" style="width: 16px; height: 16px;">
         </button>
     </div>
-    <div class="history-table-container">
+    <div class="history-table-container" style="flex: 1 0 auto;">
         <!-- Components table  -->
            @await Component.InvokeAsync("Table", new { 
             columnNames = new List<string> { "ID", "Max_Discount",
@@ -158,13 +158,15 @@
         })
     </div>
 
-    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
-        CurrentPage = 1,
-        TotalPages = 1,
-        TotalItems = 1,
-        ItemsPerPage = 15,
-        PageAction = "staffPageChange"
-    })
+    <div style="flex-shrink: 0;">
+        @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+            CurrentPage = 1,
+            TotalPages = 1,
+            TotalItems = 1,
+            ItemsPerPage = 15,
+            PageAction = "staffPageChange"
+        })
+    </div>
 </div>
 
 

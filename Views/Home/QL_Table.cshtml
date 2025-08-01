@@ -210,7 +210,7 @@
     }
 </style>
 
-<div class="table-management-container">
+<div class="table-management-container" style="display: flex; flex-direction: column; min-height: 95vh;">
     <div class="add-table-button-container">
         <button class="add-table-button" id="openAddTableModal">
             <span class="add-icon">+</span> Thêm bàn
@@ -257,19 +257,22 @@
     </div>
 
 @* Components table *@
-    <div class="table-list-container">   
+    <div class="table-list-container" style="flex: 1 0 auto;">   
          @await Component.InvokeAsync("Table", new { 
             columnNames = new List<string> { "STT", "Bàn số", "QR Code", "Hành Động" }, 
             tableBodyId = "table-list-body" 
         })
     </div>
-    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
-        CurrentPage = 1,
-        TotalPages = 1,
-        TotalItems = 1,
-        ItemsPerPage = 15,
-        PageAction = "onTablePageChange"
-    })
+    
+    <div style="flex-shrink: 0;">
+        @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+            CurrentPage = 1,
+            TotalPages = 1,
+            TotalItems = 1,
+            ItemsPerPage = 15,
+            PageAction = "onTablePageChange"
+        })
+    </div>
 </div>
 
 @section Scripts {

@@ -339,7 +339,7 @@
     }
 </style>
 
-<div class="table-management-container">
+<div class="table-management-container" style="display: flex; flex-direction: column; min-height: 95vh;">
     <div class="add-table-button-container">
         <button class="add-table-button" id="openAddToppingModal">
             <span class="add-icon">+</span> Thêm topping
@@ -386,7 +386,7 @@
     </div>
 
 @* Components table *@
-    <div class="table-list-container">
+    <div class="table-list-container" style="flex: 1 0 auto;">
         <table class="table-list" id="topping-accordion-table">
             <thead>
                 <tr>
@@ -401,13 +401,16 @@
             </tbody>
         </table>
     </div>
-    @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
-        CurrentPage = 1,
-        TotalPages = 1,
-        TotalItems = 1,
-        ItemsPerPage = 5,
-        PageAction = "onTablePageChange"
-    })
+    
+    <div style="flex-shrink: 0;">
+        @await Component.InvokeAsync("Pagination", new Components.Model.Pagination.PaginationComponentModel {
+            CurrentPage = 1,
+            TotalPages = 1,
+            TotalItems = 1,
+            ItemsPerPage = 5,
+            PageAction = "onTablePageChange"
+        })
+    </div>
 </div>
 
 <!-- Popup modal thêm topping cho món -->
