@@ -209,6 +209,134 @@
         white-space: nowrap;
         overflow: hidden;
     }
+
+    /* Invoice modal styles */
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .invoice-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .invoice-info h3 {
+        margin: 0;
+        color: #4267B2;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .invoice-info p {
+        margin: 0;
+        color: #696969;
+        font-size: 14px;
+    }
+
+    .invoice-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .invoice-status.confirmed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .invoice-status.pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .invoice-status.cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .invoice-items {
+        margin-bottom: 20px;
+    }
+
+    .invoice-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 15px 0;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .invoice-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-details {
+        flex: 1;
+        margin-right: 15px;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    .item-toppings {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .item-note {
+        color: #888;
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .item-quantity {
+        color: #4267B2;
+        font-weight: 600;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .item-price {
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+        text-align: right;
+        min-width: 80px;
+    }
+
+    .invoice-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-top: 2px solid #e9ecef;
+        margin-top: 20px;
+    }
+
+    .total-label {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .total-amount {
+        font-size: 20px;
+        font-weight: 700;
+        color: #4267B2;
+    }
 </style>
 
 <div class="table-management-container">
@@ -312,11 +440,21 @@
     </div>
 </div>
 
+<!-- Popup modal xem hóa đơn -->
+<div id="invoice-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:600px; max-height:80vh; overflow-y:auto;">
+        <span class="close-modal" id="closeInvoiceModal">&times;</span>
+        <h2 class="modal-title" style="color:#4267B2;">Hóa đơn chi tiết</h2>
+        <div id="invoice-content">
+            <!-- Nội dung hóa đơn sẽ được render bằng JS -->
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="~/js/api_service/menu.service.js"></script>
     <script src="~/js/logic/topping.js"></script>
     <link rel="stylesheet" href="/css/topping-accordion.css" />
-    <script src="/js/logic/topping-accordion.js"></script>
 }
 

@@ -161,10 +161,6 @@
       "PackagePath": "staticwebassets\\js\\logic\\table.js"
     },
     {
-      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\topping-accordion.js",
-      "PackagePath": "staticwebassets\\js\\logic\\topping-accordion.js"
-    },
-    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\logic\\topping.js",
       "PackagePath": "staticwebassets\\js\\logic\\topping.js"
     },
@@ -425,8 +421,24 @@
       "PackagePath": "staticwebassets\\svg\\icon_action\\delete.svg"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\download.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\download.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\eyeoff.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\eyeoff.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\eyeon.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\eyeon.svg"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\lock.svg",
       "PackagePath": "staticwebassets\\svg\\icon_action\\lock.svg"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\qr.svg",
+      "PackagePath": "staticwebassets\\svg\\icon_action\\qr.svg"
     },
     {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\svg\\icon_action\\reset.svg",

@@ -73,18 +73,18 @@ function renderOrderCardsConfirmed(data) {
             
             return `
                 <tr>
-                    <td>${item.id_dishes || 'Món ăn'}</td>
-                    <td>${item.quantity || 1}</td>
-                    <td>${toppings}</td>
-                    <td>${item.note || '---'}</td>
+                    <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">${item.id_dishes || 'Món ăn'}</td>
+                    <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">${item.quantity || 1}</td>
+                    <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">${toppings}</td>
+                    <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">${item.note || '---'}</td>
                 </tr>
             `;
         }).join('') : `
             <tr>
-                <td>Không có món ăn</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
+                <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">Không có món ăn</td>
+                <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">-</td>
+                <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">-</td>
+                <td style="padding: 8px; text-align: left; border-bottom: 1px solid #eee;">-</td>
             </tr>
         `;
 
@@ -102,21 +102,20 @@ function renderOrderCardsConfirmed(data) {
                     <span class="card-status">${order.status_order || 'Đã xác nhận'}</span>
                 </div>
                 
-                <table class="order-items-table">
+                <table class="order-items-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
                     <thead>
                         <tr>
-                            <th>Món ăn</th>
-                            <th>Số lượng</th>
-                            <th>Topping</th>
-                            <th>Ghi chú</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color:rgb(255, 255, 255);">Món ăn</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color:rgb(255, 255, 255);">SL</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color:rgb(255, 255, 255);">Topping</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color:rgb(255, 255, 255);">Ghi chú</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        ${itemsHtml}
-                    </tbody>
-                </table>
+                                         <tbody>
+                         ${itemsHtml}
+                     </tbody>
+                 </table>
                 <div class="order-actions">
-                    
                     <button class="btn btn-green" data-order-id="${order.id_order}">Hoàn tất</button>
                 </div>
             </div>
@@ -197,9 +196,13 @@ function renderOrderListPaged(page, perPage) {
                 <td>${formattedPrice}</td>
                 <td>${order.payment || 'N/A'}</td>
                 <td>${order.status_order || 'N/A'}</td>
-                <td>${notesCount} ghi chú</td>
-                <td><a href="#" class="action-link" data-id="${order.id_order}">${order.status_order || 'N/A'}</a></td>
-                <td><a href="#" class="action-link">[Xem đơn]</a></td>
+                                   <td>
+                     <a href="#" class="action-link" data-id="${order.id_order}" title="Duyệt đơn" style="display: flex; gap: 5px;">
+                         <img src="/svg/icon_action/write.svg" alt="Duyệt đơn" style="width: 16px; height: 16px;">
+                         <span style="color: #696969;">Duyệt đơn</span>
+                     </a>
+                 </td>
+                
             </tr>
         `;
     }).join('');
@@ -264,14 +267,16 @@ window.onHistoryPageChange = function(page, perPage) {
 
 
 document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('action-link')) {
+    // Kiểm tra nếu click vào action-link hoặc các element con của nó
+    const actionLink = e.target.closest('.action-link');
+    if (actionLink) {
         e.preventDefault();
-        const id_order = e.target.getAttribute('data-id');
+        const id_order = actionLink.getAttribute('data-id');
         if (!id_order) return;
         showLoading();
         orderService.updateStatus(id_order, 'preparing')
             .then(data => {
-                showAlert('Đã chuyển trạng thái sang preparing!', 'success');
+                showAlert('Đã xác nhận đơn lên bếp', 'success');
                 // Reload lại dữ liệu
                 const userStr = localStorage.getItem('user');
                 if (userStr) {
@@ -300,7 +305,7 @@ document.addEventListener('click', function(e) {
         showLoading();
         orderService.updateStatus(id_order, 'confirmed')
             .then(data => {
-                showAlert('Đã chuyển trạng thái sang confirmed!', 'success');
+                showAlert('Đơn đã hoàn thành', 'success');
                 // Reload lại dữ liệu
                 const userStr = localStorage.getItem('user');
                 if (userStr) {
@@ -318,5 +323,7 @@ document.addEventListener('click', function(e) {
                 hideLoading();
             });
     }
+    
+
 });
 

@@ -394,8 +394,12 @@ function renderTableListPaged(page, perPage) {
                 <td>${tableId}</td>
                 <td><a href="${qrUrl}" target="_blank">${qrUrl}</a></td>
                 <td>
-                    <a href="#" class="action-link upload">[Hiện]</a>
-                    <a href="#" class="action-link delete" data-id="${item.id}">[Xóa]</a>
+                    <a href="#" class="action-link upload" title="Hiện QR">
+                        <img src="/svg/icon_action/qr.svg" alt="Hiện QR" style="width: 20px; height: 20px;">
+                    </a>
+                    <a href="#" class="action-link delete" data-id="${item.id}" title="Xóa bàn">
+                        <img src="/svg/icon_action/delete.svg" alt="Xóa bàn" style="width: 20px; height: 20px;">
+                    </a>
                 </td>
             </tr>
         `;

@@ -65,6 +65,36 @@ const PROMO_API = {
             throw error;
         }
     },
+
+    async editPromotion(id, promotionData) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/promotions/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(promotionData)
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Edit promotion error:', error);
+            throw error;
+        }
+    },
+
+    async deletePromotion(id) {
+        try {
+            const response = await fetch(`${this.BASE_URL}/promotions/${id}`, {
+                method: 'DELETE'
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Delete promotions error:', error);
+            throw error;
+        }
+    },
 };
 
 // Export service

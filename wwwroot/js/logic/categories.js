@@ -199,8 +199,12 @@ function renderCategoryListPaged(page, perPage) {
                 <td>${category.id_category}</td>
                 <td>${category.name}</td>
                 <td>
-                    <a href="#" class="menu-action-link edit" data-id="${category.id}">Sửa</a>
-                    <a href="#" class="menu-action-link delete" data-id="${category.id}">Xóa</a>
+                    <a href="#" class="menu-action-link edit" data-id="${category.id}" title="Sửa">
+                         <img src="/svg/icon_action/write.svg" alt="Sửa" style="width:20px; height: 20px;">
+                    </a>
+                    <a href="#" class="menu-action-link delete" data-id="${category.id}" title="Xóa">
+                         <img src="/svg/icon_action/delete.svg" alt="Xóa" style="width: 20px; height: 20px;">
+                    </a>
                 </td>
             </tr>
         `;
@@ -218,7 +222,8 @@ function setupActionButtons() {
     document.querySelectorAll('.menu-action-link.edit').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            const categoryId = e.target.getAttribute('data-id');
+            // Lấy categoryId từ link element, không phải từ SVG
+            const categoryId = e.currentTarget.getAttribute('data-id');
             console.log('Edit button clicked, categoryId:', categoryId);
             editCategory(categoryId);
         });
@@ -228,7 +233,8 @@ function setupActionButtons() {
     document.querySelectorAll('.menu-action-link.delete').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            const categoryId = e.target.getAttribute('data-id');
+            // Lấy categoryId từ link element, không phải từ SVG
+            const categoryId = e.currentTarget.getAttribute('data-id');
             console.log('Delete button clicked, categoryId:', categoryId);
             showDeleteConfirmation(categoryId);
         });

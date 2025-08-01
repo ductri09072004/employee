@@ -5,7 +5,7 @@
 
 <style>
 /* Modal popup thêm promotion - đồng bộ với topping modal */
-#add-promotion-modal {
+#add-promotion-modal, #edit-promotion-modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -15,7 +15,7 @@
     justify-content: center;
     align-items: center;
 }
-#add-promotion-modal .modal-content {
+#add-promotion-modal .modal-content, #edit-promotion-modal .modal-content {
     background: #fff;
     max-width: 400px;
     padding: 36px 36px 28px 36px;
@@ -25,7 +25,7 @@
     margin: auto;
     transition: box-shadow 0.2s, transform 0.2s;
 }
-#add-promotion-modal h3 {
+#add-promotion-modal h3, #edit-promotion-modal h3 {
     font-size: 24px;
     color: #4267B2;
     margin-bottom: 22px;
@@ -33,13 +33,13 @@
     font-weight: bold;
     letter-spacing: 0.5px;
 }
-#add-promotion-modal label {
+#add-promotion-modal label, #edit-promotion-modal label {
     font-size: 15px;
     margin-bottom: 8px;
     font-weight: 500;
     color: #333;
 }
-#add-promotion-modal input, #add-promotion-modal select {
+#add-promotion-modal input, #add-promotion-modal select, #edit-promotion-modal input, #edit-promotion-modal select {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
@@ -50,18 +50,18 @@
     background: #fafbfc;
     transition: border 0.2s;
 }
-#add-promotion-modal input:focus, #add-promotion-modal select:focus {
+#add-promotion-modal input:focus, #add-promotion-modal select:focus, #edit-promotion-modal input:focus, #edit-promotion-modal select:focus {
     border: 1.5px solid #4267B2;
     outline: none;
 }
-#add-promotion-modal .modal-actions {
+#add-promotion-modal .modal-actions, #edit-promotion-modal .modal-actions {
     text-align: center;
     margin-top: 16px;
     display: flex;
     gap: 12px;
     justify-content: center;
 }
-#add-promotion-modal button[type="submit"] {
+#add-promotion-modal button[type="submit"], #edit-promotion-modal button[type="submit"] {
     background: linear-gradient(90deg, #4267B2 60%, #3498db 100%);
     color: #fff;
     border: none;
@@ -74,11 +74,11 @@
     box-shadow: 0 2px 8px rgba(66,103,178,0.10);
     transition: background 0.2s, box-shadow 0.2s;
 }
-#add-promotion-modal button[type="submit"]:hover {
+#add-promotion-modal button[type="submit"]:hover, #edit-promotion-modal button[type="submit"]:hover {
     background: linear-gradient(90deg, #3498db 60%, #4267B2 100%);
     box-shadow: 0 4px 16px rgba(66,103,178,0.13);
 }
-#add-promotion-modal button[type="button"] {
+#add-promotion-modal button[type="button"], #edit-promotion-modal button[type="button"] {
     background: #e9ecef;
     color: #333;
     border: none;
@@ -89,10 +89,10 @@
     cursor: pointer;
     transition: background 0.2s;
 }
-#add-promotion-modal button[type="button"]:hover {
+#add-promotion-modal button[type="button"]:hover, #edit-promotion-modal button[type="button"]:hover {
     background: #d0d7de;
 }
-#add-promotion-modal .close-x {
+#add-promotion-modal .close-x, #edit-promotion-modal .close-x {
     position: absolute;
     right: 18px;
     top: 12px;
@@ -102,11 +102,11 @@
     font-weight: bold;
     transition: color 0.2s;
 }
-#add-promotion-modal .close-x:hover {
+#add-promotion-modal .close-x:hover, #edit-promotion-modal .close-x:hover {
     color: #e74c3c;
 }
 @@media (max-width: 600px) {
-    #add-promotion-modal .modal-content {
+    #add-promotion-modal .modal-content, #edit-promotion-modal .modal-content {
         max-width: 98vw;
         padding: 18px 6vw 18px 6vw;
     }
@@ -192,6 +192,36 @@
       <div class="modal-actions">
         <button type="button" id="closeAddPromotionModal">Hủy</button>
         <button type="submit">Thêm</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal sửa promotion -->
+<div id="edit-promotion-modal">
+  <div class="modal-content">
+    <span class="close-x" id="closeEditPromotionModalX">&times;</span>
+    <h3>Sửa khuyến mãi</h3>
+    <form id="editPromotionForm">
+      <input type="hidden" id="edit-promotion-id">
+      <label>Ngày kết thúc:</label>
+      <input type="datetime-local" id="edit-date-end" required>
+      <label>Giảm tối đa (VNĐ):</label>
+      <input type="number" id="edit-max-discount" required min="0" max="99999999">
+      <label>Giá trị đơn tối thiểu (VNĐ):</label>
+      <input type="number" id="edit-min-order-value" required min="0" max="99999999">
+      <label>Phần trăm giảm (%):</label>
+      <input type="number" id="edit-percent" required min="1" max="100">
+      <label>Số lượng:</label>
+      <input type="number" id="edit-quantity" required min="1" max="9999">
+      <label>Trạng thái:</label>
+      <select id="edit-status" required>
+        <option value="active">active</option>
+        <option value="inactive">inactive</option>
+      </select>
+      <div class="modal-actions">
+        <button type="button" id="closeEditPromotionModal">Hủy</button>
+        <button type="submit">Cập nhật</button>
       </div>
     </form>
   </div>

@@ -16,24 +16,70 @@
     }
 
     .order-cards-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        display: flex;
+        flex-direction: row;
         gap: 12px;
         padding: 32px;
-        justify-items: center;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        scrollbar-width: thin;
+        scrollbar-color: #CBCBCB #f0f0f0;
     }
 
-    .order-card {
-        background-color: #fff;
-        border: 1px solid #CBCBCB;
-        border-radius: 16px;
-        padding: 12px;
-        max-width: 319px;
-        max-height: 483px;
-        min-height: 280px;
-        display: flex;
-        flex-direction: column;
+    .order-cards-grid::-webkit-scrollbar {
+        height: 8px;
     }
+
+    .order-cards-grid::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    .order-cards-grid::-webkit-scrollbar-thumb {
+        background: #CBCBCB;
+        border-radius: 4px;
+    }
+
+    .order-cards-grid::-webkit-scrollbar-thumb:hover {
+        background: #999;
+    }
+
+                   .order-card {
+          background-color: #fff;
+          border: 1px solid #CBCBCB;
+          border-radius: 16px;
+          padding: 12px;
+          max-width: 320px;
+          min-width: 220px;
+          max-height: 340px;
+          min-height: 280px;
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          overflow-y: auto;
+          overflow-x: hidden;
+          scrollbar-width: thin;
+          scrollbar-color: #CBCBCB #f0f0f0;
+      }
+
+      .order-card::-webkit-scrollbar {
+          width: 6px;
+      }
+
+      .order-card::-webkit-scrollbar-track {
+          background: #f0f0f0;
+          border-radius: 3px;
+      }
+
+      .order-card::-webkit-scrollbar-thumb {
+          background: #CBCBCB;
+          border-radius: 3px;
+      }
+
+      .order-card::-webkit-scrollbar-thumb:hover {
+          background: #999;
+      }
 
     .card-header {
         display: flex;
@@ -70,21 +116,52 @@
         font-weight: w400;
     }
 
-    .order-items-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-        margin-bottom: 30px;
-        font-size: 14px;
-    }
+                   .order-items-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 15px;
+          margin-bottom: 30px;
+          font-size: 14px;
+          table-layout: fixed;
+      }
 
-    .order-items-table th,
-    .order-items-table td {
-        padding: 6px 0;
-        text-align:center;
-        border-bottom: 1px solid #eee;
-        justify-content: space-between;
-    }
+      /* Định nghĩa độ rộng cho từng cột */
+      .order-items-table th:nth-child(1),
+      .order-items-table td:nth-child(1) {
+          width: 35%; /* Món ăn */
+      }
+
+      .order-items-table th:nth-child(2),
+      .order-items-table td:nth-child(2) {
+          width: 15%; /* Số lượng */
+      }
+
+      .order-items-table th:nth-child(3),
+      .order-items-table td:nth-child(3) {
+          width: 25%; /* Topping */
+      }
+
+      .order-items-table th:nth-child(4),
+      .order-items-table td:nth-child(4) {
+          width: 25%; /* Ghi chú */
+      }
+
+                   .order-items-table th,
+      .order-items-table td {
+          padding: 6px 4px;
+          text-align: left;
+          border-bottom: 1px solid #eee;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          white-space: normal;
+          vertical-align: top;
+      }
+
+      /* Đặc biệt cho cột ghi chú */
+      .order-items-table td:last-child {
+          max-width: 120px;
+          word-break: break-word;
+      }
 
     .order-items-table th {
         color: #696969;
@@ -145,7 +222,7 @@
     <table class="order-details-table">        
          @await Component.InvokeAsync("Table", new { 
             columnNames = new List<string> { "STT","Mã đơn" ,"Bàn số", "Giờ đặt", "Tổng tiền",
-                 "Phương thức thanh toán","Trạng thái" ,"Ghi chú","Duyệt đơn","Chi tiết đơn" }, 
+                 "Thanh toán","Trạng thái" ,"Duyệt đơn" }, 
             tableBodyId = "orderHistoryBody" 
         })
     </table>

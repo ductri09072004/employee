@@ -212,8 +212,12 @@ function renderMenuListPaged(page, perPage) {
                 <td>${toppingNames || 'Không có'}</td>
                 <td><span class="status-text ${statusClass}">${statusText}</span></td>
                 <td>
-                    <a href="#" class="menu-action-link edit" data-id="${item.id}">Sửa</a>
-                    <a href="#" class="menu-action-link delete" data-id="${item.id}">Xóa</a>
+                    <a href="#" class="menu-action-link edit" data-id="${item.id}" title="Sửa món">
+                        <img src="/svg/icon_action/write.svg" alt="Sửa món" style="width:20px; height: 20px;">
+                    </a>
+                    <a href="#" class="menu-action-link delete" data-id="${item.id}" title="Xóa món">
+                        <img src="/svg/icon_action/delete.svg" alt="Xóa món" style="width: 20px; height: 20px;">
+                    </a>
                 </td>
             </tr>
         `;
@@ -227,15 +231,21 @@ function setupMenuActionButtons() {
     document.querySelectorAll('.menu-action-link.edit').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            const menuId = e.target.getAttribute('data-id');
-            editMenuItem(menuId);
+            const actionLink = e.target.closest('.menu-action-link');
+            const menuId = actionLink ? actionLink.getAttribute('data-id') : null;
+            if (menuId) {
+                editMenuItem(menuId);
+            }
         });
     });
     document.querySelectorAll('.menu-action-link.delete').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            const menuId = e.target.getAttribute('data-id');
-            deleteMenuItem(menuId);
+            const actionLink = e.target.closest('.menu-action-link');
+            const menuId = actionLink ? actionLink.getAttribute('data-id') : null;
+            if (menuId) {
+                deleteMenuItem(menuId);
+            }
         });
     });
 }

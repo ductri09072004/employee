@@ -142,6 +142,274 @@
         height: 16px;
         filter: brightness(0) invert(1);
     }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0; top: 0; width: 100%; height: 100%;
+        overflow: auto; background: rgba(0,0,0,0.3);
+    }
+    .modal-content {
+        background: #fff; margin: 8% auto; padding: 32px 32px 24px 32px; border-radius: 14px;
+        width: 300px; box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Ẩn thanh cuộn dọc cho modal hóa đơn */
+    #invoice-modal .modal-content {
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        /* Ẩn thanh cuộn cho Webkit browsers (Chrome, Safari, Edge) */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    #invoice-modal .modal-content::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .close-modal {
+        position: absolute; right: 18px; top: 12px; font-size: 26px; color: #bbb; cursor: pointer;
+        transition: color 0.2s;
+    }
+    .close-modal:hover {
+        color: #e74c3c;
+    }
+    .modal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #4267B2;
+        margin-bottom: 18px;
+        text-align: center;
+    }
+
+    /* Invoice modal styles */
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .invoice-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .invoice-info h3 {
+        margin: 0;
+        color: #4267B2;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .invoice-info p {
+        margin: 0;
+        color: #696969;
+        font-size: 14px;
+    }
+
+    .invoice-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .invoice-status.confirmed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .invoice-status.pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .invoice-status.cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .invoice-items {
+        margin-bottom: 20px;
+    }
+
+    .invoice-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 15px 0;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .invoice-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-details {
+        flex: 1;
+        margin-right: 15px;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    .item-toppings {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .item-note {
+        color: #888;
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .item-quantity {
+        color: #4267B2;
+        font-weight: 600;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .item-price {
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+        text-align: right;
+        min-width: 80px;
+    }
+
+    .invoice-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-top: 2px solid #e9ecef;
+        margin-top: 20px;
+    }
+
+    .total-label {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .total-amount {
+        font-size: 20px;
+        font-weight: 700;
+        color: #4267B2;
+    }
+
+    /* Price breakdown styles */
+    .price-breakdown {
+        width: 100%;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .price-row:last-child {
+        border-bottom: none;
+        padding-top: 12px;
+        border-top: 2px solid #e9ecef;
+        margin-top: 8px;
+    }
+
+    .price-label {
+        font-size: 14px;
+        color: #696969;
+        font-weight: 500;
+    }
+
+    .price-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .original-price {
+        color: #888;
+        text-decoration: line-through;
+    }
+
+    .discount-price {
+        color: #e74c3c;
+        font-weight: 700;
+    }
+
+    .total-row .price-label {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .total-row .price-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #4267B2;
+    }
+
+    /* Download PDF button styles */
+    .modal-actions {
+        border-top: 1px solid #e9ecef;
+        padding-top: 20px;
+    }
+
+    #viewInvoiceBtn {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
+    }
+
+    #viewInvoiceBtn:hover {
+        background-color: #5a6268 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    }
+
+    #viewInvoiceBtn:active {
+        transform: translateY(0);
+    }
+
+    #downloadPdfBtn {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(66, 103, 178, 0.2);
+    }
+
+    #downloadPdfBtn:hover {
+        background-color: #365899 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(66, 103, 178, 0.3);
+    }
+
+    #downloadPdfBtn:active {
+        transform: translateY(0);
+    }
 </style>
 
 <div class="history-container">
@@ -169,6 +437,17 @@
         ItemsPerPage = 15,
         PageAction = "onHistoryPageChange"
     })
+</div>
+
+<!-- Popup modal xem hóa đơn -->
+<div id="invoice-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:600px; max-height:80vh; overflow-y:auto;">
+        <span class="close-modal" id="closeInvoiceModal">&times;</span>
+        <h2 class="modal-title" style="color:#4267B2;">Hóa đơn chi tiết</h2>
+        <div id="invoice-content">
+            <!-- Nội dung hóa đơn sẽ được render bằng JS -->
+        </div>
+    </div>
 </div>
 
 @section Scripts {

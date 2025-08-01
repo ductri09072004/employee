@@ -1,6 +1,3 @@
-let allToppingsArr = [];
-let currentPage = 1;
-let itemsPerPage = 15;
 let currentEditDishId = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,23 +10,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadToppings(user.restaurant_id);
             } else {
                 console.error('Không tìm thấy restaurant_id trong thông tin user');
-                document.getElementById('table-list-body').innerHTML = '<tr><td colspan="7">Không tìm thấy thông tin nhà hàng.</td></tr>';
+                document.getElementById('topping-accordion-body').innerHTML = '<tr><td colspan="4">Không tìm thấy thông tin nhà hàng.</td></tr>';
             }
         } catch (error) {
             console.error('Lỗi khi parse user data:', error);
-            document.getElementById('table-list-body').innerHTML = '<tr><td colspan="7">Lỗi dữ liệu người dùng.</td></tr>';
+            document.getElementById('topping-accordion-body').innerHTML = '<tr><td colspan="4">Lỗi dữ liệu người dùng.</td></tr>';
         }
     } else {
         console.error('Chưa đăng nhập');
-        document.getElementById('table-list-body').innerHTML = '<tr><td colspan="7">Người dùng chưa đăng nhập.</td></tr>';
+        document.getElementById('topping-accordion-body').innerHTML = '<tr><td colspan="4">Người dùng chưa đăng nhập.</td></tr>';
     }
 
     // Sửa event cho nút Sửa (edit)
     document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('action-link') && e.target.classList.contains('edit')) {
+        if (e.target.closest('.action-link.edit')) {
             e.preventDefault();
-            const dishId = e.target.getAttribute('data-id');
+            const link = e.target.closest('.action-link.edit');
+            const dishId = link.getAttribute('data-id');
             showAddToppingModalForDish(dishId);
+        }
+    });
+
+    // Event cho nút Xóa (delete)
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.action-link.delete')) {
+            e.preventDefault();
+            const link = e.target.closest('.action-link.delete');
+            const dishId = link.getAttribute('data-id');
+            const optionId = link.getAttribute('data-option-id');
+            showDeleteConfirmation(dishId, optionId);
         }
     });
 
@@ -249,6 +258,46 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.target === modal) modal.style.display = 'none';
         });
     }
+
+    // Event listener cho nút đóng modal add table
+    const closeAddTableModalBtn = document.getElementById('closeAddTableModal');
+    if (closeAddTableModalBtn) {
+        closeAddTableModalBtn.addEventListener('click', function() {
+            closeModal('add-table-modal');
+        });
+    }
+
+    // Event listener cho nút đóng modal QR
+    const closeQRModalBtn = document.getElementById('closeShowQRModal');
+    if (closeQRModalBtn) {
+        closeQRModalBtn.addEventListener('click', function() {
+            closeModal('show-qr-modal');
+        });
+    }
+
+    // Đóng modal add table khi click outside
+    const addTableModal = document.getElementById('add-table-modal');
+    if (addTableModal) {
+        window.addEventListener('click', function(e) {
+            if (e.target === addTableModal) addTableModal.style.display = 'none';
+        });
+    }
+
+    // Đóng modal delete khi click outside
+    const deleteModal = document.getElementById('delete-table-modal');
+    if (deleteModal) {
+        window.addEventListener('click', function(e) {
+            if (e.target === deleteModal) deleteModal.style.display = 'none';
+        });
+    }
+
+    // Đóng modal QR khi click outside
+    const qrModal = document.getElementById('show-qr-modal');
+    if (qrModal) {
+        window.addEventListener('click', function(e) {
+            if (e.target === qrModal) qrModal.style.display = 'none';
+        });
+    }
 });
 
 async function loadToppings(restaurantId) {
@@ -278,10 +327,10 @@ async function loadToppings(restaurantId) {
             console.log('Loaded toppings from API and cached');
         }
         
-        renderToppingList(data);
+        window.renderToppingAccordion(data);
     } catch (error) {
         console.error('Error loading toppings:', error);
-        document.getElementById('table-list-body').innerHTML = '<tr><td colspan="7">Lỗi tải dữ liệu.</td></tr>';
+        document.getElementById('topping-accordion-body').innerHTML = '<tr><td colspan="4">Lỗi tải dữ liệu.</td></tr>';
     } finally {
         hideLoading();
     }
@@ -303,105 +352,6 @@ window.refreshToppingsData = function() {
         }
     }
 };
-
-function renderToppingList(data) {
-    // Chuyển đổi object thành array để dễ xử lý phân trang
-    allToppingsArr = Object.entries(data).map(([key, dish]) => dish);
-    
-    // Lấy giá trị mặc định từ select nếu có
-    const select = document.querySelector('.items-per-page-select');
-    if (select) {
-        itemsPerPage = parseInt(select.value, 10) || 15;
-    }
-    
-    // Reset về trang 1 khi load dữ liệu mới
-    currentPage = 1;
-    
-    // Render danh sách và cập nhật UI phân trang
-    renderToppingListPaged(currentPage, itemsPerPage);
-    updatePaginationUI(currentPage, itemsPerPage, allToppingsArr.length);
-}
-
-function renderToppingListPaged(page, perPage) {
-    const tbody = document.getElementById('table-list-body');
-    const startIdx = (page - 1) * perPage;
-    const endIdx = startIdx + perPage;
-    const pageDishes = allToppingsArr.slice(startIdx, endIdx);
-    
-    if (pageDishes.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7">Không có dữ liệu topping.</td></tr>';
-        return;
-    }
-
-    let htmlContent = '';
-    let rowIndex = 0;
-
-    pageDishes.forEach((dish, dishIndex) => {
-        const globalIndex = startIdx + dishIndex;
-        
-        // Format price
-        const formattedPrice = new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        }).format(dish.price);
-
-        // Status badge
-        const statusBadge = (dish.status === 'active' || dish.status === true) 
-            ? '<span style="color: #28a745; font-weight: 600;">Còn món</span>'
-            : '<span style="color: #dc3545; font-weight: 600;">Hết món</span>';
-
-        // Process toppings data - each topping category becomes a row
-        if (dish.toppings && dish.toppings.length > 0) {
-            dish.toppings.forEach((toppingCategory, toppingIndex) => {
-                // For each option in the topping category, create a separate row
-                toppingCategory.options.forEach((option, optionIndex) => {
-                    const optionStt = toppingIndex === 0 && optionIndex === 0 ? String(globalIndex + 1).padStart(2, '0') : '';
-                    
-                    // Format option price
-                    const optionFormattedPrice = new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND'
-                    }).format(option.price);
-
-                    htmlContent += `
-                        <tr>
-                            <td>${optionStt}</td>
-                            <td>${toppingCategory.name_details}</td>
-                            <td>${dish.name}</td>
-                            <td>${option.name}</td>
-                            <td>${optionFormattedPrice}</td>
-                            <td>${statusBadge}</td>
-                            <td>
-                                <a href="#" class="action-link edit" data-id="${dish.id_dishes || dish.id}" data-option-id="${option.id_option}">Sửa</a>
-                                <a href="#" class="action-link delete" data-id="${dish.id_dishes || dish.id}" data-option-id="${option.id_option}">Xóa</a>
-                            </td>
-                        </tr>
-                    `;
-                    rowIndex++;
-                });
-            });
-        } else {
-            // If no toppings, show just the dish
-            htmlContent += `
-                <tr>
-                    <td>${String(globalIndex + 1).padStart(2, '0')}</td>
-                    <td>-</td>
-                    <td>${dish.name}</td>
-                    <td>-</td>
-                    <td>${formattedPrice}</td>
-                    <td>${statusBadge}</td>
-                    <td>
-                        <a href="#" class="action-link edit" data-id="${dish.id_dishes || dish.id}">Sửa</a>
-                        <a href="#" class="action-link delete" data-id="${dish.id_dishes || dish.id}">Xóa</a>
-                    </td>
-                </tr>
-            `;
-            rowIndex++;
-        }
-    });
-
-    tbody.innerHTML = htmlContent.split('</tr>').reverse().join('</tr>');
-}
 
 function showDeleteConfirmation(dishId, optionId) {
     const deleteModal = document.getElementById('delete-table-modal');
@@ -451,63 +401,6 @@ async function deleteTopping(dishId, optionId) {
     }
 }
 
-function updatePaginationUI(page, perPage, totalItems) {
-    const totalPages = Math.ceil(totalItems / perPage) || 1;
-    currentPage = parseInt(page, 10);
-    itemsPerPage = parseInt(perPage, 10);
-
-    // Update info text
-    const paginationInfo = document.getElementById('pagination-info');
-    if (paginationInfo) {
-        const start = (currentPage - 1) * itemsPerPage + 1;
-        const end = Math.min(currentPage * itemsPerPage, totalItems);
-        paginationInfo.textContent = `${start} - ${end}/${totalItems}`;
-    }
-
-    // Update button states and onclick handlers
-    const btnFirst = document.getElementById('page-first');
-    const btnPrev = document.getElementById('page-prev');
-    const btnNext = document.getElementById('page-next');
-    const btnLast = document.getElementById('page-last');
-
-    if (btnFirst && btnPrev && btnNext && btnLast) {
-        btnFirst.disabled = currentPage === 1;
-        btnPrev.disabled = currentPage === 1;
-        btnNext.disabled = currentPage === totalPages;
-        btnLast.disabled = currentPage === totalPages;
-
-        // Xóa event listeners cũ (nếu có)
-        btnFirst.replaceWith(btnFirst.cloneNode(true));
-        btnPrev.replaceWith(btnPrev.cloneNode(true));
-        btnNext.replaceWith(btnNext.cloneNode(true));
-        btnLast.replaceWith(btnLast.cloneNode(true));
-
-        // Lấy lại reference sau khi clone
-        const newBtnFirst = document.getElementById('page-first');
-        const newBtnPrev = document.getElementById('page-prev');
-        const newBtnNext = document.getElementById('page-next');
-        const newBtnLast = document.getElementById('page-last');
-
-        // Gắn event listeners mới
-        newBtnFirst.addEventListener('click', () => window.onTablePageChange(1, itemsPerPage));
-        newBtnPrev.addEventListener('click', () => window.onTablePageChange(currentPage - 1, itemsPerPage));
-        newBtnNext.addEventListener('click', () => window.onTablePageChange(currentPage + 1, itemsPerPage));
-        newBtnLast.addEventListener('click', () => window.onTablePageChange(totalPages, itemsPerPage));
-    }
-}
-
-// Hàm này sẽ được gọi bởi component Pagination
-window.onTablePageChange = function(page, perPage) {
-    currentPage = parseInt(page, 10);
-    itemsPerPage = parseInt(perPage, 10);
-    
-    // Render lại danh sách với trang mới
-    renderToppingListPaged(currentPage, itemsPerPage);
-    
-    // Cập nhật UI phân trang
-    updatePaginationUI(currentPage, itemsPerPage, allToppingsArr.length);
-};
-
 // Modal functions
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -525,4 +418,72 @@ function showAddToppingModalForDish(dishId) {
         document.getElementById('toppingNameInput').value = '';
         document.getElementById('toppingPriceInput').value = '';
     }
+}
+
+// Render topping accordion table
+window.renderToppingAccordion = function(data) {
+    const tbody = document.getElementById('topping-accordion-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    const dishes = Object.values(data);
+    dishes.forEach((dish, idx) => {
+        const stt = String(idx + 1).padStart(2, '0');
+        const statusBadge = (dish.status === 'active' || dish.status === true)
+            ? '<span style="color: #28a745; font-weight: 600;">Còn món</span>'
+            : '<span style="color: #dc3545; font-weight: 600;">Hết món</span>';
+        // Main row
+        const trMain = document.createElement('tr');
+        trMain.className = 'topping-accordion-row';
+        trMain.innerHTML = `
+            <td>${stt}</td>
+            <td>${dish.name}</td>
+            <td>${statusBadge}</td>
+            <td>
+                <a href="#" class="action-link edit" data-id="${dish.id_dishes || dish.id}" title="Sửa">
+                    <img src="/svg/icon_action/write.svg" alt="Sửa món" style="width:20px; height: 20px;">
+                </a>
+                <a href="#" class="action-link delete" data-id="${dish.id_dishes || dish.id}" title="Xóa">
+                      <img src="/svg/icon_action/delete.svg" alt="Xóa món" style="width: 20px; height: 20px;">
+                </a>
+            </td>
+        `;
+        // Details row
+        const trDetails = document.createElement('tr');
+        trDetails.className = 'topping-accordion-details';
+        trDetails.innerHTML = `<td colspan="4">
+            <ul class="topping-topping-list">
+                ${(dish.toppings||[]).map(cat => `
+                    <li class="topping-category">${cat.name_details}
+                        <ul>
+                            ${(cat.options||[]).filter(o=>o).map(option => `
+                                <li class="topping-option">${option.name} <span style='color:#888;'>(${option.price.toLocaleString('vi-VN')} đ)</span></li>
+                            `).join('')}
+                        </ul>
+                    </li>
+                `).join('')}
+            </ul>
+        </td>`;
+        // Accordion logic
+        trMain.addEventListener('click', function(e) {
+            // Đừng trigger khi bấm vào nút Sửa/Xóa
+            if (e.target.closest('.action-link')) return;
+            trDetails.classList.toggle('open');
+        });
+        tbody.appendChild(trMain);
+        tbody.appendChild(trDetails);
+    });
+};
+
+// Hook vào loadToppings để sử dụng accordion view
+if (window.loadToppings) {
+    const oldLoadToppings = window.loadToppings;
+    window.loadToppings = async function(restaurantId) {
+        try {
+            const data = await window.menuService.getMenu(restaurantId);
+            window.renderToppingAccordion(data);
+        } catch (error) {
+            console.error('Error loading toppings:', error);
+            document.getElementById('topping-accordion-body').innerHTML = '<tr><td colspan="4">Lỗi tải dữ liệu.</td></tr>';
+        }
+    };
 } 

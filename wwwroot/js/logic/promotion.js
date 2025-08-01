@@ -4,6 +4,7 @@ let currentPage = 1;
 let itemsPerPage = 15;
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Add promotion modal
     const openBtn = document.getElementById('openAddPromotionModal');
     const modal = document.getElementById('add-promotion-modal');
     const closeBtn = document.getElementById('closeAddPromotionModal');
@@ -27,6 +28,95 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Edit promotion modal
+    const editModal = document.getElementById('edit-promotion-modal');
+    const closeEditBtn = document.getElementById('closeEditPromotionModal');
+    const closeEditX = document.getElementById('closeEditPromotionModalX');
+    const editForm = document.getElementById('editPromotionForm');
+    
+    if (editModal && closeEditBtn) {
+        closeEditBtn.addEventListener('click', function() {
+            editModal.style.display = 'none';
+        });
+        if (closeEditX) {
+            closeEditX.addEventListener('click', function() {
+                editModal.style.display = 'none';
+            });
+        }
+        window.addEventListener('click', function(e) {
+            if (e.target === editModal) {
+                editModal.style.display = 'none';
+            }
+        });
+    }
+    
+    // Edit form submit handler
+    if (editForm) {
+        editForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('Edit form submitted'); // Debug log
+            
+            const promotionId = document.getElementById('edit-promotion-id').value;
+            const date_end = document.getElementById('edit-date-end').value;
+            const max_discount = Number(document.getElementById('edit-max-discount').value);
+            const min_order_value = Number(document.getElementById('edit-min-order-value').value);
+            const percent = Number(document.getElementById('edit-percent').value);
+            const quantity = Number(document.getElementById('edit-quantity').value);
+            const status = document.getElementById('edit-status').value;
+            
+            console.log('Form data:', { promotionId, date_end, max_discount, min_order_value, percent, quantity, status }); // Debug log
+            
+            if (!promotionId || !date_end || !max_discount || !min_order_value || !percent || !quantity || !status) {
+                showAlert('Vui lòng điền đầy đủ thông tin!', 'warning');
+                return;
+            }
+            
+            try {
+                // Tìm promotion trong array để lấy thông tin đầy đủ
+                const promotion = allStaffArr.find(p => p.id === promotionId);
+                if (!promotion) {
+                    showAlert('Không tìm thấy thông tin khuyến mãi!', 'error');
+                    return;
+                }
+                
+                // Tạo object promotion với thông tin đầy đủ
+                const updatedPromotionData = {
+                    id_promotion: promotion.id_promotion,
+                    id_restaurant: promotion.id_restaurant,
+                    date_end: date_end,
+                    max_discount: max_discount,
+                    min_order_value: min_order_value,
+                    percent: percent,
+                    quantity: quantity,
+                    status: status,
+                    title: promotion.title,
+                    title_sub: promotion.title_sub
+                };
+                
+                console.log('Updating promotion with ID:', promotionId, 'new data:', updatedPromotionData);
+                await window.promotionService.editPromotion(promotionId, updatedPromotionData);
+                showAlert('Cập nhật khuyến mãi thành công!', 'success');
+                editModal.style.display = 'none';
+                
+                // Clear cache and reload data
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    if (user && user.restaurant_id) {
+                        const cacheKey = `promotionData_${user.restaurant_id}`;
+                        localStorage.removeItem(cacheKey);
+                        loadPromotionData(user.restaurant_id);
+                    }
+                }
+            } catch (err) {
+                console.error('Error updating promotion:', err);
+                showAlert('Có lỗi xảy ra khi cập nhật khuyến mãi!', 'error');
+            }
+        });
+    }
+    
+
     
     // Thêm validation cho ô nhập ngày kết thúc
     const dateEndInput = document.getElementById('add-date-end');
@@ -270,6 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+
+    
     // Xử lý submit form thêm promotion
     if (form) {
         form.addEventListener('submit', async function(e) {
@@ -329,6 +421,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -377,8 +471,20 @@ async function loadPromotionData(restaurantId) {
             console.log('Loaded promotion data from API and cached');
         }
         
-        // data là object, mỗi key là 1 staff
-        allStaffArr = Object.values(data).filter(staff => staff.id_promotion).reverse();
+        console.log('Raw data from API:', data); // Debug log
+        
+        // data là object, mỗi key là 1 promotion
+        // Convert object to array and add the Firebase document ID as id
+        allStaffArr = Object.entries(data)
+            .filter(([key, promotion]) => promotion.id_promotion)
+            .map(([key, promotion]) => ({
+                ...promotion,
+                id: key // Store the Firebase document ID as 'id'
+            }))
+            .reverse();
+        
+        console.log('Processed allStaffArr:', allStaffArr); // Debug log
+        
         // Lấy giá trị mặc định từ select nếu có
         const select = document.querySelector('.items-per-page-select');
         if (select) {
@@ -390,7 +496,7 @@ async function loadPromotionData(restaurantId) {
     } catch (error) {
         console.error('Lỗi khi lấy danh sách promotion:', error);
         const staffBody = document.getElementById('staffBody');
-        if (staffBody) staffBody.innerHTML = '<tr><td colspan="6">Lỗi khi tải dữ liệu khuyến mãi.</td></tr>';
+        if (staffBody) staffBody.innerHTML = '<tr><td colspan="8">Lỗi khi tải dữ liệu khuyến mãi.</td></tr>';
     } finally {
         hideLoading();
     }
@@ -440,11 +546,17 @@ function renderStatusVN(status) {
 
 function renderStaffListPaged(page, perPage) {
     const staffBody = document.getElementById('staffBody');
+    console.log('staffBody element:', staffBody); // Debug log
+    
     const startIdx = (page - 1) * perPage;
     const endIdx = startIdx + perPage;
     const pageStaff = allStaffArr.slice(startIdx, endIdx);
+    console.log('pageStaff:', pageStaff); // Debug log
+    
     if (pageStaff.length === 0) {
-        staffBody.innerHTML = '<tr><td colspan="7">Không có dữ liệu khuyến mãi.</td></tr>';
+        if (staffBody) {
+            staffBody.innerHTML = '<tr><td colspan="8">Không có dữ liệu khuyến mãi.</td></tr>';
+        }
         return;
     }
     
@@ -458,12 +570,281 @@ function renderStaffListPaged(page, perPage) {
             <td>${formatDateTimeVN(staff.date_end)}</td>
             <td>${renderStatusVN(staff.status)}</td>
           
-            <td>
-                <a href="#" class="action-link edit" style="color: #1976d2;">[Sửa]</a>
-                <a href="#" class="action-link delete" style="color: #e31616;">[Xóa]</a>
-            </td>
+                         <td>
+                  <a href="#" class="menu-action-link edit" data-id="${staff.id}" title="Sửa khuyến mãi">
+                         <img src="/svg/icon_action/write.svg" alt="Sửa khuyến mãi" style="width:20px; height: 20px;">
+                    </a>
+                    <a href="#" class="menu-action-link delete" data-id="${staff.id}" title="Xóa khuyến mãi">
+                         <img src="/svg/icon_action/delete.svg" alt="Xóa khuyến mãi" style="width: 20px; height: 20px;">
+                    </a>
+             </td>
         </tr>
     `).join('');
+    
+    // Add event listeners for edit and delete buttons
+    const editButtons = staffBody.querySelectorAll('.edit');
+    console.log('Found edit buttons:', editButtons.length); // Debug log
+    editButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const promotionId = this.getAttribute('data-id');
+            console.log('Edit button clicked, promotionId:', promotionId); // Debug log
+            openEditModal(promotionId);
+        });
+    });
+    
+    const deleteButtons = staffBody.querySelectorAll('.delete');
+    console.log('Found delete buttons:', deleteButtons.length); // Debug log
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const promotionId = this.getAttribute('data-id');
+            console.log('Delete button clicked, promotionId:', promotionId); // Debug log
+            showDeleteConfirmation(promotionId);
+        });
+    });
+}
+
+// Function to open edit modal and populate with promotion data
+function openEditModal(promotionId) {
+    console.log('Edit promotion function called with ID:', promotionId);
+    
+    // Tìm promotion trong array
+    const promotion = allStaffArr.find(p => p.id === promotionId);
+    if (!promotion) {
+        console.error('Promotion not found with ID:', promotionId);
+        showAlert('Không tìm thấy khuyến mãi!', 'error');
+        return;
+    }
+    
+    console.log('Found promotion:', promotion); // Debug log
+    
+    // Sử dụng modal có sẵn trong HTML
+    const modal = document.getElementById('edit-promotion-modal');
+    if (!modal) {
+        console.error('Edit modal not found!');
+        showAlert('Không tìm thấy modal sửa khuyến mãi!', 'error');
+        return;
+    }
+    
+    // Điền dữ liệu vào form
+    const promotionIdInput = document.getElementById('edit-promotion-id');
+    const dateEndInput = document.getElementById('edit-date-end');
+    const maxDiscountInput = document.getElementById('edit-max-discount');
+    const minOrderValueInput = document.getElementById('edit-min-order-value');
+    const percentInput = document.getElementById('edit-percent');
+    const quantityInput = document.getElementById('edit-quantity');
+    const statusInput = document.getElementById('edit-status');
+    
+    if (promotionIdInput && dateEndInput && maxDiscountInput && minOrderValueInput && percentInput && quantityInput && statusInput) {
+        // Lưu promotion ID để sử dụng khi submit
+        promotionIdInput.value = promotionId;
+        
+        // Format date for datetime-local input
+        const dateEnd = new Date(promotion.date_end);
+        const year = dateEnd.getFullYear();
+        const month = String(dateEnd.getMonth() + 1).padStart(2, '0');
+        const day = String(dateEnd.getDate()).padStart(2, '0');
+        const hours = String(dateEnd.getHours()).padStart(2, '0');
+        const minutes = String(dateEnd.getMinutes()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+        
+        dateEndInput.value = formattedDate;
+        maxDiscountInput.value = promotion.max_discount;
+        minOrderValueInput.value = promotion.min_order_value;
+        percentInput.value = promotion.percent;
+        quantityInput.value = promotion.quantity;
+        statusInput.value = promotion.status;
+        
+        // Set minimum date for edit form
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 3);
+        
+        const minYear = currentDate.getFullYear();
+        const minMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const minDay = String(currentDate.getDate()).padStart(2, '0');
+        const minHours = String(currentDate.getHours()).padStart(2, '0');
+        const minMinutes = String(currentDate.getMinutes()).padStart(2, '0');
+        const minDateString = `${minYear}-${minMonth}-${minDay}T${minHours}:${minMinutes}`;
+        
+        dateEndInput.setAttribute('min', minDateString);
+    } else {
+        console.error('Some form inputs not found!');
+        showAlert('Có lỗi khi tải form sửa khuyến mãi!', 'error');
+        return;
+    }
+    
+    // Hiển thị modal
+    modal.style.display = 'flex';
+    
+    console.log('Modal displayed successfully'); // Debug log
+}
+
+// --- Delete Confirmation Modal ---
+function showDeleteConfirmation(promotionId) {
+    console.log('showDeleteConfirmation called with promotionId:', promotionId);
+    
+    // Tìm promotion trong array để hiển thị thông tin
+    const promotion = allStaffArr.find(p => p.id === promotionId);
+    if (!promotion) {
+        console.error('Promotion not found with ID:', promotionId);
+        showAlert('Không tìm thấy khuyến mãi!', 'error');
+        return;
+    }
+    
+    let modal = document.getElementById('delete-promotion-modal');
+    if (!modal) {
+        // Tạo modal nếu chưa có
+        modal = document.createElement('div');
+        modal.id = 'delete-promotion-modal';
+        modal.className = 'modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        `;
+        modal.innerHTML = `
+            <div class="modal-content" style="
+                background: white;
+                border-radius: 12px;
+                padding: 24px;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                position: relative;
+                animation: popupFadeIn 0.3s ease-out;
+            ">
+                <span class="close-modal" id="closeDeletePromotionModal" style="
+                    position: absolute;
+                    top: 12px;
+                    right: 16px;
+                    font-size: 24px;
+                    font-weight: bold;
+                    color: #999;
+                    cursor: pointer;
+                    line-height: 1;
+                ">&times;</span>
+                <h2 class="modal-title" style="
+                    color: #B24242;
+                    margin: 0 0 16px 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    text-align: center;
+                ">Xác nhận xóa khuyến mãi</h2>
+                <div style="
+                    margin: 18px 0 24px 0;
+                    text-align: center;
+                    color: #333;
+                    font-size: 15px;
+                    line-height: 1.5;
+                ">
+                    Bạn có chắc chắn muốn xóa khuyến mãi <strong>${promotion.id_promotion}</strong> không?
+                </div>
+                <div style="
+                    display: flex;
+                    gap: 12px;
+                    width: 100%;
+                    justify-content: center;
+                ">
+                    <button id="cancelDeletePromotionBtn" style="
+                        background: #e9ecef;
+                        color: #333;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 24px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        transition: background-color 0.2s;
+                        min-width: 80px;
+                    " onmouseover="this.style.backgroundColor='#d1d5db'" onmouseout="this.style.backgroundColor='#e9ecef'">Hủy</button>
+                    <button id="confirmDeletePromotionBtn" style="
+                        background: #B24242;
+                        color: #fff;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 24px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: background-color 0.2s;
+                        min-width: 80px;
+                    " onmouseover="this.style.backgroundColor='#a03a3a'" onmouseout="this.style.backgroundColor='#B24242'">Xóa</button>
+                </div>
+            </div>
+        `;
+        
+        // Thêm CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes popupFadeIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.8) translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(modal);
+    } else {
+        // Cập nhật thông tin promotion trong modal nếu đã tồn tại
+        const titleElement = modal.querySelector('.modal-title');
+        const messageElement = modal.querySelector('div[style*="text-align: center"]');
+        if (titleElement && messageElement) {
+            titleElement.textContent = 'Xác nhận xóa khuyến mãi';
+            messageElement.innerHTML = `Bạn có chắc chắn muốn xóa khuyến mãi <strong>${promotion.id_promotion}</strong> không?`;
+        }
+    }
+    
+    modal.style.display = 'flex';
+
+    // Đóng modal
+    const closeBtn = document.getElementById('closeDeletePromotionModal');
+    const cancelBtn = document.getElementById('cancelDeletePromotionBtn');
+    if (closeBtn) closeBtn.onclick = () => { modal.style.display = 'none'; };
+    if (cancelBtn) cancelBtn.onclick = () => { modal.style.display = 'none'; };
+    window.onclick = function(event) {
+        if (event.target === modal) modal.style.display = 'none';
+    };
+    
+    // Xác nhận xóa
+    const confirmBtn = document.getElementById('confirmDeletePromotionBtn');
+    if (confirmBtn) {
+        confirmBtn.onclick = async function() {
+            try {
+                console.log('Deleting promotion with ID:', promotionId);
+                await window.promotionService.deletePromotion(promotionId);
+                showAlert('Xóa khuyến mãi thành công!', 'success');
+                modal.style.display = 'none';
+                
+                // Clear cache and reload data
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    if (user && user.restaurant_id) {
+                        const cacheKey = `promotionData_${user.restaurant_id}`;
+                        localStorage.removeItem(cacheKey);
+                        loadPromotionData(user.restaurant_id);
+                    }
+                }
+            } catch (err) {
+                console.error('Error deleting promotion:', err);
+                showAlert('Có lỗi xảy ra khi xóa khuyến mãi!', 'error');
+                modal.style.display = 'none';
+            }
+        };
+    }
 }
 
 function updatePaginationUI(page, perPage, totalItems) {
