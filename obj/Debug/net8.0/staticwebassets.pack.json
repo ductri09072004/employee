@@ -85,6 +85,14 @@
       "PackagePath": "staticwebassets\\js\\common\\alert.component.js"
     },
     {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\common\\auto-refresh-control.js",
+      "PackagePath": "staticwebassets\\js\\common\\auto-refresh-control.js"
+    },
+    {
+      "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\common\\auto-refresh.js",
+      "PackagePath": "staticwebassets\\js\\common\\auto-refresh.js"
+    },
+    {
       "Id": "E:\\Study\\MVC_Web\\Employee\\wwwroot\\js\\common\\confirm.modal.js",
       "PackagePath": "staticwebassets\\js\\common\\confirm.modal.js"
     },

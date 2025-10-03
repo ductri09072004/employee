@@ -454,6 +454,21 @@
     </div>
 </div>
 
+<!-- Popup modal sửa thông tin topping -->
+<div id="edit-topping-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:400px;">
+        <span class="close-modal" id="closeEditToppingModal">&times;</span>
+        <h2 class="modal-title" style="color:#4267B2;">Sửa phân loại topping</h2>
+        <div class="modal-form-group">
+            <label for="editToppingNameDetails">Phân loại topping</label>
+            <input type="text" id="editToppingNameDetails" maxlength="20" placeholder="Nhập phân loại topping..." />
+        </div>
+        <button id="confirmEditToppingBtn" style="background: linear-gradient(90deg, #4267B2 60%, #3498db 100%); color: #fff; border: none; border-radius: 7px; padding: 10px 32px; font-size: 15px; cursor: pointer; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 2px 8px rgba(66,103,178,0.08); margin-top: 20px; width: 100%;">
+            Lưu thay đổi
+        </button>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="~/js/api_service/menu.service.js"></script>

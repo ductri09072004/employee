@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const link = e.target.closest('.action-link.edit');
             const dishId = link.getAttribute('data-id');
-            showAddToppingModalForDish(dishId);
+            const toppingId = link.getAttribute('data-topping-id');
+            if (toppingId) {
+                showEditToppingModal(dishId, toppingId);
+            } else {
+                showAddToppingModalForDish(dishId);
+            }
         }
     });
 
@@ -102,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const select = document.getElementById('toppingNameDetailsSelect');
         select.innerHTML = '<option value="">-- Chọn phân loại --</option><option value="__new__">+ Nhập phân loại mới</option>';
         if (dish && dish.toppings) {
-            const uniqueDetails = [...new Set(dish.toppings.map(t => t.name_details))];
+            const uniqueDetails = [...new Set(Object.values(dish.toppings).map(t => t.name_details))];
             uniqueDetails.forEach(name_details => {
                 const opt = document.createElement('option');
                 opt.value = name_details;
@@ -298,6 +303,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.target === qrModal) qrModal.style.display = 'none';
         });
     }
+
+    // Setup modal sửa topping
+    setupEditToppingModal();
 });
 
 async function loadToppings(restaurantId) {
@@ -319,13 +327,21 @@ async function loadToppings(restaurantId) {
             }
         }
         
-        // If no cached data or parsing failed, fetch from API
-        if (!data) {
-            data = await window.menuService.getMenu(restaurantId);
-            // Cache the data
-            localStorage.setItem(cacheKey, JSON.stringify(data));
-            console.log('Loaded toppings from API and cached');
-        }
+                 // If no cached data or parsing failed, fetch from API
+         if (!data) {
+             data = await window.menuService.getMenu(restaurantId);
+             // Cache the data
+             localStorage.setItem(cacheKey, JSON.stringify(data));
+             console.log('Loaded toppings from API and cached');
+         } else {
+             // Force reload from API to get fresh data
+             console.log('Forcing reload from API to get fresh data');
+             data = await window.menuService.getMenu(restaurantId);
+             localStorage.setItem(cacheKey, JSON.stringify(data));
+         }
+         
+         // Debug: Log dữ liệu trước khi render
+         console.log('Data before rendering:', data);
         
         window.renderToppingAccordion(data);
     } catch (error) {
@@ -420,6 +436,159 @@ function showAddToppingModalForDish(dishId) {
     }
 }
 
+// Biến lưu trữ thông tin topping đang sửa
+let currentEditingTopping = null;
+
+// Hàm hiển thị modal sửa topping
+async function showEditToppingModal(dishId, toppingId) {
+    try {
+        showLoading();
+        
+        // Lấy dữ liệu topping từ cache hoặc API
+        const userStr = localStorage.getItem('user');
+        if (!userStr) return;
+        const user = JSON.parse(userStr);
+        
+        const cacheKey = `toppingsData_${user.restaurant_id}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        let menuData = {};
+        
+        if (cachedData) {
+            menuData = JSON.parse(cachedData);
+        } else {
+            menuData = await window.menuService.getMenu(user.restaurant_id);
+        }
+        
+        // Tìm topping cần sửa
+        const dish = Object.values(menuData).find(d => (d.id_dishes || d.id) === dishId);
+        if (!dish || !dish.toppings) {
+            showAlert('Không tìm thấy thông tin topping!', 'error');
+            return;
+        }
+        
+        // Tìm topping theo key gốc
+        const topping = dish.toppings[toppingId];
+        if (!topping) {
+            showAlert('Không tìm thấy thông tin topping!', 'error');
+            return;
+        }
+        
+        // Lưu thông tin topping đang sửa
+        currentEditingTopping = {
+            dishId,
+            toppingId,
+            topping
+        };
+        
+                 // Hiển thị modal
+         const modal = document.getElementById('edit-topping-modal');
+         if (modal) {
+             modal.style.display = 'block';
+             
+             // Điền thông tin vào form
+             document.getElementById('editToppingNameDetails').value = topping.name_details || '';
+         }
+        
+    } catch (error) {
+        console.error('Error showing edit topping modal:', error);
+        showAlert('Có lỗi xảy ra khi tải thông tin topping!', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+
+
+// Hàm setup modal sửa topping
+function setupEditToppingModal() {
+    // Đóng modal
+    const closeBtn = document.getElementById('closeEditToppingModal');
+    if (closeBtn) {
+        closeBtn.onclick = function() {
+            document.getElementById('edit-topping-modal').style.display = 'none';
+            currentEditingTopping = null;
+        };
+    }
+    
+    // Đóng modal khi click outside
+    const modal = document.getElementById('edit-topping-modal');
+    if (modal) {
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                currentEditingTopping = null;
+            }
+        });
+    }
+    
+    // Nút lưu thay đổi
+    const confirmBtn = document.getElementById('confirmEditToppingBtn');
+    if (confirmBtn) {
+        confirmBtn.onclick = async function() {
+            if (!currentEditingTopping) {
+                showAlert('Không có thông tin topping để sửa!', 'error');
+                return;
+            }
+            
+            // Lấy dữ liệu từ form
+            const nameDetails = document.getElementById('editToppingNameDetails').value.trim();
+            
+            if (!nameDetails) {
+                showAlert('Vui lòng nhập phân loại topping!', 'warning');
+                return;
+            }
+            
+            try {
+                showLoading();
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'Đang lưu...';
+                
+                                                  // Debug: Log thông tin trước khi gọi API
+                 console.log('Updating topping:', {
+                     toppingId: currentEditingTopping.toppingId,
+                     oldName: currentEditingTopping.topping.name_details,
+                     newName: nameDetails
+                 });
+                 
+                 // Chỉ cập nhật name_details
+                 const result = await window.toppingService.updateTitle(currentEditingTopping.toppingId, { name_details: nameDetails });
+                 
+                 // Debug: Log kết quả API
+                 console.log('API update result:', result);
+                 
+                 // Clear cache và reload dữ liệu ngay lập tức
+                 const userStr = localStorage.getItem('user');
+                 if (userStr) {
+                     const user = JSON.parse(userStr);
+                     if (user && user.restaurant_id) {
+                         const cacheKey = `toppingsData_${user.restaurant_id}`;
+                         localStorage.removeItem(cacheKey);
+                         
+                         // Reload dữ liệu mới từ API
+                         await loadToppings(user.restaurant_id);
+                         
+                         // Debug: Kiểm tra dữ liệu sau khi reload
+                         const newData = await window.menuService.getMenu(user.restaurant_id);
+                         console.log('Data after reload:', newData);
+                     }
+                 }
+                 
+                 showAlert('Cập nhật topping thành công!', 'success');
+                 document.getElementById('edit-topping-modal').style.display = 'none';
+                 currentEditingTopping = null;
+                
+            } catch (error) {
+                console.error('Error updating topping:', error);
+                showAlert('Có lỗi xảy ra khi cập nhật topping!', 'error');
+            } finally {
+                hideLoading();
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Lưu thay đổi';
+            }
+        };
+    }
+}
+
 // Render topping accordion table
 window.renderToppingAccordion = function(data) {
     const tbody = document.getElementById('topping-accordion-body');
@@ -452,8 +621,14 @@ window.renderToppingAccordion = function(data) {
         trDetails.className = 'topping-accordion-details';
         trDetails.innerHTML = `<td colspan="4">
             <ul class="topping-topping-list">
-                ${(dish.toppings||[]).map(cat => `
-                    <li class="topping-category">${cat.name_details}
+                ${Object.entries(dish.toppings || {}).map(([toppingKey, cat]) => `
+                    <li class="topping-category">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span>${cat.name_details}</span>
+                            <a href="#" class="action-link edit" data-id="${dish.id_dishes || dish.id}" data-topping-id="${toppingKey}" title="Sửa topping">
+                                <img src="/svg/icon_action/write.svg" alt="Sửa topping" style="width: 16px; height: 16px;">
+                            </a>
+                        </div>
                         <ul>
                             ${(cat.options||[]).filter(o=>o).map(option => `
                                 <li class="topping-option">${option.name} <span style='color:#888;'>(${option.price.toLocaleString('vi-VN')} đ)</span></li>

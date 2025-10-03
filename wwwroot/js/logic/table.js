@@ -284,8 +284,10 @@ function showQRModal(url, tableNumber) {
     const qrContainer = document.getElementById('qrCodeContainer');
     const urlText = document.getElementById('qrUrlText');
     if (!modal || !qrContainer || !urlText) return;
+    
     // Xóa QR cũ
     qrContainer.innerHTML = '';
+    
     // Render QR code
     new QRCode(qrContainer, {
         text: url,
@@ -295,18 +297,210 @@ function showQRModal(url, tableNumber) {
         colorLight: '#fff',
         correctLevel: QRCode.CorrectLevel.H
     });
+    
     urlText.textContent = url;
+    
     // Cập nhật tiêu đề modal
     const titleEl = modal.querySelector('.modal-title');
     if (titleEl) {
         titleEl.textContent = tableNumber ? `Mã QR bàn ${tableNumber}` : 'Mã QR bàn';
     }
+    
     modal.style.display = 'block';
 }
 
 function hideQRModal() {
     const modal = document.getElementById('show-qr-modal');
     if (modal) modal.style.display = 'none';
+}
+
+// Hàm tải QR code thành PDF
+async function downloadQRAsPDF(url, tableNumber) {
+    try {
+        showLoading();
+        
+        // Kiểm tra jsPDF có sẵn không
+        if (typeof window.jspdf === 'undefined') {
+            throw new Error('jsPDF library chưa được load. Vui lòng refresh trang và thử lại.');
+        }
+        
+        // Khởi tạo jsPDF
+        let jsPDF;
+        try {
+            jsPDF = window.jspdf.jsPDF;
+        } catch (e) {
+            jsPDF = window.jspdf;
+        }
+        
+        if (!jsPDF) {
+            throw new Error('Không thể khởi tạo jsPDF. Vui lòng refresh trang và thử lại.');
+        }
+        
+        // Lấy thông tin nhà hàng
+        let restaurantName = 'Nhà hàng';
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            try {
+                const user = JSON.parse(userStr);
+                if (user && user.restaurant_name) {
+                    restaurantName = user.restaurant_name;
+                }
+            } catch (e) {
+                console.warn('Không thể parse thông tin nhà hàng:', e);
+            }
+        }
+        
+        // Tạo PDF hình vuông
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: [150, 150], // Kích thước hình vuông 150x150mm
+            putOnlyUsedFonts: true
+        });
+        
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 15;
+        
+        // Vẽ viền trang trí (chỉ viền ngoài)
+        doc.setDrawColor(66, 103, 178);
+        doc.setLineWidth(2);
+        doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+        
+        // Tiêu đề bàn
+        doc.setFontSize(28);
+        doc.setTextColor(66, 103, 178);
+        doc.text(`Mã QR bàn ${tableNumber || 'XX'}`, pageWidth / 2, 35, { align: 'center' });
+        
+        // Tạo QR code cho PDF với viền trang trí
+        const qrSize = 80; // Giảm kích thước QR để vừa khung
+        const qrX = (pageWidth - qrSize) / 2;
+        const qrY = 50; // Điều chỉnh vị trí Y sau khi bỏ header
+        
+        // Vẽ viền cho QR code
+        doc.setDrawColor(66, 103, 178);
+        doc.setLineWidth(1);
+        doc.rect(qrX - 3, qrY - 3, qrSize + 6, qrSize + 6); // Giảm padding viền
+        
+        // Vẽ góc trang trí cho QR code
+        const cornerSize = 6; // Giảm kích thước góc
+        const cornerThickness = 1.5; // Giảm độ dày góc
+        
+        // Góc trên trái
+        doc.setDrawColor(66, 103, 178);
+        doc.setLineWidth(cornerThickness);
+        doc.line(qrX - 3, qrY - 3 + cornerSize, qrX - 3, qrY - 3);
+        doc.line(qrX - 3, qrY - 3, qrX - 3 + cornerSize, qrY - 3);
+        
+        // Góc trên phải
+        doc.line(qrX + qrSize + 3 - cornerSize, qrY - 3, qrX + qrSize + 3, qrY - 3);
+        doc.line(qrX + qrSize + 3, qrY - 3, qrX + qrSize + 3, qrY - 3 + cornerSize);
+        
+        // Góc dưới trái
+        doc.line(qrX - 3, qrY + qrSize + 3 - cornerSize, qrX - 3, qrY + qrSize + 3);
+        doc.line(qrX - 3, qrY + qrSize + 3, qrX - 3 + cornerSize, qrY + qrSize + 3);
+        
+        // Góc dưới phải
+        doc.line(qrX + qrSize + 3 - cornerSize, qrY + qrSize + 3, qrX + qrSize + 3, qrY + qrSize + 3);
+        doc.line(qrX + qrSize + 3, qrY + qrSize + 3, qrX + qrSize + 3, qrY + qrSize + 3 - cornerSize);
+        
+        // Tạo QR code bằng cách sử dụng div ẩn
+        const tempDiv = document.createElement('div');
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.left = '-9999px';
+        tempDiv.style.top = '-9999px';
+        tempDiv.style.width = (qrSize * 3) + 'px';
+        tempDiv.style.height = (qrSize * 3) + 'px';
+        document.body.appendChild(tempDiv);
+        
+        // Tạo QR code với promise
+        const createQRCode = () => {
+            return new Promise((resolve, reject) => {
+                try {
+                    // Thử tạo QR code với QRCode library
+                    if (typeof QRCode !== 'undefined') {
+                        const qr = new QRCode(tempDiv, {
+                            text: url,
+                            width: qrSize * 3,
+                            height: qrSize * 3,
+                            colorDark: '#000',
+                            colorLight: '#fff',
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        
+                        // Đợi QR code được tạo
+                        setTimeout(() => {
+                            const canvas = tempDiv.querySelector('canvas');
+                            if (canvas && canvas.width > 0 && canvas.height > 0) {
+                                resolve(canvas);
+                            } else {
+                                reject(new Error('QR code không được tạo thành công'));
+                            }
+                        }, 500);
+                    } else {
+                        reject(new Error('QRCode library không có sẵn'));
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        };
+        
+        // Tạo QR code
+        let canvas;
+        try {
+            canvas = await createQRCode();
+        } catch (error) {
+            console.warn('Không thể tạo QR code bằng QRCode library, thử phương pháp khác:', error);
+            
+            // Phương pháp dự phòng: Sử dụng API online
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize * 3}x${qrSize * 3}&data=${encodeURIComponent(url)}`;
+            
+            // Tạo image từ URL
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            
+            canvas = await new Promise((resolve, reject) => {
+                img.onload = () => {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = qrSize * 3;
+                    tempCanvas.height = qrSize * 3;
+                    const ctx = tempCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    resolve(tempCanvas);
+                };
+                img.onerror = () => reject(new Error('Không thể tải QR code từ API'));
+                img.src = qrApiUrl;
+            });
+        }
+        
+        // Chuyển canvas thành image data
+        const imgData = canvas.toDataURL('image/png');
+        
+        // Kiểm tra xem QR code có được tạo thành công không
+        if (imgData === 'data:,') {
+            document.body.removeChild(tempDiv);
+            throw new Error('Không thể tạo QR code. Vui lòng thử lại.');
+        }
+        
+        // Thêm QR code vào PDF
+        doc.addImage(imgData, 'PNG', qrX, qrY, qrSize, qrSize);
+        
+        // Dọn dẹp
+        document.body.removeChild(tempDiv);
+        
+        // Tải xuống PDF
+        const fileName = `QR_Ban_${tableNumber || 'Unknown'}_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(fileName);
+        
+        showAlert('Đã tải xuống PDF thành công!', 'success');
+        
+    } catch (error) {
+        console.error('Lỗi khi tạo PDF:', error);
+        showAlert('Lỗi khi tạo PDF: ' + error.message, 'error');
+    } finally {
+        hideLoading();
+    }
 }
 
 function setupShowQRModalEvents() {
@@ -318,6 +512,22 @@ function setupShowQRModalEvents() {
             if (e.target === modal) hideQRModal();
         });
     }
+}
+
+// Setup nút tải PDF
+function setupDownloadPDFButtons() {
+    document.querySelectorAll('.action-link.download-pdf').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const url = btn.getAttribute('data-url');
+            const tableNumber = btn.getAttribute('data-table');
+            if (!url || !tableNumber) {
+                showAlert('Không tìm thấy thông tin bàn!', 'error');
+                return;
+            }
+            downloadQRAsPDF(url, tableNumber);
+        });
+    });
 }
 
 let allTablesArr = [];
@@ -397,6 +607,9 @@ function renderTableListPaged(page, perPage) {
                     <a href="#" class="action-link upload" title="Hiện QR">
                         <img src="/svg/icon_action/qr.svg" alt="Hiện QR" style="width: 20px; height: 20px;">
                     </a>
+                    <a href="#" class="action-link download-pdf" data-url="${qrUrl}" data-table="${tableId}" title="Tải PDF">
+                        <img src="/svg/icon_action/download.svg" alt="Tải PDF" style="width: 20px; height: 20px;">
+                    </a>
                     <a href="#" class="action-link delete" data-id="${item.id}" title="Xóa bàn">
                         <img src="/svg/icon_action/delete.svg" alt="Xóa bàn" style="width: 20px; height: 20px;">
                     </a>
@@ -408,6 +621,7 @@ function renderTableListPaged(page, perPage) {
     // Cập nhật lại các event listeners sau khi render lại bảng
     setupDeleteTableButtons();
     setupShowQRButtons();
+    setupDownloadPDFButtons();
 }
 
 // Hàm này sẽ được gọi bởi component Pagination
