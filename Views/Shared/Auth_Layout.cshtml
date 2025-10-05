@@ -535,7 +535,7 @@
                 const hasTracked = sessionStorage.getItem('auth_tracking_called');
                 
                 if (!hasTracked) {
-                    fetch('https://jollicowbe-admin.up.railway.app/api/admin/track/increase', {
+                    fetch('https://jollicowfe-production.up.railway.app/api/admin/track/increase', {
                         method: 'POST'
                     }).then(() => {
                         // Đánh dấu đã gọi API trong session này
